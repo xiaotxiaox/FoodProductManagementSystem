@@ -1,4 +1,10 @@
+# FoodProductManagementSystem
 ## 码匠社区
+
+## 运行环境
+1、maven 3.6.1
+2、java 11
+3、springBoot 2.1.4
 
 ## 快速运行
 1. 安装必备工具  
@@ -11,6 +17,7 @@ mvn flyway:migrate
 4. 运行打包命令
 ```sh
 mvn package
+mvn clean compile package
 ```
 5. 运行项目  
 ```sh
