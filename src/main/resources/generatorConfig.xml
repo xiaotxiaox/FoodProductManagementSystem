@@ -38,7 +38,5 @@
         <table tableName="notification" domainObjectName="Notification"></table>
         <table tableName="nav" domainObjectName="Nav"></table>
         <table tableName="ad" domainObjectName="Ad"></table>
-        <table tableName="custom" domainObjectName="Custom"></table>
-        <table tableName="policy" domainObjectName="Policy"></table>
     </context>
 </generatorConfiguration>

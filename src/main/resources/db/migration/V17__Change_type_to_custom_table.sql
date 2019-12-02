@@ -1,1 +1,0 @@
-alter table CUSTOM alter column TYPE int;
