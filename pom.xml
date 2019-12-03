@@ -24,12 +24,12 @@
         <profile>
             <id>dev</id>
             <properties>
-<!--                <db.url>jdbc:h2:~/community</db.url>-->
-<!--                <db.user>sa</db.user>-->
-<!--                <db.password>123</db.password>-->
-                <db.url>jdbc:mysql://39.107.243.158:3306/mysql</db.url>
-                <db.user>root</db.user>
-                <db.password>3390tsl</db.password>
+                <db.url>jdbc:h2:~/community</db.url>
+                <db.user>sa</db.user>
+                <db.password>123</db.password>
+<!--                <db.url>jdbc:mysql://39.107.243.158:3306/mysql</db.url>-->
+<!--                <db.user>root</db.user>-->
+<!--                <db.password>3390tsl</db.password>-->
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -74,7 +74,12 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.45</version>
+            <version>8.0.18</version>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.2.8</version>
         </dependency>
 
         <dependency>
@@ -102,6 +107,26 @@
             <groupId>cn.ucloud.ufile</groupId>
             <artifactId>ufile-client-java</artifactId>
             <version>2.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>2.0.0-rc2</version>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-models</artifactId>
+            <version>2.0.0-rc2</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.9.2</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.9.2</version>
         </dependency>
     </dependencies>
 
@@ -150,6 +175,11 @@
                         <groupId>com.h2database</groupId>
                         <artifactId>h2</artifactId>
                         <version>1.4.199</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>5.1.45</version>
                     </dependency>
                 </dependencies>
             </plugin>
