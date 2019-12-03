@@ -6,12 +6,12 @@
 <generatorConfiguration>
 
     <context id="DB2Tables" targetRuntime="MyBatis3">
-        
+
         <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"></plugin>
-        <jdbcConnection driverClass="org.h2.Driver"
-                        connectionURL="jdbc:h2:~/community"
-                        userId="sa"
-                        password="123">
+        <jdbcConnection driverClass="org.postgresql.Driver"
+                        connectionURL="jdbc:postgresql://39.107.243.158:5432/postgres"
+                        userId="postgres"
+                        password="3390tsl">
         </jdbcConnection>
 
         <javaTypeResolver>
@@ -32,7 +32,7 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table tableName="user" domainObjectName="User"></table>
+        <table tableName="user_user" domainObjectName="User"></table>
         <table tableName="question" domainObjectName="Question"></table>
         <table tableName="comment" domainObjectName="Comment"></table>
         <table tableName="notification" domainObjectName="Notification"></table>

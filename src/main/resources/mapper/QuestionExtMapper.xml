@@ -37,7 +37,7 @@
                 and tag regexp #{tag}
             </if>
         </where>
-        order by gmt_create desc limit 20
+        order by gmt_create desc
     </select>
 
     <select id="countBySearch" parameterType="life.majiang.community.dto.QuestionQueryDTO"
@@ -88,6 +88,5 @@
         <if test="sort != null and sort != '' and (sort == 'hot' || sort == 'hot7' || sort == 'hot30')">
             order by comment_count desc
         </if>
-        limit #{page},#{size}
     </select>
 </mapper>
