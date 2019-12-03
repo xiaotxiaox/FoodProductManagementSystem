@@ -38,14 +38,14 @@ public class HotTagTasks {
             list = questionMapper.selectByExampleWithRowbounds(new QuestionExample(), new RowBounds(offset, limit));
             for (Question question : list) {
                 String[] tags = StringUtils.split(question.getTag(), ",");
-                for (String tag : tags) {
-                    Integer priority = priorities.get(tag);
-                    if (priority != null) {
-                        priorities.put(tag, priority + 5 + question.getCommentCount());
-                    } else {
-                        priorities.put(tag, 5 + question.getCommentCount());
-                    }
-                }
+//                for (String tag : tags) {
+//                    Integer priority = priorities.get(tag);
+//                    if (priority != null) {
+//                        priorities.put(tag, priority + 5 + question.getCommentCount());
+//                    } else {
+//                        priorities.put(tag, 5 + question.getCommentCount());
+//                    }
+//                }
             }
             offset += limit;
         }

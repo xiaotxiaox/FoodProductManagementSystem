@@ -1,6 +1,7 @@
 package life.majiang.community.controller;
 
 import life.majiang.api.CommonResult;
+import life.majiang.community.dto.LoginDTO;
 import life.majiang.community.mapper.UserMapper;
 import life.majiang.community.model.User;
 import life.majiang.community.model.UserExample;
@@ -13,27 +14,27 @@ import java.util.List;
 
 @RestController
 public class LoginController {
+
     @Autowired
     private UserMapper userMapper;
 
     @RequestMapping(value = "/user/login", method = RequestMethod.POST)
-    public void login(@RequestParam("username") String username,
-                      @RequestParam("password") String password,
+    public Object login(@RequestBody LoginDTO loginDTO,
                       HttpServletRequest request) {
         UserExample userExample = new UserExample();
-        userExample.createCriteria().andNameEqualTo(username);
+        userExample.createCriteria()
+                .andNameEqualTo(loginDTO.getUsername());
         List<User> users = userMapper.selectByExample(userExample);
-//        if (users.size() == 0)
-//            return CommonResult.failed("用户名不存在");
-//        else{
-//            if (users.get(0).getPassword().equals(password)) {
-//                request.getSession().setAttribute("user", users.get(0));
-//                return CommonResult.success("user");
-//            }
-//            else return CommonResult.failed("密码错误");
-//        }
-        if (users.get(0).getPassword().equals(password)) {
+        if (users.size() == 0)
+            return CommonResult.failed("用户名不存在");
+
+        if (users.get(0).getPassword().equals(loginDTO.getPassword())) {
             request.getSession().setAttribute("user", users.get(0));
+            return CommonResult.success("user");
         }
+        else{
+            return CommonResult.failed("密码错误");
+        }
+
     }
 }
