@@ -11,6 +11,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,10 +32,10 @@ public class RoleService {
         example.createCriteria()
                 .andRoleEqualTo(role.getId());
         List<Role_permissions> role_permissions = role_permissionsMapper.selectByExample(example);
-        List<Permissions> permissions = null;
+        List<Permissions> permissions = new ArrayList<Permissions>();
         for (Role_permissions rolePermission : role_permissions) {
-            assert permissions != null;
-            permissions.add(permissionsMapper.selectByPrimaryKey(rolePermission.getId()));
+            Permissions temp = permissionsMapper.selectByPrimaryKey(rolePermission.getPermissions());
+            permissions.add(temp);
         }
         roleDTO.setPermissions(permissions);
         return roleDTO;

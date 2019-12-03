@@ -26,7 +26,7 @@ public class UserInfoService {
     public UserInfoDTO getInfo(User user){
         UserInfoDTO userInfoDto = new UserInfoDTO();
         BeanUtils.copyProperties(user,userInfoDto);
-        userInfoDto.setRoleDTO(roleService.getRole(roleMapper.selectByPrimaryKey(user.getRole())));
+        userInfoDto.setRole(roleService.getRole(roleMapper.selectByPrimaryKey(user.getRoleId())));
         return userInfoDto;
     }
 }

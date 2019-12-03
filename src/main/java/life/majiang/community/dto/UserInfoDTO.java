@@ -17,6 +17,6 @@ public class UserInfoDTO {
     private String bio;
     private String avatarUrl;
     private String password;
-    private Integer role;
-    private RoleDTO roleDTO;
+    private Integer roleId;
+    private RoleDTO role;
 }
