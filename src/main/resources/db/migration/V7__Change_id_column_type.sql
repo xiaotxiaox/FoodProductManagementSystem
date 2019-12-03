@@ -1,2 +1,2 @@
-alter table question modify id bigint NOT NULL;
-alter table `user` modify id bigint NOT NULL;
+alter table question alter column id type BIGINT using id::BIGINT;
+alter table user_user alter column id type BIGINT using id::BIGINT;

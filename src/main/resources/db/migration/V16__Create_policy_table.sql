@@ -1,6 +1,6 @@
 create table POLICY
 (
-	id int auto_increment,
+	id serial,
 	type VARCHAR(48) not null,
 	rate int,
 	handler int,

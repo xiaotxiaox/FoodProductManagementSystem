@@ -24,12 +24,12 @@
         <profile>
             <id>dev</id>
             <properties>
-                <db.url>jdbc:h2:~/community</db.url>
-                <db.user>sa</db.user>
-                <db.password>123</db.password>
-<!--                <db.url>jdbc:mysql://39.107.243.158:3306/mysql</db.url>-->
-<!--                <db.user>root</db.user>-->
-<!--                <db.password>3390tsl</db.password>-->
+<!--                <db.url>jdbc:h2:~/community</db.url>-->
+<!--                <db.user>sa</db.user>-->
+<!--                <db.password>123</db.password>-->
+                <db.url>jdbc:postgresql://39.107.243.158:5432/postgres</db.url>
+                <db.user>postgres</db.user>
+                <db.password>3390tsl</db.password>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -160,6 +160,11 @@
                         <version>5.1.45</version>
                     </dependency>
                     <dependency>
+                        <groupId>org.postgresql</groupId>
+                        <artifactId>postgresql</artifactId>
+                        <version>42.2.8</version>
+                    </dependency>
+                    <dependency>
                         <groupId>com.h2database</groupId>
                         <artifactId>h2</artifactId>
                         <version>1.4.199</version>
@@ -175,6 +180,11 @@
                         <groupId>com.h2database</groupId>
                         <artifactId>h2</artifactId>
                         <version>1.4.199</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.postgresql</groupId>
+                        <artifactId>postgresql</artifactId>
+                        <version>42.2.8</version>
                     </dependency>
                     <dependency>
                         <groupId>mysql</groupId>

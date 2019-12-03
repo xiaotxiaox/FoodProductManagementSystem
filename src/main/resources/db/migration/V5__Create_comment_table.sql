@@ -1,6 +1,6 @@
 create table comment
 (
-    id bigint auto_increment primary key,
+    id bigserial primary key,
     parent_id bigint not null,
     type int not null,
     commentator int not null,

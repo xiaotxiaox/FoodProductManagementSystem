@@ -1,6 +1,6 @@
 create table CUSTOM
 (
-	id int auto_increment,
+	id serial,
 	name VARCHAR(20) not null,
 	telephone VARCHAR(32),
 	type VARCHAR(16),

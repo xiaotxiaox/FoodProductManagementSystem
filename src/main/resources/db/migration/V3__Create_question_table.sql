@@ -1,6 +1,6 @@
 create table question
 (
-    id int auto_increment primary key,
+    id serial primary key,
     title varchar(50),
     description text,
     gmt_create bigint,

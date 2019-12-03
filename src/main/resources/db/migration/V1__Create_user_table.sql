@@ -1,6 +1,6 @@
-create table user
+create table User_user
 (
-    id int auto_increment primary key not null,
+    id serial primary key not null,
     account_id varchar(100),
     name varchar(50),
     token varchar(36),

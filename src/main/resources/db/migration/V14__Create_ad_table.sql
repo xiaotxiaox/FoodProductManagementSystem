@@ -1,6 +1,6 @@
 create table ad
 (
-    id int auto_increment primary key not null,
+    id serial primary key not null,
     title varchar(256) DEFAULT NULL,
     url varchar(512) DEFAULT NULL,
     image varchar(256) DEFAULT NULL,

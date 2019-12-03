@@ -1,1 +1,2 @@
-alter table CUSTOM alter column TYPE int;
+alter table custom alter column type type int using type::int;
+

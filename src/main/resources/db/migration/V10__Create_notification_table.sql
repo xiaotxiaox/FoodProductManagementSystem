@@ -1,6 +1,6 @@
 create table notification
 (
-    id bigint auto_increment primary key,
+    id bigserial primary key,
     notifier bigint not null,
     receiver bigint not null,
     outerid bigint not null,
