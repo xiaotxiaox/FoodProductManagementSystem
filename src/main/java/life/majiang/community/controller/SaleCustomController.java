@@ -20,7 +20,7 @@ public class SaleCustomController {
     @Autowired
     private PolicyMapper policyMapper;
 
-    @RequestMapping(value = "/sale/custom",method = RequestMethod.GET)
+    @RequestMapping(value = "/api/sale/custom",method = RequestMethod.GET)
     public List<CustomDTO> get(){
         CustomExample example = new CustomExample();
         example.createCriteria();
@@ -37,12 +37,12 @@ public class SaleCustomController {
         return customDTO;
     }
 
-    @RequestMapping(value = "/sale/custom",method = RequestMethod.POST)
+    @RequestMapping(value = "/api/sale/custom",method = RequestMethod.POST)
     public void post(@RequestBody Custom custom){
         customMapper.insert(custom);
     }
 
-    @RequestMapping(value = "/sale/custom/{id}",method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/sale/custom/{id}",method = RequestMethod.PUT)
     public Custom put(@RequestBody Custom custom,
                       @PathVariable(name = "id") int id){
         CustomExample example = new CustomExample();
@@ -52,7 +52,7 @@ public class SaleCustomController {
         return custom;
     }
 
-    @RequestMapping(value = "/sale/custom/{id}",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/sale/custom/{id}",method = RequestMethod.DELETE)
     public void delete(@PathVariable(name = "id") int id){
         customMapper.deleteByPrimaryKey(id);
     }

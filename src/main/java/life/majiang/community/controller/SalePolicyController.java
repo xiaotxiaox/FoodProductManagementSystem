@@ -15,7 +15,7 @@ public class SalePolicyController {
     @Autowired
     private PolicyMapper policyMapper;
 
-    @RequestMapping(value = "/sale/policy",method = RequestMethod.GET)
+    @RequestMapping(value = "/api/sale/policy",method = RequestMethod.GET)
     public List<Policy> get(){
         PolicyExample example = new PolicyExample();
         example.createCriteria();
@@ -23,12 +23,12 @@ public class SalePolicyController {
         return policies;
     }
 
-    @RequestMapping(value = "/sale/policy",method = RequestMethod.POST)
+    @RequestMapping(value = "/api/sale/policy",method = RequestMethod.POST)
     public void post(@RequestBody Policy policy){
         policyMapper.insert(policy);
     }
 
-    @RequestMapping(value = "/sale/policy/{id}",method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/sale/policy/{id}",method = RequestMethod.PUT)
     public Policy put(@RequestBody Policy policy,
                       @PathVariable(name = "id") int id){
         PolicyExample example = new PolicyExample();
@@ -38,7 +38,7 @@ public class SalePolicyController {
         return policy;
     }
 
-    @RequestMapping(value = "/sale/policy/{id}",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/sale/policy/{id}",method = RequestMethod.DELETE)
     public void delete(@PathVariable(name = "id") int id){
         policyMapper.deleteByPrimaryKey(id);
     }

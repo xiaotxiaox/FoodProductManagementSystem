@@ -18,7 +18,7 @@ public class LoginController {
     @Autowired
     private UserMapper userMapper;
 
-    @RequestMapping(value = "/user/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/user/login", method = RequestMethod.POST)
     public Object login(@RequestBody LoginDTO loginDTO,
                       HttpServletRequest request) {
         UserExample userExample = new UserExample();
