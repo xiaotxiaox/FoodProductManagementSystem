@@ -18,7 +18,7 @@ public class EmployeeManagerController {
     @Autowired
     private EmployeeMapper employeeMapper;
 
-    @RequestMapping(value = "/api/sale/policy",method = RequestMethod.GET)
+    @RequestMapping(value = "/api/stuff/normal",method = RequestMethod.GET)
     public List<Employee> get(){
         EmployeeExample example = new EmployeeExample();
         example.createCriteria();
@@ -26,12 +26,12 @@ public class EmployeeManagerController {
         return employees;
     }
 
-    @RequestMapping(value = "/api/sale/policy",method = RequestMethod.POST)
+    @RequestMapping(value = "/api/stuff/normal",method = RequestMethod.POST)
     public void post(@RequestBody Employee employee){
         employeeMapper.insert(employee);
     }
 
-    @RequestMapping(value = "/api/sale/policy/{id}",method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/stuff/normal/{id}",method = RequestMethod.PUT)
     public Employee put(@RequestBody Employee employee,
                       @PathVariable(name = "id") long id){
         EmployeeExample example = new EmployeeExample();
@@ -41,7 +41,7 @@ public class EmployeeManagerController {
         return employee;
     }
 
-    @RequestMapping(value = "/api/sale/policy/{id}",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/stuff/normal/{id}",method = RequestMethod.DELETE)
     public void delete(@PathVariable(name = "id") long id){
         employeeMapper.deleteByPrimaryKey(id);
     }

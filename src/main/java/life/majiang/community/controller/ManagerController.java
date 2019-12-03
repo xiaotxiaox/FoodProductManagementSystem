@@ -18,7 +18,7 @@ public class ManagerController {
     @Autowired
     private ManagerMapper managerMapper;
 
-    @RequestMapping(value = "/api/sale/policy",method = RequestMethod.GET)
+    @RequestMapping(value = "/api/stuff/manager",method = RequestMethod.GET)
     public List<Manager> get(){
         ManagerExample example = new ManagerExample();
         example.createCriteria();
@@ -26,12 +26,12 @@ public class ManagerController {
         return managers;
     }
 
-    @RequestMapping(value = "/api/sale/policy",method = RequestMethod.POST)
+    @RequestMapping(value = "/api/stuff/manager",method = RequestMethod.POST)
     public void post(@RequestBody Manager manager){
         managerMapper.insert(manager);
     }
 
-    @RequestMapping(value = "/api/sale/policy/{id}",method = RequestMethod.PUT)
+    @RequestMapping(value = "//api/stuff/manager/{id}",method = RequestMethod.PUT)
     public Manager put(@RequestBody Manager manager,
                         @PathVariable(name = "id") long id){
         ManagerExample example = new ManagerExample();
@@ -41,7 +41,7 @@ public class ManagerController {
         return manager;
     }
 
-    @RequestMapping(value = "/api/sale/policy/{id}",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/stuff/manager/{id}",method = RequestMethod.DELETE)
     public void delete(@PathVariable(name = "id") long id){
         managerMapper.deleteByPrimaryKey(id);
     }
