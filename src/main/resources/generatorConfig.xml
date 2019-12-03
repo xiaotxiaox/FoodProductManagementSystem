@@ -40,5 +40,8 @@
         <table tableName="ad" domainObjectName="Ad"></table>
         <table tableName="custom" domainObjectName="Custom"></table>
         <table tableName="policy" domainObjectName="Policy"></table>
+        <table tableName="role" domainObjectName="Role"></table>
+        <table tableName="permissions" domainObjectName="Permissions"></table>
+        <table tableName="role_permissions" domainObjectName="Role_permissions"></table>
     </context>
 </generatorConfiguration>
