@@ -11,6 +11,6 @@ export default {
     return fetchAPI('user/logout/', 'get')
   },
   getInfo () {
-    return fetchAPI('user/userinfo/', 'get')
+    return fetchAPI('user/userInfo/', 'get')
   }
 }
