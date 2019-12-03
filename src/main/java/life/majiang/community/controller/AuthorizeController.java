@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +21,7 @@ import java.util.UUID;
 /**
  * Created by codedrinker on 2019/4/24.
  */
-@Controller
+@RestController
 @Slf4j
 public class AuthorizeController {
 
@@ -70,13 +71,12 @@ public class AuthorizeController {
         }
     }
 
-    @GetMapping("/logout")
-    public String logout(HttpServletRequest request,
+    @GetMapping("api/user/logout")
+    public void logout(HttpServletRequest request,
                          HttpServletResponse response) {
         request.getSession().removeAttribute("user");
         Cookie cookie = new Cookie("token", null);
         cookie.setMaxAge(0);
         response.addCookie(cookie);
-        return "redirect:/";
     }
 }
