@@ -43,5 +43,7 @@
         <table tableName="role" domainObjectName="Role"></table>
         <table tableName="permissions" domainObjectName="Permissions"></table>
         <table tableName="role_permissions" domainObjectName="Role_permissions"></table>
+        <table tableName="employee" domainObjectName="Employee"></table>
+        <table tableName="manager" domainObjectName="Manager"></table>
     </context>
 </generatorConfiguration>

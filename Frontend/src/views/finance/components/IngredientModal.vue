@@ -18,14 +18,14 @@
         <a-input
           type="text"
           v-decorator="[
-            'order_id',
+            'ingredient_id',
             {
               rules:[
                 { required: true, message: '请输入订单编号' },
                 { max:16, message: '长度在16个汉字以内' }
               ],
               validateTrigger: 'blur',
-              initialValue: record ? record.order_id: null
+              initialValue: record ? record.ingredient_id: null
             }
           ]">
         </a-input>
@@ -147,67 +147,67 @@
 </template>
 
 <script>
-  import api from '../../../api/sale'
-  import {mapGetters} from 'vuex'
+    import api from '../../../api/sale'
+    import {mapGetters} from 'vuex'
 
-  export default {
-    name: 'OrderModal',
-    props: {
-      record: Object,
-      visible: Boolean,
-      type: String,
-    },
-    data() {
-      return {
-        //project_id: this.projectSelected().id,
-        layout: {
-          'label-col': {span: 8},
-          'wrapper-col': {span: 12}
+    export default {
+        name: 'IngredientModal',
+        props: {
+            record: Object,
+            visible: Boolean,
+            type: String,
         },
-        form: this.$form.createForm(this),
-        matter: {},
-        typeList: [],
-      }
-    },
-    mounted() {
-    },
-    methods: {
-      ...mapGetters(['projectSelected']),
-      handleOk() {
-        this.form.validateFields((error, data) => {
-          if (!error) {
-              data.order_date = data.order_date.format('YYYY-MM-DD')
-              data.order_date = data.order_date.format('YYYY-MM-DD')
-            if (this.isEdit) {
-              api.updateOrder(this.record.id, data)
-                .then(data => {
-                  this.$notification.success({message: '成功', description: '更新成功', key: 'SUCCESS'})
-                  this.$emit('close')
-                })
-            } else {
-              api.createOrder(this.project_id, data)
-                .then(data => {
-                  this.$notification.success({message: '成功', description: '新建成功', key: 'SUCCESS'})
-                  this.$emit('close')
-                })
+        data() {
+            return {
+                //project_id: this.projectSelected().id,
+                layout: {
+                    'label-col': {span: 8},
+                    'wrapper-col': {span: 12}
+                },
+                form: this.$form.createForm(this),
+                matter: {},
+                typeList: [],
             }
-          }
-        })
-      },
-      handleCancel() {
-        this.$emit('close')
-      }
+        },
+        mounted() {
+        },
+        methods: {
+            ...mapGetters(['projectSelected']),
+            handleOk() {
+                this.form.validateFields((error, data) => {
+                    if (!error) {
+                        data.order_date = data.order_date.format('YYYY-MM-DD')
+                        data.order_date = data.order_date.format('YYYY-MM-DD')
+                        if (this.isEdit) {
+                            api.updateOrder(this.record.id, data)
+                                .then(data => {
+                                    this.$notification.success({message: '成功', description: '更新成功', key: 'SUCCESS'})
+                                    this.$emit('close')
+                                })
+                        } else {
+                            api.createOrder(this.project_id, data)
+                                .then(data => {
+                                    this.$notification.success({message: '成功', description: '新建成功', key: 'SUCCESS'})
+                                    this.$emit('close')
+                                })
+                        }
+                    }
+                })
+            },
+            handleCancel() {
+                this.$emit('close')
+            }
 
-    },
-    computed: {
-      isEdit() {
-        return this.type === 'edit'
-      },
-      title() {
-        return this.isEdit ? '编辑' : '新建'
-      }
+        },
+        computed: {
+            isEdit() {
+                return this.type === 'edit'
+            },
+            title() {
+                return this.isEdit ? '编辑' : '新建'
+            }
+        }
     }
-  }
 </script>
 
 <style scoped lang="less">

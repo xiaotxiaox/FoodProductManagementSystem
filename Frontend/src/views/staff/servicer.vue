@@ -1,0 +1,177 @@
+<template>
+  <div>
+    <servicer-modal
+      :record="modal.record"
+      :visible="modal.visible"
+      :type="modal.type"
+      :staff_id="modal.staff_id"
+      v-if="modal.visible"
+      @close="handleClose()">
+    </servicer-modal>
+    <a-card style="margin-bottom: 16px" title="员工信息表">
+      <a-row>
+        <a-col
+          class="item"
+          :xs="{ span: 24 }"
+          :sm="{ span: 12 }"
+          :xl="{ span: 4 }">
+          <a-button
+            type="primary"
+            icon="plus"
+            style="width: 100%;float:right;margin-bottom: 16px"
+            @click="handleCreate()">
+            新建
+          </a-button>
+        </a-col>
+      </a-row>
+      <!--<a-spin :spinning="status.listLoading">-->
+      <a-table
+        bordered
+        :columns="columns"
+        :dataSource="staffList"
+        :scroll="{ x: 1300 }"
+        rowKey="customer_id"
+        :pagination="false">
+        <template slot="operation" slot-scope="text, record, index">
+          <a-button @click="handleEdit(record)">编辑</a-button>
+          <a-popconfirm
+            title="确认删除吗?"
+            @confirm="handleDelete(record)">
+            <a-button type="danger">删除</a-button>
+          </a-popconfirm>
+        </template>
+      </a-table>
+      <!--</a-spin>-->
+    </a-card>
+  </div>
+</template>
+
+<script>
+    import ServicerModal from './components/ServicerModal'
+    import api from '../../api/sale'
+    import {mapGetters} from 'vuex'
+
+    const columns = [
+        {
+            title: '员工编号',
+            dataIndex: 'staff_id',
+            width: '20%',
+            align: 'center'
+        }, {
+            title: '姓名',
+            dataIndex: 'name',
+            width: '20%',
+            align: 'center'
+        }, {
+            title: '性别',
+            dataIndex: 'gender',
+            width: '20%',
+            align: 'center'
+        },{
+            title: '工作部门',
+            dataIndex: 'customer_name',
+            width: '10%',
+            align: 'center'
+        },
+        {
+            title: '入职时间',
+            dataIndex: 'item_name.label',
+            width: '10%',
+            align: 'center'
+        }, {
+            title: '工资',
+            dataIndex: 'item_num',
+            width: '10%',
+            align: 'center'
+        }, {
+            title: '电话号码',
+            dataIndex: 'order_date',
+            width: '20%',
+            align: 'center'
+        },
+        {
+            title: '处理人',
+            dataIndex: 'staff',
+            width: '20%',
+            align: 'center'
+        },
+        {
+            title: '编辑',
+            dataIndex: 'operation',
+            align: 'center',
+            scopedSlots: {customRender: 'operation'}
+        }
+    ]
+    const staffList = [
+        {
+            staff_id: '123',
+            customer_name: '123'
+        }
+    ]
+    export default {
+        name: "servicer",
+        components: {
+            ServicerModal
+        },
+        props: {
+            id: Number
+        },
+        data() {
+            return {
+                status: {
+                    listLoading: true,
+                    tableLoading: true
+                },
+                modal: {
+                    record: null,
+                    visible: false,
+                    type: '1',
+                    staff_id: this.id
+                },
+                columns,
+                staffList,
+                // project_id: this.projectSelected().id
+            }
+        },
+        mounted() {
+            //this.getData()
+        },
+        methods: {
+            ...mapGetters(['projectSelected']),
+            getData() {
+                // api.getCustomerInfoList(this.project_id)
+                //  .then(data => {
+                //    this.customerInfoList = data
+                //    this.status.listLoading = false
+                //    console.log(1)
+                //  })
+            },
+            handleClose() {
+                this.modal.type = ''
+                this.modal.record = null
+                this.modal.visible = false
+                this.getData()
+            },
+            handleCreate() {
+                this.modal.type = 'create'
+                this.modal.record = null
+                this.modal.visible = true
+            },
+            handleEdit(record) {
+                this.modal.type = 'edit'
+                this.modal.record = record
+                this.modal.visible = true
+            },
+            handleDelete(record) {
+                api.deleteCustomerInfo(record.id)
+                    .then(data => {
+                        this.$notification.success({message: '成功', description: '删除成功', key: 'SUCCESS'})
+                    })
+            },
+        }
+    }
+</script>
+
+<style scoped>
+
+</style>

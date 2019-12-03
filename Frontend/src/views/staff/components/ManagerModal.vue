@@ -11,63 +11,90 @@
     <a-form
       :form="form">
       <a-form-item
-        label="订单编号"
+        label="员工编号"
         :label-col="{span: 8}"
         :wrapper-col="{span: 12}"
         v-bind="layout">
         <a-input
           type="text"
           v-decorator="[
-            'order_id',
+            'staff_id',
             {
               rules:[
                 { required: true, message: '请输入订单编号' },
                 { max:16, message: '长度在16个汉字以内' }
               ],
               validateTrigger: 'blur',
-              initialValue: record ? record.order_id: null
+              initialValue: record ? record.staff_id: null
             }
           ]">
         </a-input>
       </a-form-item>
       <a-form-item
-        label="客户姓名"
+        label="性别"
         v-bind="layout">
         <a-select
-          placeholder="请选择客户姓名"
-          v-decorator="[
-                'customer_name',
-                {rules:[{required: true, message: '请选择客户姓名'}],
-                initialValue: record ? record.customer_name : null}
-              ]">
-          <a-select-option
-            v-for="item in typeList"
-            :key="item.value"
-            :value="item.value">
-            {{ item.label }}
-          </a-select-option>
-        </a-select>
-      </a-form-item>
-      <a-form-item
-        label="商品名称"
-        v-bind="layout">
-        <a-select
-          placeholder="请选择商品名称"
+          placeholder="请选择性别"
           v-decorator="[
                 'item_name',
-                {rules:[{required: true, message: '请选择客户姓名'}],
+                {rules:[{required: true, message: '请选择员工性别'}],
                 initialValue: record ? record.item_name : null}
               ]">
-          <a-select-option
-            v-for="item in typeList"
-            :key="item.value"
-            :value="item.value">
-            {{ item.label }}
-          </a-select-option>
+          <a-select-option :key="1" :value="1">男</a-select-option>
+          <a-select-option :key="2" :value="2">女</a-select-option>
         </a-select>
       </a-form-item>
       <a-form-item
-        label="商品数量"
+        label="工作部门"
+        v-bind="layout">
+        <a-select
+          placeholder="请选择工作部门"
+          v-decorator="[
+                'item_name',
+                {rules:[{required: true, message: '请选择员工性别'}],
+                initialValue: record ? record.item_name : null}
+              ]">
+          <a-select-option :key="1" :value="1">销售部</a-select-option>
+          <a-select-option :key="2" :value="2">财务部</a-select-option>
+          <a-select-option :key="3" :value="3">生产计划科</a-select-option>
+          <a-select-option :key="4" :value="4">成品库部门</a-select-option>
+          <a-select-option :key="5" :value="5">生产车间部门</a-select-option>
+          <a-select-option :key="6" :value="6">原材料库</a-select-option>
+          <a-select-option :key="7" :value="7">人事部</a-select-option>
+        </a-select>
+      </a-form-item>
+      <a-form-item
+        label="入职时间"
+        v-bind="layout">
+        <a-date-picker
+          style="width:100%"
+          v-decorator="[
+                'order_date',
+                {rules: [{ type: 'object', required: true, message: '请输入入职时间' }],
+                 initialValue: isEdit ? record.starting_date : null}
+              ]">
+        </a-date-picker>
+      </a-form-item>
+      <a-form-item
+        label="工资"
+        v-bind="layout">
+        <a-input
+          type="number"
+          addonAfter="元/月"
+          v-decorator="[
+            'item_num',
+            {
+              rules: [
+                { max:32, message: '长度在32个汉字以内' }
+              ],
+              validateTrigger: 'blur',
+              initialValue: record ? record.item_num : null
+            }
+          ]">
+        </a-input>
+      </a-form-item>
+      <a-form-item
+        label="职务"
         v-bind="layout">
         <a-input
           type="text"
@@ -84,18 +111,6 @@
         </a-input>
       </a-form-item>
       <a-form-item
-        label="订货日期"
-        v-bind="layout">
-        <a-date-picker
-          style="width:100%"
-          v-decorator="[
-                'order_date',
-                {rules: [{ type: 'object', required: true, message: '请输入订货日期' }],
-                 initialValue: isEdit ? record.starting_date : null}
-              ]">
-        </a-date-picker>
-      </a-form-item>
-      <a-form-item
         label="提货日期"
         v-bind="layout">
         <a-date-picker
@@ -105,24 +120,6 @@
                 {rules: [{ type: 'object', required: true, message: '请输入开工日期' }],
                  initialValue: isEdit ? record.get_date : null}
               ]"></a-date-picker>
-      </a-form-item>
-      <a-form-item
-        label="订单状态"
-        v-bind="layout">
-        <a-select
-          placeholder="请选择订单状态"
-          v-decorator="[
-                'staff',
-                {rules:[{required: true, message: '请选择订单状态'}],
-                initialValue: record ? record.staff : null}
-              ]">
-          <a-select-option :key="1" :value="1">待付款</a-select-option>
-          <a-select-option :key="2" :value="2">进行中</a-select-option>
-          <a-select-option :key="3" :value="3">退货中</a-select-option>
-          <a-select-option :key="4" :value="4">订单完成</a-select-option>
-          <a-select-option :key="5" :value="5">退货完成</a-select-option>
-          <a-select-option :key="6" :value="6">异常</a-select-option>
-        </a-select>
       </a-form-item>
       <a-form-item
         label="处理人"
@@ -151,7 +148,7 @@
   import {mapGetters} from 'vuex'
 
   export default {
-    name: 'OrderModal',
+    name: 'ManagerModal',
     props: {
       record: Object,
       visible: Boolean,
@@ -176,8 +173,6 @@
       handleOk() {
         this.form.validateFields((error, data) => {
           if (!error) {
-              data.order_date = data.order_date.format('YYYY-MM-DD')
-              data.order_date = data.order_date.format('YYYY-MM-DD')
             if (this.isEdit) {
               api.updateOrder(this.record.id, data)
                 .then(data => {
