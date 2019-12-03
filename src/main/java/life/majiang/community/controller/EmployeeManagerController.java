@@ -1,6 +1,9 @@
 package life.majiang.community.controller;
 
+import life.majiang.community.mapper.EmployeeMapper;
 import life.majiang.community.mapper.PolicyMapper;
+import life.majiang.community.model.Employee;
+import life.majiang.community.model.EmployeeExample;
 import life.majiang.community.model.Policy;
 import life.majiang.community.model.PolicyExample;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,33 +16,33 @@ import java.util.List;
 
 public class EmployeeManagerController {
     @Autowired
-    private PolicyMapper policyMapper;
+    private EmployeeMapper employeeMapper;
 
     @RequestMapping(value = "/api/sale/policy",method = RequestMethod.GET)
-    public List<Policy> get(){
-        PolicyExample example = new PolicyExample();
+    public List<Employee> get(){
+        EmployeeExample example = new EmployeeExample();
         example.createCriteria();
-        List<Policy> policies = policyMapper.selectByExample(example);
-        return policies;
+        List<Employee> employees = employeeMapper.selectByExample(example);
+        return employees;
     }
 
     @RequestMapping(value = "/api/sale/policy",method = RequestMethod.POST)
-    public void post(@RequestBody Policy policy){
-        policyMapper.insert(policy);
+    public void post(@RequestBody Employee employee){
+        employeeMapper.insert(employee);
     }
 
     @RequestMapping(value = "/api/sale/policy/{id}",method = RequestMethod.PUT)
-    public Policy put(@RequestBody Policy policy,
-                      @PathVariable(name = "id") int id){
-        PolicyExample example = new PolicyExample();
+    public Employee put(@RequestBody Employee employee,
+                      @PathVariable(name = "id") long id){
+        EmployeeExample example = new EmployeeExample();
         example.createCriteria()
                 .andIdEqualTo(id);
-        policyMapper.updateByExampleSelective(policy, example);
-        return policy;
+        employeeMapper.updateByExampleSelective(employee, example);
+        return employee;
     }
 
     @RequestMapping(value = "/api/sale/policy/{id}",method = RequestMethod.DELETE)
-    public void delete(@PathVariable(name = "id") int id){
-        policyMapper.deleteByPrimaryKey(id);
+    public void delete(@PathVariable(name = "id") long id){
+        employeeMapper.deleteByPrimaryKey(id);
     }
 }
