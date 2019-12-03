@@ -8,8 +8,7 @@ public class CustomDTO {
     private Integer id;
     private String name;
     private String telephone;
-    private Integer type;
     private Integer count;
     private String handler;
-    private Policy policy;
+    private Policy type;
 }

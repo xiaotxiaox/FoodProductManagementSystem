@@ -9,6 +9,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -25,12 +26,12 @@ public class SaleCustomController {
         CustomExample example = new CustomExample();
         example.createCriteria();
         List<Custom> customs = customMapper.selectByExample(example);
-        List<CustomDTO> customDTO = null;
+        List<CustomDTO> customDTO = new ArrayList<CustomDTO>();
         for (Custom custom : customs) {
             CustomDTO temp = new CustomDTO();
             BeanUtils.copyProperties(custom,temp);
             if(custom.getType()!=null){
-                temp.setPolicy(policyMapper.selectByPrimaryKey(custom.getType()));
+                temp.setType(policyMapper.selectByPrimaryKey(custom.getType()));
             }
             customDTO.add(temp);
         }
