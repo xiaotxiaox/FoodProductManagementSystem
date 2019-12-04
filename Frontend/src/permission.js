@@ -14,7 +14,6 @@ const whiteList = ['login'] // no redirect whitelist
 router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar
   const isLogin = cookie.get('JSESSIONID')
-  console.log(isLogin)
   if (isLogin) {
     if (to.path === '/user/login') {
       next({ path: '/project' })

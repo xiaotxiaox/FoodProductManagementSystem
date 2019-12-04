@@ -28,6 +28,7 @@ const user = {
       return new Promise((resolve, reject) => {
         api.getInfo().then(response => {
           const result = response
+          console.log(result.role)
           if (result.role && result.role.permissions.length > 0) {
             const role = result.role
             role.permissions = result.role.permissions

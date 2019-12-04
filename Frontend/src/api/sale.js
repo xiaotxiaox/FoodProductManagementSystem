@@ -2,17 +2,17 @@ import fetchAPI from '../utils/fetch'
 
 export default {
   //用户信息管理
-  getCustomerInfoList (project_id) {
-    return fetchAPI('implement/contract/', 'get', null, { project_id })
+  getCustomerInfoList () {
+    return fetchAPI('sale/custom/', 'get', null)
   },
-  createCustomerInfo (project_id, data) {
-    return fetchAPI('implement/contract/', 'post', data, { project_id })
+  createCustomerInfo (data) {
+    return fetchAPI('sale/custom/', 'post', data)
   },
-  updateCustomerInfo (contract_id, data) {
-    return fetchAPI(`implement/contract/${contract_id}/`, 'put', data)
+  updateCustomerInfo (id, data) {
+    return fetchAPI(`sale/custom/${id}/`, 'put', data)
   },
-  deleteCustomerInfo (contract_id) {
-    return fetchAPI(`implement/contract/${contract_id}/`, 'delete')
+  deleteCustomerInfo (id) {
+    return fetchAPI(`sale/custom/${id}/`, 'delete')
   },
   getSalePolicyList (project_id) {
     return fetchAPI('implement/contract/', 'get', null, { project_id })

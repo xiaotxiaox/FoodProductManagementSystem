@@ -4,7 +4,7 @@
       :record="modal.record"
       :visible="modal.visible"
       :type="modal.type"
-      :customer_id="modal.customer_id"
+      :id="modal.id"
       v-if="modal.visible"
       @close="handleClose()">
     </customer-Info-modal>
@@ -29,7 +29,7 @@
         bordered
         :columns="columns"
         :dataSource="customerInfoList"
-        rowKey="customer_id"
+        rowKey="id"
         :pagination="false">
         <template slot="operation" slot-scope="text, record, index">
           <a-button @click="handleEdit(record)">编辑</a-button>
@@ -63,18 +63,18 @@
     },
     {
       title: '客户类型',
-      dataIndex: 'type.label',
+      dataIndex: 'type.type',
       width: '10%',
       align: 'center'
     }, {
       title: '客户累计购买量',
-      dataIndex: 'customer_amount',
+      dataIndex: 'count',
       width: '20%',
       align: 'center'
     },
     {
       title: '处理人',
-      dataIndex: 'staff',
+      dataIndex: 'handler',
       width: '20%',
       align: 'center'
     },
@@ -83,12 +83,6 @@
       dataIndex: 'operation',
       align: 'center',
       scopedSlots: {customRender: 'operation'}
-    }
-  ]
-  const customerInfoList=[
-    {
-      customer_name:'123',
-      customer_id: '123'
     }
   ]
   export default {
@@ -109,25 +103,26 @@
           record: null,
           visible: false,
           type: '1',
-          customer_id: this.id
+          id: this.id
         },
         columns,
-        customerInfoList,
+        customerInfoList:[],
         // project_id: this.projectSelected().id
       }
     },
     mounted(){
-      //this.getData()
+      this.getData()
     },
     methods: {
        ...mapGetters(['projectSelected']),
       getData(){
-         // api.getCustomerInfoList(this.project_id)
-         //  .then(data => {
-         //    this.customerInfoList = data
-         //    this.status.listLoading = false
-         //    console.log(1)
-         //  })
+         api.getCustomerInfoList(this.project_id)
+          .then(data => {
+            this.customerInfoList = data
+              console.log(data)
+            this.status.listLoading = false
+            console.log(1)
+          })
       },
       handleClose() {
         this.modal.type = ''

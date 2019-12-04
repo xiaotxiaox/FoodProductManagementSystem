@@ -18,14 +18,14 @@
         <a-input
           type="text"
           v-decorator="[
-            'customer_name',
+            'name',
             {
               rules:[
                 { required: true, message: '请输入客户姓名' },
                 { max:16, message: '长度在16个汉字以内' }
               ],
               validateTrigger: 'blur',
-              initialValue: record ? record.customer_name: null
+              initialValue: record ? record.name: null
             }
           ]">
         </a-input>
@@ -38,13 +38,13 @@
           autocomplete="true"
           placeholder="13812341234"
           v-decorator="[
-                            'customer_telephone',
+                            'telephone',
                             {rules: [
                                     {required: true, message: '请输入联系电话'},
                                     {pattern:/^[1][3,4,5,7,8][0-9]{9}$/, message: '联系电话格式错误'}
                                     ],
                             validateTrigger: 'blur',
-                            initialValue: record ? record.customer_telephone : null}
+                            initialValue: record ? record.telephone : null}
                             ]">
         </a-input>
       </a-form-item>
@@ -54,9 +54,9 @@
         <a-select
           placeholder="请选择客户类型"
           v-decorator="[
-                'customer_type',
+                'type',
                 {rules:[{required: true, message: '请选择客户类型'}],
-                initialValue: record ? record.customer_type : null}
+                initialValue: record ? record.type.type : null}
               ]">
           <a-select-option
             v-for="item in typeList"
@@ -67,18 +67,19 @@
         </a-select>
       </a-form-item>
       <a-form-item
-        label="客户累计购买量"
+        label="客户累计消费"
         v-bind="layout">
         <a-input
-          type="text"
+          type="number"
+          addonAfter="元"
           v-decorator="[
-            'customer_amount',
+            'account',
             {
               rules: [
                 { max:32, message: '长度在32个汉字以内' }
               ],
               validateTrigger: 'blur',
-              initialValue: record ? record.customer_amount : null
+              initialValue: record ? record.count : null
             }
           ]">
         </a-input>
@@ -89,9 +90,9 @@
         <a-select
           placeholder="请选择处理人"
           v-decorator="[
-                'staff',
+                'handler',
                 {rules:[{required: true, message: '请选择处理人'}],
-                initialValue: record ? record.staff : null}
+                initialValue: record ? record.handler : null}
               ]">
           <a-select-option
             v-for="item in typeList"
@@ -142,7 +143,7 @@
                   this.$emit('close')
                 })
             } else {
-              api.createCustomerInfo(this.project_id, data)
+              api.createCustomerInfo(data)
                 .then(data => {
                   this.$notification.success({message: '成功', description: '新建成功', key: 'SUCCESS'})
                   this.$emit('close')

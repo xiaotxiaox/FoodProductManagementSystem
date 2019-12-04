@@ -1,5 +1,13 @@
 <template>
   <div>
+    <batch-modal
+      :record="modal.record"
+      :visible="modal.visible"
+      :type="modal.type"
+      :batch_id="modal.batch_id"
+      v-if="modal.visible"
+      @close="handleClose()">
+    </batch-modal>
     <a-card style="margin-bottom: 16px">
       <a-row>
         <a-col
@@ -15,7 +23,7 @@
         </a-col>
       </a-row>
     </a-card>
-    <a-card style="margin-bottom: 16px" title="收支统计表">
+    <a-card style="margin-bottom: 16px" title="成品批次表">
       <a-row>
         <a-col
           class="item"
@@ -35,9 +43,9 @@
       <a-table
         bordered
         :columns="columns"
-        :dataSource="orderList"
+        :dataSource="batchList"
         :scroll="{ x: 1300 }"
-        rowKey="customer_id"
+        rowKey="batch_id"
         :pagination="false">
         <template slot="operation" slot-scope="text, record, index">
           <a-button @click="handleEdit(record)">编辑</a-button>
@@ -55,6 +63,7 @@
 
 <script>
     import echarts from 'echarts'
+    import BatchModal from './components/BatchModal'
     import api from '../../api/sale'
     import {mapGetters} from 'vuex'
 
