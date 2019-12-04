@@ -24,7 +24,7 @@ public class SalePolicyController {
     private UserMapper userMapper;
 
     @RequestMapping(value = "/api/sale/policy",method = RequestMethod.GET)
-    public List<Policy> get(){
+    public List<PolicyDTO> get(){
         PolicyExample example = new PolicyExample();
         example.createCriteria();
         List<Policy> policies = policyMapper.selectByExample(example);
@@ -35,7 +35,7 @@ public class SalePolicyController {
             temp.setUser(userMapper.selectByPrimaryKey(policy.getHandler()));
             policyDto.add(temp);
         }
-        return policies;
+        return policyDto;
     }
 
     @RequestMapping(value = "/api/sale/policy",method = RequestMethod.POST)
