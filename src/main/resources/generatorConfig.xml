@@ -4,15 +4,15 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
-
     <context id="DB2Tables" targetRuntime="MyBatis3">
-
         <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"></plugin>
         <jdbcConnection driverClass="org.postgresql.Driver"
                         connectionURL="jdbc:postgresql://39.107.243.158:5432/postgres"
                         userId="postgres"
                         password="3390tsl">
         </jdbcConnection>
+
+
 
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>
@@ -38,13 +38,15 @@
         <table tableName="notification" domainObjectName="Notification"></table>
         <table tableName="nav" domainObjectName="Nav"></table>
         <table tableName="ad" domainObjectName="Ad"></table>
-        <table tableName="custom" domainObjectName="Custom"></table>
+        <table tableName="custom" domainObjectName="Custom">
+            <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
+        </table>
         <table tableName="policy" domainObjectName="Policy"></table>
         <table tableName="role" domainObjectName="Role"></table>
         <table tableName="permissions" domainObjectName="Permissions"></table>
         <table tableName="role_permissions" domainObjectName="Role_permissions"></table>
         <table tableName="employee" domainObjectName="Employee"></table>
         <table tableName="manager" domainObjectName="Manager"></table>
-        <table tableName="order" domainObjectName="Order"></table>
+        <table tableName="order_collection" domainObjectName="Order"></table>
     </context>
 </generatorConfiguration>

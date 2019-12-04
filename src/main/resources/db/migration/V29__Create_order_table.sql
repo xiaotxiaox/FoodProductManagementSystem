@@ -1,4 +1,4 @@
-create table "Order"
+create table order_collection
 (
     id bigserial
         constraint Order_pk
