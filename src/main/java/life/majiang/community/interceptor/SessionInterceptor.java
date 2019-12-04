@@ -35,34 +35,34 @@ public class SessionInterceptor implements HandlerInterceptor {
     @Value("${github.redirect.uri}")
     private String redirectUri;
 
-    @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        //设置 context 级别的属性
-        request.getServletContext().setAttribute("redirectUri", redirectUri);
-        // 没有登录的时候也可以查看导航
-        for (AdPosEnum adPos : AdPosEnum.values()) {
-            request.getServletContext().setAttribute(adPos.name(), adService.list(adPos.name()));
-        }
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null && cookies.length != 0)
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("token")) {
-                    String token = cookie.getValue();
-                    UserExample userExample = new UserExample();
-                    userExample.createCriteria()
-                            .andTokenEqualTo(token);
-                    List<User> users = userMapper.selectByExample(userExample);
-                    if (users.size() != 0) {
-                        HttpSession session = request.getSession();
-                        session.setAttribute("user", users.get(0));
-                        Long unreadCount = notificationService.unreadCount(users.get(0).getId());
-                        session.setAttribute("unreadCount", unreadCount);
-                    }
-                    break;
-                }
-            }
-        return true;
-    }
+//    @Override
+//    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+//        //设置 context 级别的属性
+//        request.getServletContext().setAttribute("redirectUri", redirectUri);
+//        // 没有登录的时候也可以查看导航
+//        for (AdPosEnum adPos : AdPosEnum.values()) {
+//            request.getServletContext().setAttribute(adPos.name(), adService.list(adPos.name()));
+//        }
+//        Cookie[] cookies = request.getCookies();
+//        if (cookies != null && cookies.length != 0)
+//            for (Cookie cookie : cookies) {
+//                if (cookie.getName().equals("token")) {
+//                    String token = cookie.getValue();
+//                    UserExample userExample = new UserExample();
+//                    userExample.createCriteria()
+//                            .andTokenEqualTo(token);
+//                    List<User> users = userMapper.selectByExample(userExample);
+//                    if (users.size() != 0) {
+//                        HttpSession session = request.getSession();
+//                        session.setAttribute("user", users.get(0));
+//                        Integer unreadCount = notificationService.unreadCount(users.get(0).getId());
+//                        session.setAttribute("unreadCount", unreadCount);
+//                    }
+//                    break;
+//                }
+//            }
+//        return true;
+//    }
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable ModelAndView modelAndView) throws Exception {

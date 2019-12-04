@@ -47,8 +47,12 @@
         <table tableName="role" domainObjectName="Role"></table>
         <table tableName="permissions" domainObjectName="Permissions"></table>
         <table tableName="role_permissions" domainObjectName="Role_permissions"></table>
-        <table tableName="employee" domainObjectName="Employee"></table>
-        <table tableName="manager" domainObjectName="Manager"></table>
+        <table tableName="employee" domainObjectName="Employee">
+            <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
+        </table>
+        <table tableName="manager" domainObjectName="Manager">
+            <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
+        </table>
         <table tableName="order_collection" domainObjectName="Order"></table>
     </context>
 </generatorConfiguration>
