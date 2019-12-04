@@ -26,8 +26,8 @@ public class UserInfoController {
     @RequestMapping(value = "/api/user/userInfo", method = RequestMethod.GET)
     public Object login(HttpServletRequest request) {
         // 给一个User 对象 ，通过 UserInfoservice 获得 一个 USERINFDTO
-//        User user = (User) request.getSession().getAttribute("user");
-        User user = userMapper.selectByPrimaryKey((long)1);
+        User user = (User) request.getSession().getAttribute("user");
+//        User user = userMapper.selectByPrimaryKey((long)1);
         if (user == null) {
             return ResultDTO.errorOf(CustomizeErrorCode.NO_LOGIN);
         }
