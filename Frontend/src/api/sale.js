@@ -14,16 +14,18 @@ export default {
   deleteCustomerInfo (id) {
     return fetchAPI(`sale/custom/${id}/`, 'delete')
   },
-  getSalePolicyList (project_id) {
-    return fetchAPI('implement/contract/', 'get', null, { project_id })
+  getSalePolicyList () {
+    return fetchAPI('sale/policy/', 'get', null)
   },
-  createSalePolicy (project_id, data) {
-    return fetchAPI('implement/contract/', 'post', data, { project_id })
+  createSalePolicy (data) {
+    console.log(2)
+    return fetchAPI('sale/policy/', 'post', data)
   },
-  updateSalePolicy (contract_id, data) {
-    return fetchAPI(`implement/contract/${contract_id}/`, 'put', data)
+  updateSalePolicy (id, data) {
+    console.log(data)
+    return fetchAPI(`sale/policy/${id}/`, 'put', data)
   },
-  deleteSalePolicy (contract_id) {
-    return fetchAPI(`implement/contract/${contract_id}/`, 'delete')
+  deleteSalePolicy (id) {
+    return fetchAPI(`sale/policy/${id}/`, 'delete')
   }
 }

@@ -18,14 +18,14 @@
         <a-input
           type="text"
           v-decorator="[
-            'staff_id',
+            'id',
             {
               rules:[
                 { required: true, message: '请输入订单编号' },
                 { max:16, message: '长度在16个汉字以内' }
               ],
               validateTrigger: 'blur',
-              initialValue: record ? record.staff_id: null
+              initialValue: record ? record.id: null
             }
           ]">
         </a-input>
@@ -36,9 +36,9 @@
         <a-select
           placeholder="请选择性别"
           v-decorator="[
-                'item_name',
+                'gender',
                 {rules:[{required: true, message: '请选择员工性别'}],
-                initialValue: record ? record.item_name : null}
+                initialValue: record ? record.gender : null}
               ]">
           <a-select-option :key="1" :value="1">男</a-select-option>
           <a-select-option :key="2" :value="2">女</a-select-option>
@@ -50,9 +50,9 @@
         <a-select
           placeholder="请选择工作部门"
           v-decorator="[
-                'item_name',
+                'department',
                 {rules:[{required: true, message: '请选择员工性别'}],
-                initialValue: record ? record.item_name : null}
+                initialValue: record ? record.department : null}
               ]">
           <a-select-option :key="1" :value="1">销售部</a-select-option>
           <a-select-option :key="2" :value="2">财务部</a-select-option>
@@ -134,7 +134,7 @@
 </template>
 
 <script>
-    import api from '../../../api/sale'
+    import api from '../../../api/staff'
     import {mapGetters} from 'vuex'
 
     export default {
@@ -146,7 +146,6 @@
         },
         data() {
             return {
-                //project_id: this.projectSelected().id,
                 layout: {
                     'label-col': {span: 8},
                     'wrapper-col': {span: 12}
@@ -164,13 +163,13 @@
                 this.form.validateFields((error, data) => {
                     if (!error) {
                         if (this.isEdit) {
-                            api.updateOrder(this.record.id, data)
+                            api.updateServicer(this.record.id, data)
                                 .then(data => {
                                     this.$notification.success({message: '成功', description: '更新成功', key: 'SUCCESS'})
                                     this.$emit('close')
                                 })
                         } else {
-                            api.createOrder(this.project_id, data)
+                            api.createServicer(data)
                                 .then(data => {
                                     this.$notification.success({message: '成功', description: '新建成功', key: 'SUCCESS'})
                                     this.$emit('close')

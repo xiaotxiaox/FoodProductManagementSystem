@@ -69,55 +69,31 @@
 
     const columns = [
         {
-            title: '订单编号',
+            title: '批次编号',
             dataIndex: 'order_id',
             width: '20%',
             align: 'center'
         }, {
-            title: '客户姓名',
+            title: '商品名称',
             dataIndex: 'customer_name',
             width: '10%',
             align: 'center'
         },
         {
-            title: '商品名称',
+            title: '商品数量',
             dataIndex: 'item_name.label',
             width: '10%',
             align: 'center'
         }, {
-            title: '商品数量',
+            title: '成品时间',
             dataIndex: 'item_num',
             width: '10%',
             align: 'center'
         }, {
-            title: '订货日期',
+            title: '保质期',
             dataIndex: 'order_date',
             width: '20%',
             align: 'center'
-        }, {
-            title: '提货日期',
-            dataIndex: 'get_date',
-            width: '20%',
-            align: 'center'
-        }, {
-            title: '订单状态',
-            dataIndex: 'state',
-            width: '20%',
-            align: 'center',
-            customRender: (text, record) => {
-                if (record.choice_D === '1')
-                    return '待付款'
-                else if (record.choice_D === '2')
-                    return '进行中'
-                else if (record.choice_D === '3')
-                    return '退货中'
-                else if (record.choice_D === '4')
-                    return '订单完成'
-                else if (record.choice_D === '5')
-                    return '退货完成'
-                else if (record.choice_D === '6')
-                    return '异常'
-            },
         },
         {
             title: '处理人',
@@ -132,15 +108,17 @@
             scopedSlots: {customRender: 'operation'}
         }
     ]
-    const orderList = [
+    const batchList = [
         {
-            order_id: '123',
+            batch_id: '123',
             customer_name: '123'
         }
     ]
     export default {
         name: "batch",
-
+        components:{
+            BatchModal
+        },
         props: {
             id: Number
         },
@@ -216,10 +194,10 @@
                     record: null,
                     visible: false,
                     type: '1',
-                    order_id: this.id
+                    batch_id: this.id
                 },
                 columns,
-                orderList,
+                batchList,
                 // project_id: this.projectSelected().id
             }
         },

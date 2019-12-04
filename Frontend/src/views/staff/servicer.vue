@@ -4,7 +4,7 @@
       :record="modal.record"
       :visible="modal.visible"
       :type="modal.type"
-      :staff_id="modal.staff_id"
+      :id="modal.id"
       v-if="modal.visible"
       @close="handleClose()">
     </servicer-modal>
@@ -48,7 +48,7 @@
 
 <script>
     import ServicerModal from './components/ServicerModal'
-    import api from '../../api/sale'
+    import api from '../../api/staff'
     import {mapGetters} from 'vuex'
 
     const columns = [
@@ -102,12 +102,6 @@
             scopedSlots: {customRender: 'operation'}
         }
     ]
-    const staffList = [
-        {
-            staff_id: '123',
-            customer_name: '123'
-        }
-    ]
     export default {
         name: "servicer",
         components: {
@@ -126,25 +120,24 @@
                     record: null,
                     visible: false,
                     type: '1',
-                    staff_id: this.id
+                    id: this.id
                 },
                 columns,
-                staffList,
-                // project_id: this.projectSelected().id
+                staffList:[],
             }
         },
         mounted() {
-            //this.getData()
+            this.getData()
         },
         methods: {
             ...mapGetters(['projectSelected']),
             getData() {
-                // api.getCustomerInfoList(this.project_id)
-                //  .then(data => {
-                //    this.customerInfoList = data
-                //    this.status.listLoading = false
-                //    console.log(1)
-                //  })
+                api.getServicerList()
+                 .then(data => {
+                   this.staffList = data
+                   this.status.listLoading = false
+                   console.log(1)
+                 })
             },
             handleClose() {
                 this.modal.type = ''
@@ -163,7 +156,7 @@
                 this.modal.visible = true
             },
             handleDelete(record) {
-                api.deleteCustomerInfo(record.id)
+                api.deleteServicer(record.id)
                     .then(data => {
                         this.$notification.success({message: '成功', description: '删除成功', key: 'SUCCESS'})
                     })

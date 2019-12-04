@@ -35,6 +35,7 @@ export default function fetchAPI (url, method, data = null, params = null) {
       body: body
     })
       .then(res => {
+        console.log(res.ok)
         if (res.status === 204) {
           return res.text()
         } else if (res.status === 400) {

@@ -50,6 +50,12 @@
   import api from '../../api/sale'
   import {mapGetters} from 'vuex'
   const columns = [
+      {
+          title: '客户编号',
+          dataIndex: 'id',
+          width: '20%',
+          align: 'center'
+      },
     {
       title: '客户姓名',
       dataIndex: 'name',
@@ -74,7 +80,7 @@
     },
     {
       title: '处理人',
-      dataIndex: 'handler',
+      dataIndex: 'user.name',
       width: '20%',
       align: 'center'
     },
@@ -116,12 +122,10 @@
     methods: {
        ...mapGetters(['projectSelected']),
       getData(){
-         api.getCustomerInfoList(this.project_id)
+         api.getCustomerInfoList()
           .then(data => {
             this.customerInfoList = data
-              console.log(data)
             this.status.listLoading = false
-            console.log(1)
           })
       },
       handleClose() {

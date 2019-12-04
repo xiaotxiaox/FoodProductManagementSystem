@@ -88,7 +88,7 @@ export const asyncRouterMap = [
           {
             path: '/batch',
             name: 'batch',
-            //component: () => import(/* webpackChunkName: "Implement" */ '../views/finish/batch'),
+            component: () => import(/* webpackChunkName: "Implement" */ '../views/finish/batch'),
             meta: {title: '批次管理'}
           }
         ]

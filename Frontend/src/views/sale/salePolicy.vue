@@ -4,7 +4,7 @@
       :record="modal.record"
       :visible="modal.visible"
       :type="modal.type"
-      :policy_id="modal.policy_id"
+      :id="modal.id"
       v-if="modal.visible"
       @close="handleClose()">
     </sale-policy-modal>
@@ -50,9 +50,15 @@
   import api from '../../api/sale'
   import {mapGetters} from 'vuex'
   const columns = [
-    {
+      {
+          title: '客户编号',
+          dataIndex: 'id',
+          width: '20%',
+          align: 'center'
+      },
+      {
       title: '客户类型',
-      dataIndex: 'customer_type',
+      dataIndex: 'type',
       width: '20%',
       align: 'center'
     }, {
@@ -63,13 +69,13 @@
     },
     {
       title: '预付款比例',
-      dataIndex: 'prepay_ratio',
+      dataIndex: 'rate',
       width: '10%',
       align: 'center'
     },
     {
       title: '处理人',
-      dataIndex: 'staff',
+      dataIndex: 'user.name',
       width: '10%',
       align: 'center'
     },
@@ -78,11 +84,6 @@
       dataIndex: 'operation',
       align: 'center',
       scopedSlots: {customRender: 'operation'}
-    }
-  ]
-  const salePolicyList=[
-    {
-      customer_type:'123'
     }
   ]
   export default {
@@ -103,26 +104,24 @@
           record: null,
           visible: false,
           type: '1',
-          policy_id: this.id
+          id: this.id
         },
         columns,
-        salePolicyList,
-        // project_id: this.projectSelected().id
+        salePolicyList:[],
       }
     },
     mounted(){
-      //this.getData()
+      this.getData()
     },
     methods: {
        ...mapGetters(['projectSelected']),
       getData(){
-         // api.getCustomerInfoList(this.project_id)
-         //  .then(data => {
-         //    this.customerInfoList = data
-         //    this.status.listLoading = false
-         //    console.log(1)
-         //  })
-      },
+            api.getSalePolicyList()
+                .then(data => {
+                    this.salePolicyList = data
+                    this.status.listLoading = false
+                })
+        },
       handleClose() {
         this.modal.type = ''
         this.modal.record = null
