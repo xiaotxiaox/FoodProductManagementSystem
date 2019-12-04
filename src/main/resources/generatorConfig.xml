@@ -53,6 +53,8 @@
         <table tableName="manager" domainObjectName="Manager">
             <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
         </table>
-        <table tableName="order_collection" domainObjectName="Order"></table>
+        <table tableName="order_collection" domainObjectName="Order">
+            <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
+        </table>
     </context>
 </generatorConfiguration>
