@@ -32,8 +32,36 @@ public class OrderCollectionController {
 
     @Autowired
     private CustomMapper customMapper;
+
+    @RequestMapping(value = "/api/sale/order/sell",method = RequestMethod.GET)
+    public List<OrderCollectionDTO> getSell(){
+        List<OrderCollectionDTO> all = getAll();
+        List<OrderCollectionDTO> part = new ArrayList<OrderCollectionDTO>();
+        for (OrderCollectionDTO orderCollectionDTO : all) {
+            Integer state = orderCollectionDTO.getState();
+            if(state == 1 || state ==2 || state ==4){
+                part.add(orderCollectionDTO);
+            }
+        }
+        return part;
+    }
+
+    @RequestMapping(value = "/api/sale/order/back",method = RequestMethod.GET)
+    public List<OrderCollectionDTO> getBack(){
+        List<OrderCollectionDTO> all = getAll();
+        List<OrderCollectionDTO> part = new ArrayList<OrderCollectionDTO>();
+        for (OrderCollectionDTO orderCollectionDTO : all) {
+            Integer state = orderCollectionDTO.getState();
+            if(state == 3 || state ==5 || state ==6){
+                part.add(orderCollectionDTO);
+            }
+        }
+        return part;
+    }
+
+
     @RequestMapping(value = "/api/sale/order",method = RequestMethod.GET)
-    public List<OrderCollectionDTO> get(){
+    public List<OrderCollectionDTO> getAll(){
         OrderExample example = new OrderExample();
         example.createCriteria();
         List<Order> orders = orderMapper.selectByExample(example);

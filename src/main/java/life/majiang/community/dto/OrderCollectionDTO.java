@@ -26,4 +26,8 @@ public class OrderCollectionDTO {
     private String willDate;
     private String finalDate;
     private Integer state;
+    private String backDate;
+    private String backAgreeDate;
+    private Integer backMoneySymbol;
+    private BigDecimal backMoney;
 }
