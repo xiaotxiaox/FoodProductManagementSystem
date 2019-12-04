@@ -18,9 +18,9 @@ export default function fetchAPI (url, method, data = null, params = null) {
   let headers = {
     'Content-Type': 'application/json'
   }
-  if (!/^(GET|HEAD|OPTIONS|TRACE)$/.test(method.toUpperCase())) {
-    headers['X-CSRFToken'] = getCookie('csrftoken')
-  }
+  // if (!/^(GET|HEAD|OPTIONS|TRACE)$/.test(method.toUpperCase())) {
+  //   headers['X-CSRFToken'] = getCookie('csrftoken')
+  // }
   if (data) {
     body = JSON.stringify(data)
   }
@@ -42,6 +42,7 @@ export default function fetchAPI (url, method, data = null, params = null) {
         } else if (res.status === 404) {
           return res.json()
         } else if (res.ok) {
+          // bug
           return res.json()
         } else {
           throw `${res.status}, ${res.statusText}`

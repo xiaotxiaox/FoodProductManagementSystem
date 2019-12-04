@@ -52,18 +52,18 @@
   const columns = [
     {
       title: '客户姓名',
-      dataIndex: 'customer_name',
+      dataIndex: 'name',
       width: '20%',
       align: 'center'
     }, {
       title: '客户电话',
-      dataIndex: 'customer_telephone',
+      dataIndex: 'telephone',
       width: '30%',
       align: 'center'
     },
     {
       title: '客户类型',
-      dataIndex: 'customer_type.label',
+      dataIndex: 'type.label',
       width: '10%',
       align: 'center'
     }, {
