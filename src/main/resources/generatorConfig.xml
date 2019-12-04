@@ -41,7 +41,9 @@
         <table tableName="custom" domainObjectName="Custom">
             <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
         </table>
-        <table tableName="policy" domainObjectName="Policy"></table>
+        <table tableName="policy" domainObjectName="Policy">
+            <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
+        </table>
         <table tableName="role" domainObjectName="Role"></table>
         <table tableName="permissions" domainObjectName="Permissions"></table>
         <table tableName="role_permissions" domainObjectName="Role_permissions"></table>

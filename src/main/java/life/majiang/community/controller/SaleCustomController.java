@@ -70,10 +70,7 @@ public class SaleCustomController {
             return ResultDTO.errorOf(CustomizeErrorCode.NO_LOGIN);
         }
         custom.setHandler(user.getId());
-        CustomExample example = new CustomExample();
-        example.createCriteria()
-                .andIdEqualTo(id);
-        customMapper.updateByExampleSelective(custom, example);
+        customMapper.updateByPrimaryKey(custom);
         return custom;
     }
 
