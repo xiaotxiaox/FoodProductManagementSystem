@@ -82,8 +82,16 @@ export const asyncRouterMap = [
       {
         path: '3',
         name: '3',
-        // component: () => import(/* webpackChunkName: "project" */ '../views/project/Project'),
-        meta: {title: '成品库部门', icon: 'home', permission: ['sale']}
+        component: RouteView,
+        meta: {title: '成品库部门', icon: 'home', permission: ['sale']},
+        children: [
+          {
+            path: '/batch',
+            name: 'batch',
+            //component: () => import(/* webpackChunkName: "Implement" */ '../views/finish/batch'),
+            meta: {title: '批次管理'}
+          }
+        ]
       },
       {
         path: '4',

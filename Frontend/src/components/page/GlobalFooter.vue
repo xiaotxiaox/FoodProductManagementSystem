@@ -5,7 +5,7 @@
       <a-icon type="copyright"></a-icon>
       {{ year }}
       <span>
-        <a href="https://ie.wh.sdu.edu.cn/" target="_blank">山东裕达建设工程咨询有限公司</a>
+        <a href="https://ie.wh.sdu.edu.cn/" target="_blank">山东大学（威海）机电与信息工程学院</a>
       </span>
     </div>
   </div>

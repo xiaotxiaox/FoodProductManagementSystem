@@ -17,7 +17,7 @@
         Copyright
         <a-icon type="copyright"></a-icon>
         {{ year }}
-        <span>山东裕达建设咨询有限公司荣誉出品</span>
+        <span>山东大学（威海）机电与信息工程学院</span>
       </div>
     </div>
   </div>

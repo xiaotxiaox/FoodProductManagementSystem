@@ -1,13 +1,13 @@
 <template>
   <div>
-    <order-modal
+    <ingredient-modal
       :record="modal.record"
       :visible="modal.visible"
       :type="modal.type"
-      :customer_id="modal.order_id"
+      :ingredient_id="modal.ingredient_id"
       v-if="modal.visible"
       @close="handleClose()">
-    </order-modal>
+    </ingredient-modal>
     <a-card style="margin-bottom: 16px">
       <a-row>
         <a-col
@@ -60,7 +60,7 @@
       <a-table
         bordered
         :columns="columns"
-        :dataSource="orderList"
+        :dataSource="ingredientList"
         :scroll="{ x: 1300 }"
         rowKey="ingredient_id"
         :pagination="false">
@@ -86,72 +86,51 @@
 
     const columns = [
         {
-            title: '订单编号',
-            dataIndex: 'order_id',
+            title: '采购编号',
+            dataIndex: 'ingredient_id',
             width: '20%',
             align: 'center'
         }, {
-            title: '客户姓名',
+            title: '原料名称',
             dataIndex: 'customer_name',
             width: '10%',
             align: 'center'
         },
         {
-            title: '商品名称',
+            title: '购买数量',
             dataIndex: 'item_name.label',
             width: '10%',
             align: 'center'
         }, {
-            title: '商品数量',
+            title: '总金额',
+            dataIndex: 'money',
+            width: '10%',
+            align: 'center'
+        }, {
+            title: '申请日期',
             dataIndex: 'item_num',
             width: '10%',
             align: 'center'
         }, {
-            title: '订货日期',
+            title: '申请人',
             dataIndex: 'order_date',
             width: '20%',
             align: 'center'
         }, {
-            title: '提货日期',
+            title: '批准人',
             dataIndex: 'get_date',
             width: '20%',
             align: 'center'
         }, {
-            title: '订单状态',
-            dataIndex: 'state',
-            width: '20%',
-            align: 'center',
-            customRender: (text, record) => {
-                if (record.choice_D === '1')
-                    return '待付款'
-                else if (record.choice_D === '2')
-                    return '进行中'
-                else if (record.choice_D === '3')
-                    return '退货中'
-                else if (record.choice_D === '4')
-                    return '订单完成'
-                else if (record.choice_D === '5')
-                    return '退货完成'
-                else if (record.choice_D === '6')
-                    return '异常'
-            },
-        },
-        {
-            title: '处理人',
-            dataIndex: 'staff',
-            width: '20%',
-            align: 'center'
-        },
-        {
             title: '编辑',
             dataIndex: 'operation',
             align: 'center',
             scopedSlots: {customRender: 'operation'}
         }
     ]
-    const orderList = [
+    const ingredientList = [
         {
-            order_id: '123',
+            ingredient_id: '123',
             customer_name: '123'
         }
     ]
@@ -170,20 +149,20 @@
                     tableLoading: true
                 },
                 charts: '',
-                opinion: ['待付款', '进行中','退货中', '订单完成','退货完成','异常'],
+                opinion: ['待处理', '已同意','未同意'],
                 opinionData: [
-                    { value: 10, name: '待付款', itemStyle: { color: '#00b0f0' } },
-                    { value: 20, name: '进行中', itemStyle: { color: '#7030a0' } },
-                    { value: 10, name: '已完成', itemStyle: { color: '#00CD00' } }
+                    { value: 10, name: '待处理', itemStyle: { color: '#00b0f0' } },
+                    { value: 20, name: '已同意', itemStyle: { color: '#7030a0' } },
+                    { value: 10, name: '未同意', itemStyle: { color: '#00CD00' } }
                 ],
                 modal: {
                     record: null,
                     visible: false,
                     type: '1',
-                    order_id: this.id
+                    ingredient_id: this.id
                 },
                 columns,
-                orderList,
+                ingredientList,
                 // project_id: this.projectSelected().id
             }
         },
@@ -200,7 +179,7 @@
                     .then(data => {
                         data.order_date = new moment(data.order_date)
                         data.get_date = new moment(data.get_date)
-                        this.orderList = data
+                        this.ingredientList = data
                         this.status.listLoading = false
                     })
                 api.getSecurityNotice(this.project_id)
