@@ -33,4 +33,7 @@ alter table comment alter column parent_id type int using parent_id::int;
 alter table comment alter column commentator type int using commentator::int;
 
 alter table comment alter column like_count type int using like_count::int;
+alter table order_collection alter column state set default 1;
+
+
 
