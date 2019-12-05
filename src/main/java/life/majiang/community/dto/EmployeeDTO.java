@@ -14,6 +14,6 @@ public class EmployeeDTO {
     private Integer pay;
     private String phone;
     private Integer department;
-    private BigInteger person;
+    private Integer person;
     private User user;
 }
