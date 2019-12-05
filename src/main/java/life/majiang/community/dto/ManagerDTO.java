@@ -16,4 +16,5 @@ public class ManagerDTO {
     private Integer department;
     private Integer person;
     private User user;
+    private String position;
 }
