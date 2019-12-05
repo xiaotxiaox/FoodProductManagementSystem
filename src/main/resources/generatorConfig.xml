@@ -74,5 +74,8 @@
         <table tableName="department" domainObjectName="Department">
             <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
         </table>
+        <table tableName="team" domainObjectName="Team">
+            <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
+        </table>
     </context>
 </generatorConfiguration>
