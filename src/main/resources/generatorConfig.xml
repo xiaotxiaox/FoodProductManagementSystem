@@ -62,5 +62,8 @@
         <table tableName="batch" domainObjectName="Batch">
             <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
         </table>
+        <table tableName="productionplan" domainObjectName="Productionplan">
+            <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
+        </table>
     </context>
 </generatorConfiguration>
