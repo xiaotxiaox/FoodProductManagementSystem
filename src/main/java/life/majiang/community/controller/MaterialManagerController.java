@@ -35,6 +35,7 @@ public class MaterialManagerController {
         for (Material material : materials) {
             MaterialDTO temp = new MaterialDTO();
             BeanUtils.copyProperties(material, temp);
+            temp.setUser(userMapper.selectByPrimaryKey(material.getPerson()));
             materialDTO.add(temp);
         }
         return materialDTO;

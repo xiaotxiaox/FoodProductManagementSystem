@@ -34,6 +34,7 @@ public class BatchManagerController {
         for (Batch batch : batchs) {
             BatchDTO temp = new BatchDTO();
             BeanUtils.copyProperties(batch, temp);
+            temp.setUser(userMapper.selectByPrimaryKey(batch.getPerson()));
             batchDTO.add(temp);
         }
         return batchDTO;
