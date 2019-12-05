@@ -68,5 +68,8 @@
         <table tableName="factory" domainObjectName="Factory">
             <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
         </table>
+        <table tableName="department" domainObjectName="Department">
+            <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
+        </table>
     </context>
 </generatorConfiguration>
