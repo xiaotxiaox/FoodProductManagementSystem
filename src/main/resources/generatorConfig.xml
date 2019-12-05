@@ -6,6 +6,9 @@
 <generatorConfiguration>
     <context id="DB2Tables" targetRuntime="MyBatis3">
         <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"></plugin>
+        <commentGenerator>
+            <property name="suppressDate" value="true"></property>
+        </commentGenerator>
         <jdbcConnection driverClass="org.postgresql.Driver"
                         connectionURL="jdbc:postgresql://39.107.243.158:5432/postgres"
                         userId="postgres"
@@ -66,6 +69,12 @@
             <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
         </table>
         <table tableName="factory" domainObjectName="Factory">
+            <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
+        </table>
+        <table tableName="department" domainObjectName="Department">
+            <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
+        </table>
+        <table tableName="team" domainObjectName="Team">
             <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
         </table>
     </context>
