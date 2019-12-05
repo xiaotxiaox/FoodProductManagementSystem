@@ -2,6 +2,7 @@ package life.majiang.community.controller;
 
 import life.majiang.api.CommonResult;
 import life.majiang.community.dto.OrderCollectionDTO;
+import life.majiang.community.dto.OrderStatisticsDTO;
 import life.majiang.community.dto.PolicyDTO;
 import life.majiang.community.dto.ResultDTO;
 import life.majiang.community.exception.CustomizeErrorCode;
@@ -32,6 +33,39 @@ public class OrderCollectionController {
 
     @Autowired
     private CustomMapper customMapper;
+
+    @RequestMapping(value = "/api/sale/order/statistics",method = RequestMethod.GET)
+    public OrderStatisticsDTO statistics(){
+        OrderStatisticsDTO orderStatisticsDTO = new OrderStatisticsDTO();
+        OrderExample example = new OrderExample();
+        example.createCriteria();
+        orderStatisticsDTO.setAllNumber(orderMapper.countByExample(example));
+        example.clear();
+        example.createCriteria()
+                .andStateEqualTo(1);
+        orderStatisticsDTO.setState1Number(orderMapper.countByExample(example));
+        example.clear();
+        example.createCriteria()
+                .andStateEqualTo(2);
+        orderStatisticsDTO.setState2Number(orderMapper.countByExample(example));
+        example.clear();
+        example.createCriteria()
+                .andStateEqualTo(3);
+        orderStatisticsDTO.setState3Number(orderMapper.countByExample(example));
+        example.clear();
+        example.createCriteria()
+                .andStateEqualTo(4);
+        orderStatisticsDTO.setState4Number(orderMapper.countByExample(example));
+        example.clear();
+        example.createCriteria()
+                .andStateEqualTo(5);
+        orderStatisticsDTO.setState5Number(orderMapper.countByExample(example));
+        example.clear();
+        example.createCriteria()
+                .andStateEqualTo(6);
+        orderStatisticsDTO.setState6Number(orderMapper.countByExample(example));
+        return orderStatisticsDTO;
+    }
 
     @RequestMapping(value = "/api/sale/order/sell",method = RequestMethod.GET)
     public List<OrderCollectionDTO> getSell(){
