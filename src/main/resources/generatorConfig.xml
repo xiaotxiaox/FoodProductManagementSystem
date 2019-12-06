@@ -89,5 +89,11 @@
         <table tableName="producing" domainObjectName="Producing">
             <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
         </table>
+        <table tableName="outbound" domainObjectName="Outbound">
+            <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
+        </table>
+        <table tableName="inventory" domainObjectName="Inventory">
+            <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
+        </table>
     </context>
 </generatorConfiguration>
