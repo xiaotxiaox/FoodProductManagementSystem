@@ -30,6 +30,9 @@ public class OutBoundManagerController {
     private MaterialtotalMapper materialtotalmapper;
 
     @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
     private InventoryMapper inventorymapper;
 
     @RequestMapping(value = "/api/outbound", method = RequestMethod.GET)
@@ -41,6 +44,8 @@ public class OutBoundManagerController {
         for (Outbound outbound : outbounds) {
             OutBoundDTO temp = new OutBoundDTO();
             BeanUtils.copyProperties(outbound, temp);
+            temp.setUser(userMapper.selectByPrimaryKey(outbound.getPerson()));
+            temp.setMaterialtotal(materialtotalmapper.selectByPrimaryKey(outbound.getMaterialid()));
             outBoundDTO.add(temp);
         }
         return outBoundDTO;

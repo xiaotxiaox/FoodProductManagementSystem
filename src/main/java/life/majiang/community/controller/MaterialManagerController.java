@@ -8,6 +8,7 @@ import life.majiang.community.dto.StateDTO;
 import life.majiang.community.exception.CustomizeErrorCode;
 import life.majiang.community.mapper.InventoryMapper;
 import life.majiang.community.mapper.MaterialMapper;
+import life.majiang.community.mapper.MaterialtotalMapper;
 import life.majiang.community.mapper.UserMapper;
 import life.majiang.community.model.Inventory;
 import life.majiang.community.model.Material;
@@ -30,6 +31,9 @@ public class MaterialManagerController {
     private UserMapper userMapper;
 
     @Autowired
+    private MaterialtotalMapper materialtotalMapper;
+
+    @Autowired
     private InventoryMapper inventorymapper;
 
     @RequestMapping(value = "/api/material", method = RequestMethod.GET)
@@ -42,6 +46,7 @@ public class MaterialManagerController {
             MaterialDTO temp = new MaterialDTO();
             BeanUtils.copyProperties(material, temp);
             temp.setUser(userMapper.selectByPrimaryKey(material.getPerson()));
+            temp.setMaterialtotal(materialtotalMapper.selectByPrimaryKey(material.getMaterialid()));
             materialDTO.add(temp);
         }
         return materialDTO;

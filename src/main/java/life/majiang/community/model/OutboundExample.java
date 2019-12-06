@@ -443,6 +443,66 @@ public class OutboundExample {
             addCriterion("materialid not between", value1, value2, "materialid");
             return (Criteria) this;
         }
+
+        public Criteria andPersonIsNull() {
+            addCriterion("person is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPersonIsNotNull() {
+            addCriterion("person is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPersonEqualTo(Integer value) {
+            addCriterion("person =", value, "person");
+            return (Criteria) this;
+        }
+
+        public Criteria andPersonNotEqualTo(Integer value) {
+            addCriterion("person <>", value, "person");
+            return (Criteria) this;
+        }
+
+        public Criteria andPersonGreaterThan(Integer value) {
+            addCriterion("person >", value, "person");
+            return (Criteria) this;
+        }
+
+        public Criteria andPersonGreaterThanOrEqualTo(Integer value) {
+            addCriterion("person >=", value, "person");
+            return (Criteria) this;
+        }
+
+        public Criteria andPersonLessThan(Integer value) {
+            addCriterion("person <", value, "person");
+            return (Criteria) this;
+        }
+
+        public Criteria andPersonLessThanOrEqualTo(Integer value) {
+            addCriterion("person <=", value, "person");
+            return (Criteria) this;
+        }
+
+        public Criteria andPersonIn(List<Integer> values) {
+            addCriterion("person in", values, "person");
+            return (Criteria) this;
+        }
+
+        public Criteria andPersonNotIn(List<Integer> values) {
+            addCriterion("person not in", values, "person");
+            return (Criteria) this;
+        }
+
+        public Criteria andPersonBetween(Integer value1, Integer value2) {
+            addCriterion("person between", value1, value2, "person");
+            return (Criteria) this;
+        }
+
+        public Criteria andPersonNotBetween(Integer value1, Integer value2) {
+            addCriterion("person not between", value1, value2, "person");
+            return (Criteria) this;
+        }
     }
 
     /**
