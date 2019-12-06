@@ -34,6 +34,15 @@ public class OrderCollectionController {
     @Autowired
     private CustomMapper customMapper;
 
+    @RequestMapping(value = "/api/sale/order/one",method = RequestMethod.GET)
+    public OrderCollectionDTO getOne(@RequestParam(value = "id",required = false) Integer id){
+        List<OrderCollectionDTO> all = getAll();
+        for (OrderCollectionDTO orderCollectionDTO : all) {
+            if(orderCollectionDTO.getId() == id) return orderCollectionDTO;
+        }
+        return null;
+    }
+
     @RequestMapping(value = "/api/sale/order/statistics",method = RequestMethod.GET)
     public OrderStatisticsDTO statistics(){
         OrderStatisticsDTO orderStatisticsDTO = new OrderStatisticsDTO();
