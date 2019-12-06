@@ -12,11 +12,11 @@
       :xs="{ span: 20 }"
       :sm="{ span: 18 }"
       :xl="{ span: 18 }">
-      <div>名称：{{ project.name }}</div>
       <div>编号：{{ project.id }}</div>
-      <div>开工日期：{{ project.starting_date }}</div>
-      <div>预计竣工日期：{{ project.finishing_date }}</div>
-      <div>建设地点：{{ project.place }}</div>
+      <div>客户姓名：{{ project.custom.name }}</div>
+      <div>订货日期：{{ project.orderDate }}</div>
+      <div>提货日期：{{ project.pickDate }}</div>
+      <div>订单状态：{{ project.status }}</div>
     </a-col>
     <a-col
       :xs="{ span: 4 }"
@@ -41,14 +41,14 @@
     computed: {
       safeDay () {
         let today = new moment()
-        let starting_day = new moment(this.project.starting_date)
-        let finishing_day = new moment(this.project.finishing_date)
-        return `${today.diff(starting_day, 'days') + 1} / ${finishing_day.diff(starting_day, 'days') + 1}`
+        let orderDate = new moment(this.project.orderDate)
+        let pickDate = new moment(this.project.pickDate)
+        return `${today.diff(orderDate, 'days') + 1} / ${pickDate.diff(orderDate, 'days') + 1}`
       },
       isExpire () {
         let today = new moment()
-        let finishing_day = new moment(this.project.finishing_date)
-        return today.diff(finishing_day, 'days') > 0
+        let pickDate = new moment(this.project.pickDate)
+        return today.diff(pickDate, 'days') > 0
       }
     }
   }

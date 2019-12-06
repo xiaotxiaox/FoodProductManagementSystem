@@ -49,12 +49,13 @@
 <script>
     import ServicerModal from './components/ServicerModal'
     import api from '../../api/staff'
+    import moment from 'moment'
     import {mapGetters} from 'vuex'
 
     const columns = [
         {
             title: '员工编号',
-            dataIndex: 'staff_id',
+            dataIndex: 'id',
             width: '20%',
             align: 'center'
         }, {
@@ -66,32 +67,54 @@
             title: '性别',
             dataIndex: 'gender',
             width: '20%',
-            align: 'center'
-        },{
+            align: 'center',
+            customRender: (text, record) => {
+                if (record.gender === 1)
+                    return '男'
+                else if (record.gender === 2)
+                    return '女'
+            },
+        }, {
             title: '工作部门',
-            dataIndex: 'customer_name',
+            dataIndex: 'department',
             width: '10%',
-            align: 'center'
+            align: 'center',
+            customRender: (text, record) => {
+                if (record.department === 1)
+                    return "销售部"
+                else if (record.department === 2)
+                    return '财务部'
+                else if (record.department === 3)
+                    return '成品库部门'
+                else if (record.department === 4)
+                    return '生产计划科'
+                else if (record.department === 5)
+                    return '生产车间部门'
+                else if (record.department === 6)
+                    return '原材料库'
+                else if (record.department === 7)
+                    return '人事部'
+            },
         },
         {
             title: '入职时间',
-            dataIndex: 'item_name.label',
+            dataIndex: 'timein',
             width: '10%',
             align: 'center'
         }, {
             title: '工资',
-            dataIndex: 'item_num',
+            dataIndex: 'pay',
             width: '10%',
             align: 'center'
         }, {
             title: '电话号码',
-            dataIndex: 'order_date',
+            dataIndex: 'phone',
             width: '20%',
             align: 'center'
         },
         {
             title: '处理人',
-            dataIndex: 'staff',
+            dataIndex: 'user.name',
             width: '20%',
             align: 'center'
         },
@@ -123,7 +146,7 @@
                     id: this.id
                 },
                 columns,
-                staffList:[],
+                staffList: [],
             }
         },
         mounted() {
@@ -133,13 +156,17 @@
             ...mapGetters(['projectSelected']),
             getData() {
                 api.getServicerList()
-                 .then(data => {
-                   this.staffList = data
-                   this.status.listLoading = false
-                   console.log(1)
-                 })
+                    .then(data => {
+                        console.log(data)
+                        data.timein = new moment(data.timein)
+                        console.log(data)
+                        this.staffList = data
+                        this.status.listLoading = false
+                        console.log(1)
+                    })
             },
             handleClose() {
+
                 this.modal.type = ''
                 this.modal.record = null
                 this.modal.visible = false

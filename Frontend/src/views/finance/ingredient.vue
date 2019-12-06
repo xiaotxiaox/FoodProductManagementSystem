@@ -4,7 +4,7 @@
       :record="modal.record"
       :visible="modal.visible"
       :type="modal.type"
-      :ingredient_id="modal.ingredient_id"
+      :id="modal.id"
       v-if="modal.visible"
       @close="handleClose()">
     </ingredient-modal>
@@ -40,7 +40,7 @@
         </a-col>
       </a-row>
     </a-card>
-    <a-card style="margin-bottom: 16px" title="订单表">
+    <a-card style="margin-bottom: 16px" title="原料采买管理表">
       <a-row>
         <a-col
           class="item"
@@ -62,7 +62,7 @@
         :columns="columns"
         :dataSource="ingredientList"
         :scroll="{ x: 1300 }"
-        rowKey="ingredient_id"
+        rowKey="id"
         :pagination="false">
         <template slot="operation" slot-scope="text, record, index">
           <a-button @click="handleEdit(record)">编辑</a-button>
@@ -87,18 +87,18 @@
     const columns = [
         {
             title: '采购编号',
-            dataIndex: 'ingredient_id',
+            dataIndex: 'id',
             width: '20%',
             align: 'center'
         }, {
             title: '原料名称',
-            dataIndex: 'customer_name',
+            dataIndex: 'name',
             width: '10%',
             align: 'center'
         },
         {
             title: '购买数量',
-            dataIndex: 'item_name.label',
+            dataIndex: 'num',
             width: '10%',
             align: 'center'
         }, {
@@ -163,7 +163,6 @@
                 },
                 columns,
                 ingredientList,
-                // project_id: this.projectSelected().id
             }
         },
         mounted() {

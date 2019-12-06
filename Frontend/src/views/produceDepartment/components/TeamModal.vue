@@ -11,19 +11,19 @@
     <a-form
       :form="form">
       <a-form-item
-        label="员工编号"
         v-if="isEdit"
+        label="班组编号"
         :label-col="{span: 8}"
         :wrapper-col="{span: 12}"
         v-bind="layout">
         <a-input
-          type="number"
           disabled
+          type="number"
           v-decorator="[
             'id',
             {
               rules:[
-                { required: true, message: '请输入编号' }
+                { required: true, message: '请输入班组编号' },
               ],
               validateTrigger: 'blur',
               initialValue: record ? record.id: null
@@ -32,7 +32,7 @@
         </a-input>
       </a-form-item>
       <a-form-item
-        label="管理者姓名"
+        label="班组名称"
         :label-col="{span: 8}"
         :wrapper-col="{span: 12}"
         v-bind="layout">
@@ -42,7 +42,8 @@
             'name',
             {
               rules:[
-                { required: true, message: '请输入管理者编号' }
+                { required: true, message: '请输入车间名称' },
+                { max:16, message: '长度在16个汉字以内' }
               ],
               validateTrigger: 'blur',
               initialValue: record ? record.name: null
@@ -50,100 +51,74 @@
           ]">
         </a-input>
       </a-form-item>
+<!--      <a-form-item-->
+<!--        label="所属工厂"-->
+<!--        v-bind="layout">-->
+<!--        <a-select-->
+<!--          placeholder="请选择所在工厂"-->
+<!--          v-decorator="[-->
+<!--                'factory',-->
+<!--                {rules:[{required: true, message: '请选择所属工厂'}],-->
+<!--                initialValue: record ? record.factory.id : null}-->
+<!--              ]">-->
+<!--          <a-select-option-->
+<!--            v-for="item in typeList1"-->
+<!--            :key="item.id"-->
+<!--            :value="item.id">-->
+<!--            {{ item.name }}-->
+<!--          </a-select-option>-->
+<!--        </a-select>-->
+<!--      </a-form-item>-->
       <a-form-item
-        label="职位"
-        :label-col="{span: 8}"
-        :wrapper-col="{span: 12}"
+        label="所属车间"
+        v-bind="layout">
+        <a-select
+          placeholder="请选择所属车间"
+          v-decorator="[
+                'department',
+                {rules:[{required: true, message: '请选择所属车间'}],
+                initialValue: record ? record.department.id : null}
+              ]">
+          <a-select-option
+            v-for="item in typeList"
+            :key="item.id"
+            :value="item.id">
+            {{ item.name }}
+          </a-select-option>
+        </a-select>
+      </a-form-item>
+      <a-form-item
+        label="负责人"
         v-bind="layout">
         <a-input
           type="text"
           v-decorator="[
-            'position',
+            'leader',
             {
-              rules:[
-                { required: true, message: '请输入职位' }
+              rules: [
+              {required: true, message: '请输入负责人姓名'}
               ],
               validateTrigger: 'blur',
-              initialValue: record ? record.position: null
+              initialValue: record ? record.leader: null
             }
           ]">
         </a-input>
       </a-form-item>
       <a-form-item
-        label="性别"
-        v-bind="layout">
-        <a-select
-          placeholder="请选择性别"
-          v-decorator="[
-                'gender',
-                {rules:[{required: true, message: '请选择员工性别'}],
-                initialValue: record ? record.gender : null}
-              ]">
-          <a-select-option :key="1" :value="1">男</a-select-option>
-          <a-select-option :key="2" :value="2">女</a-select-option>
-        </a-select>
-      </a-form-item>
-      <a-form-item
-        label="工作部门"
-        v-bind="layout">
-        <a-select
-          placeholder="请选择工作部门"
-          v-decorator="[
-                'department',
-                {rules:[{required: true, message: '请选择员工性别'}],
-                initialValue: record ? record.department : null}
-              ]">
-          <a-select-option :key="1" :value="1">销售部</a-select-option>
-          <a-select-option :key="2" :value="2">财务部</a-select-option>
-          <a-select-option :key="3" :value="3">生产计划科</a-select-option>
-          <a-select-option :key="4" :value="4">成品库部门</a-select-option>
-          <a-select-option :key="5" :value="5">生产车间部门</a-select-option>
-          <a-select-option :key="6" :value="6">原材料库</a-select-option>
-          <a-select-option :key="7" :value="7">人事部</a-select-option>
-        </a-select>
-      </a-form-item>
-      <a-form-item
-        label="入职时间"
-        v-bind="layout">
-        <a-date-picker
-          style="width:100%"
-          v-decorator="[
-                'timein',
-                {rules: [{ type: 'object', required: true, message: '请输入入职时间' }],
-                 initialValue: isEdit ? record.timein : null}
-              ]">
-        </a-date-picker>
-      </a-form-item>
-      <a-form-item
-        label="工资"
-        v-bind="layout">
-        <a-input
-          type="number"
-          addonAfter="元/月"
-          v-decorator="[
-            'pay',
-            {
-              validateTrigger: 'blur',
-              initialValue: record ? record.pay : null
-            }
-          ]">
-        </a-input>
-      </a-form-item>
-      <a-form-item
-        label="联系电话"
+        label="负责人联系电话"
         v-bind="layout">
         <a-input
           type="phone"
           autocomplete="true"
           placeholder="13812341234"
           v-decorator="[
-                            'phone',
+                            'leaderPhone',
                             {rules: [
                                     {required: true, message: '请输入联系电话'},
                                     {pattern:/^[1][3,4,5,7,8][0-9]{9}$/, message: '联系电话格式错误'}
                                     ],
                             validateTrigger: 'blur',
-                            initialValue: record ? record.phone : null}
+                            initialValue: record ? record.leaderPhone : null}
                             ]">
         </a-input>
       </a-form-item>
@@ -152,12 +127,10 @@
 </template>
 
 <script>
-    import api from '../../../api/staff'
-    import moment from 'moment'
-    import {mapGetters} from 'vuex'
+    import api from '../../../api/produceDepartment'
 
     export default {
-        name: 'ManagerModal',
+        name: 'TeamModal',
         props: {
             record: Object,
             visible: Boolean,
@@ -171,33 +144,35 @@
                 },
                 form: this.$form.createForm(this),
                 matter: {},
-                typeList: [],
+                typeList: []
             }
         },
         mounted() {
-            this.getData();
+            this.getData()
         },
         methods: {
             getData() {
-                if (this.isEdit) {
-                    if (this.record.timein !== null) {
-                        this.record.timein = new moment(this.record.timein)
-                    }
-                }
+                // api.getDepartmentInfoList(this.modal.record.factory.id)
+                //     .then(data => {
+                //         console.log(data)
+                //         this.typeList2 = data
+                //     })
+                api.getDepartmentList()
+                    .then(data => {
+                        this.typeList = data
+                    })
             },
             handleOk() {
                 this.form.validateFields((error, data) => {
                     if (!error) {
-                        console.log(data)
-                        data.timein = data.timein.format('YYYY-MM-DD')
                         if (this.isEdit) {
-                            api.updateManager(this.record.id, data)
+                            api.updateTeam(this.record.id, data)
                                 .then(data => {
                                     this.$notification.success({message: '成功', description: '更新成功', key: 'SUCCESS'})
                                     this.$emit('close')
                                 })
                         } else {
-                            api.createManager(data)
+                            api.createTeam(data)
                                 .then(data => {
                                     this.$notification.success({message: '成功', description: '新建成功', key: 'SUCCESS'})
                                     this.$emit('close')

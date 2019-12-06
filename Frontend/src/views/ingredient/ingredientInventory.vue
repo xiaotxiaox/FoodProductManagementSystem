@@ -1,13 +1,5 @@
 <template>
   <div>
-    <order-modal
-      :record="modal.record"
-      :visible="modal.visible"
-      :type="modal.type"
-      :id="modal.id"
-      v-if="modal.visible"
-      @close="handleClose()">
-    </order-modal>
     <a-card style="margin-bottom: 16px">
       <a-row>
         <a-col
@@ -40,33 +32,31 @@
         </a-col>
       </a-row>
     </a-card>
-    <a-card style="margin-bottom: 16px" title="订单表">
-      <a-row>
-        <a-col
-          class="item"
-          :xs="{ span: 24 }"
-          :sm="{ span: 12 }"
-          :xl="{ span: 4 }">
-          <a-button
-            type="primary"
-            icon="plus"
-            style="width: 100%;float:right;margin-bottom: 16px"
-            @click="handleCreate()">
-            新增订单
-          </a-button>
-        </a-col>
-      </a-row>
-      <!--<a-spin :spinning="status.listLoading">-->
+    <a-card style="margin-bottom: 16px" title="原料库存表(未过期）">
       <a-table
         bordered
         :columns="columns"
-        :dataSource="orderList"
+        :dataSource="inList"
         :scroll="{ x: 1300 }"
         rowKey="id"
         :pagination="false">
-        <template slot="operation" slot-scope="text, record, index">
-          <a-button @click="handleEdit(record)">处理</a-button>
-        </template>
+<!--        <template slot="operation" slot-scope="text, record, index">-->
+<!--          <a-button @click="handleEdit(record)">处理</a-button>-->
+<!--        </template>-->
+      </a-table>
+      <!--</a-spin>-->
+    </a-card>
+    <a-card style="margin-bottom: 16px" title="原料库存表（已过期）">
+      <a-table
+        bordered
+        :columns="columns"
+        :dataSource="outList"
+        :scroll="{ x: 1300 }"
+        rowKey="id"
+        :pagination="false">
+        <!--        <template slot="operation" slot-scope="text, record, index">-->
+        <!--          <a-button @click="handleEdit(record)">处理</a-button>-->
+        <!--        </template>-->
       </a-table>
       <!--</a-spin>-->
     </a-card>
@@ -74,67 +64,31 @@
 </template>
 
 <script>
-    import OrderModal from './components/OrderModal'
+
     import echarts from 'echarts'
     import moment from 'moment'
-    import api from '../../api/sale'
+    import api from '../../api/ingredient'
     import {mapGetters} from 'vuex'
 
     const columns = [
         {
-            title: '订单编号',
+            title: '库存编号',
             dataIndex: 'id',
             width: '20%',
             align: 'center'
         }, {
-            title: '客户姓名',
-            dataIndex: 'custom.name',
-            width: '10%',
-            align: 'center'
-        },
-        {
             title: '商品名称',
-            dataIndex: 'goods',
+            dataIndex: 'name',
             width: '10%',
             align: 'center'
         }, {
-            title: '商品数量',
-            dataIndex: 'count',
+            title: '库存数量',
+            dataIndex: 'num',
             width: '10%',
             align: 'center'
         }, {
-            title: '订货日期',
-            dataIndex: 'orderDate',
-            width: '20%',
-            align: 'center'
-        }, {
-            title: '提货日期',
-            dataIndex: 'pickDate',
-            width: '20%',
-            align: 'center'
-        }, {
-            title: '订单状态',
-            dataIndex: 'state',
-            width: '20%',
-            align: 'center',
-            customRender: (text, record) => {
-                if (record.state === 1)
-                    return '待付款'
-                else if (record.state === 2)
-                    return '进行中'
-                else if (record.state === 3)
-                    return '退货中'
-                else if (record.state === 4)
-                    return '订单完成'
-                else if (record.state === 5)
-                    return '退货完成'
-                else if (record.state === 6)
-                    return '异常'
-            },
-        },
-        {
-            title: '处理人',
-            dataIndex: 'user.name',
+            title: '保质期',
+            dataIndex: 'timeprotect',
             width: '20%',
             align: 'center'
         },
@@ -146,13 +100,7 @@
         }
     ]
     export default {
-        name: "order",
-        components: {
-            OrderModal
-        },
-        props: {
-            id: Number
-        },
+        name: "ingredientInventory",
         data() {
             return {
                 status: {
@@ -160,47 +108,40 @@
                     tableLoading: true
                 },
                 charts: '',
-                opinion: ['待付款', '进行中', '订单完成'],
+                opinion: ['未过期', '已过期'],
                 opinionData: [
-                    { value: 10, name: '待付款', itemStyle: { color: '#00b0f0' } },
-                    { value: 20, name: '进行中', itemStyle: { color: '#7030a0' } },
-                    { value: 10, name: '订单完成', itemStyle: { color: '#00CD00' } }
+                    { value: 10, name: '未过期', itemStyle: { color: '#00b0f0' } },
+                    { value: 20, name: '已过期', itemStyle: { color: '#7030a0' } }
                 ],
-                modal: {
-                    record: null,
-                    visible: false,
-                    type: '1',
-                    id: this.id
-                },
                 columns,
-                orderList:[]
+                inList:[],
+                outList:[]
             }
         },
         mounted() {
             this.getData(),
-            this.$nextTick(function () {
-                this.drawPie('main')
-            })
+                this.$nextTick(function () {
+                    this.drawPie('main')
+                })
         },
         methods: {
-            ...mapGetters(['projectSelected']),
             getData() {
-                api.getOrderSellList()
+                api.getIntimeList()
                     .then(data => {
-                        data.orderDate = new moment(data.orderDate)
-                        data.pickDate = new moment(data.pickDate)
                         console.log(data)
-                        this.orderList = data
-                        this.status.listLoading = false
+                        this.inList = data
                     })
-                api.getStatistics()
+                api.getOuttimeList()
                     .then(data => {
-                        this.state1 = data.state1Number
-                        this.state2 = data.state2Number
-                        this.state4 = data.state4Number
-                        this.opinionData[0].value=this.state1
-                        this.opinionData[1].value=this.state2
-                        this.opinionData[2].value=this.state4
+                        console.log(data)
+                        this.outList = data
+                    })
+                api.getIngredientStatistics()
+                    .then(data => {
+                        this.timein = data.timein
+                        this.timeout = data.timeout
+                        this.opinionData[0].value=this.timein
+                        this.opinionData[1].value=this.timeout
                         this.$nextTick(function () {
                             this.drawPie('main')
                         })
@@ -209,6 +150,10 @@
             drawPie (id) {
                 this.charts = echarts.init(document.getElementById(id))
                 this.charts.setOption({
+                    title:{
+                        text:'原料保质期统计',
+                        left: 'center',
+                    },
                     tooltip: {
                         trigger: 'item',
                     },

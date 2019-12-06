@@ -1,0 +1,152 @@
+<template>
+  <a-modal
+    :title="title"
+    :visible="visible"
+    :keyboard="false"
+    :maskClosable="false"
+    okText="保存"
+    okType="primary"
+    @ok="handleOk()"
+    @cancel="handleCancel()">
+    <a-form
+      :form="form">
+      <a-form-item
+        v-if="isEdit"
+        label="原料编号"
+        :label-col="{span: 8}"
+        :wrapper-col="{span: 12}"
+        v-bind="layout">
+        <a-input
+          disabled
+          type="number"
+          v-decorator="[
+            'id',
+            {
+              rules:[
+                { required: true, message: '请输入原料编号' },
+              ],
+              validateTrigger: 'blur',
+              initialValue: record ? record.id: null
+            }
+          ]">
+        </a-input>
+      </a-form-item>
+      <a-form-item
+        label="商品名称"
+        v-bind="layout">
+        <a-input
+          type="text"
+          v-decorator="[
+            'name',
+            {
+              rules: [
+              {required: true, message: '请输入商品名称'}
+              ],
+              validateTrigger: 'blur',
+              initialValue: record ? record.name: null
+            }
+          ]">
+        </a-input>
+      </a-form-item>
+      <a-form-item
+        label="商品单价"
+        v-bind="layout">
+        <a-input
+          type="text"
+          v-decorator="[
+            'price',
+            {
+              rules: [
+              {required: true, message: '请输入商品单价'}
+              ],
+              validateTrigger: 'blur',
+              initialValue: record ? record.price: null
+            }
+          ]">
+        </a-input>
+      </a-form-item>
+      <a-form-item
+        label="计量单位"
+        v-bind="layout">
+        <a-input
+          type="text"
+          v-decorator="[
+            'count',
+            {
+              rules: [
+              {required: true, message: '请输入商品计量单位'}
+              ],
+              validateTrigger: 'blur',
+              initialValue: record ? record.count: null
+            }
+          ]">
+        </a-input>
+      </a-form-item>
+    </a-form>
+  </a-modal>
+</template>
+
+<script>
+  import api from '../../../api/sale'
+  import {mapGetters} from 'vuex'
+
+  export default {
+    name: 'IngredientModal',
+    props: {
+      record: Object,
+      visible: Boolean,
+      type: String,
+    },
+    data() {
+      return {
+        layout: {
+          'label-col': {span: 8},
+          'wrapper-col': {span: 12}
+        },
+        form: this.$form.createForm(this),
+        matter: {},
+        typeList: [],
+      }
+    },
+    mounted() {
+    },
+    methods: {
+      ...mapGetters(['projectSelected']),
+      handleOk() {
+        this.form.validateFields((error, data) => {
+          if (!error) {
+            if (this.isEdit) {
+              api.updateProduct(this.record.id, data)
+                .then(data => {
+                  this.$notification.success({message: '成功', description: '更新成功', key: 'SUCCESS'})
+                  this.$emit('close')
+                })
+            } else {
+              api.createProduct(data)
+                .then(data => {
+                  this.$notification.success({message: '成功', description: '新建成功', key: 'SUCCESS'})
+                  this.$emit('close')
+                })
+            }
+          }
+        })
+      },
+      handleCancel() {
+        this.$emit('close')
+      }
+
+    },
+    computed: {
+      isEdit() {
+        return this.type === 'edit'
+      },
+      title() {
+        return this.isEdit ? '编辑' : '新建'
+      }
+    }
+  }
+</script>
+
+<style scoped lang="less">
+
+</style>

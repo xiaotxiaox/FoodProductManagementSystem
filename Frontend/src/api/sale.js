@@ -27,5 +27,38 @@ export default {
   },
   deleteSalePolicy (id) {
     return fetchAPI(`sale/policy/${id}/`, 'delete')
-  }
+  },
+  getSumList () {
+    return fetchAPI('sale/order/', 'get', null)
+  },
+  getOrderSellList () {
+    return fetchAPI('sale/order/sell', 'get', null)
+  },
+  getStatistics () {
+    return fetchAPI('sale/order/statistics', 'get', null)
+  },
+  getOrderBackList () {
+    return fetchAPI('sale/order/back', 'get', null)
+  },
+  createOrder (data) {
+    return fetchAPI('sale/order/', 'post', data)
+  },
+  updateOrder (id, data) {
+    return fetchAPI(`sale/order/${id}/`, 'put', data)
+  },
+  deleteOrder (id) {
+    return fetchAPI(`sale/order/${id}/`, 'delete')
+  },
+  getProductList () {
+    return fetchAPI('goods', 'get', null)
+  },
+  createProduct (data) {
+    return fetchAPI('goods', 'post', data)
+  },
+  updateProduct (id, data) {
+    return fetchAPI(`goods/${id}/`, 'put', data)
+  },
+  deleteProduct (id) {
+    return fetchAPI(`goods/${id}/`, 'delete')
+  },
 }

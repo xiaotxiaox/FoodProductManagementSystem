@@ -131,17 +131,13 @@
   import router from '../../router'
   import PageLayout from '../../components/page/PageLayout'
   import ProjectCard from './components/Card'
-  import api from '../../api/project'
+  import api from '../../api/sale'
   import ARow from 'ant-design-vue/es/grid/Row'
   import {
     BaiduMap, BmScale, BmMapType, BmNavigation, BmGeolocation, BmMarker, BmInfoWindow, BmLabel,
     BmLocalSearch, BmControl, BmAutoComplete,
   } from 'vue-baidu-map/components'
-const projectList=[
-  {
-    name:'123'
-  }
-]
+
   export default {
     name: 'Project',
     components: {
@@ -188,7 +184,7 @@ const projectList=[
           xl: {span: 6}
         },
         projectCount: 0,
-        projectList
+        projectList:[]
       }
     },
     mounted() {
@@ -234,13 +230,26 @@ const projectList=[
       getData() {
         this.status.loading = true
         this.status.loading = false
-        // api.getProjectList(this.params)
-        //   .then(data => {
-        //     console.log(data)
-        //     this.projectList = data.results
-        //     this.projectCount = data.count
-        //     this.status.loading = false
-        //   })
+        api.getSumList(this.params)
+          .then(data => {
+            console.log(data)
+            this.projectList = data
+              for(var item of this.projectList)
+                  if(item.state===1)
+                      item.status='待付款'
+                  else if(item.state===2)
+                      item.status='进行中'
+                  else if(item.state===3)
+                      item.status='退货中'
+                  else if(item.state===4)
+                      item.status='订单已完成'
+                  else if(item.state===5)
+                      item.status='退货完成'
+                  else if(item.state===6)
+                      item.status='异常'
+            //this.projectCount = data.count
+            this.status.loading = false
+          })
         api.getProjectStatistics()
           .then(data => {
             this.projectStatistics = data

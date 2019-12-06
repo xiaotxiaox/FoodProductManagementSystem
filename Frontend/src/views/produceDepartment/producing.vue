@@ -1,14 +1,14 @@
 <template>
   <div>
-    <manager-modal
+    <producing-modal
       :record="modal.record"
       :visible="modal.visible"
       :type="modal.type"
       :id="modal.id"
       v-if="modal.visible"
       @close="handleClose()">
-    </manager-modal>
-    <a-card style="margin-bottom: 16px" title="管理者信息表">
+    </producing-modal>
+    <a-card style="margin-bottom: 16px" title="正在生产批次表">
       <a-row>
         <a-col
           class="item"
@@ -28,9 +28,8 @@
       <a-table
         bordered
         :columns="columns"
-        :dataSource="staffList"
-        :scroll="{ x: 1300 }"
-        rowKey="customer_id"
+        :dataSource="producingList"
+        rowKey="id"
         :pagination="false">
         <template slot="operation" slot-scope="text, record, index">
           <a-button @click="handleEdit(record)">编辑</a-button>
@@ -40,6 +39,14 @@
             <a-button type="danger">删除</a-button>
           </a-popconfirm>
         </template>
+        <template slot="state" slot-scope="text, record, index">
+          <a-button @click="qualified(record)">检验合格</a-button>
+          <a-popconfirm
+            title="确认销毁改批次产品吗?"
+            @confirm="disqualified(record)">
+            <a-button type="danger">检验不合格</a-button>
+          </a-popconfirm>
+        </template>
       </a-table>
       <!--</a-spin>-->
     </a-card>
@@ -47,98 +54,67 @@
 </template>
 
 <script>
-    import ManagerModal from './components/ManagerModal'
-    import api from '../../api/staff'
-    import moment from 'moment'
-    import {mapGetters} from 'vuex'
-
+    import ProducingModal from './components/ProducingModal'
+    import api from '../../api/produceDepartment'
 
     const columns = [
         {
-            title: '管理者编号',
+            title: '流水编号',
             dataIndex: 'id',
             width: '20%',
             align: 'center'
-        }, {
-            title: '姓名',
-            dataIndex: 'name',
-            width: '20%',
-            align: 'center'
-        }, {
-            title: '性别',
-            dataIndex: 'gender',
-            width: '20%',
-            align: 'center',
-            customRender: (text, record) => {
-                if (record.gender === 1)
-                    return '男'
-                else if (record.gender === 2)
-                    return '女'
-            },
-        }, {
-            title: '工作部门',
-            dataIndex: 'department',
-            width: '10%',
-            align: 'center',
-            customRender: (text, record) => {
-                if (record.department === 1)
-                    return "销售部"
-                else if (record.department === 2)
-                    return '财务部'
-                else if (record.department === 3)
-                    return '成品库部门'
-                else if (record.department === 4)
-                    return '生产计划科'
-                else if (record.department === 5)
-                    return '生产车间部门'
-                else if (record.department === 6)
-                    return '原材料库'
-                else if (record.department === 7)
-                    return '人事部'
-            }
         },
         {
-            title: '职位',
-            dataIndex: 'position',
-            width: '10%',
+            title: '对应批次编号',
+            dataIndex: 'round.id',
+            width: '20%',
             align: 'center'
         },
         {
-            title: '入职时间',
-            dataIndex: 'timein',
-            width: '10%',
-            align: 'center'
-        }, {
-            title: '工资',
-            dataIndex: 'pay',
-            width: '10%',
-            align: 'center'
-        }, {
-            title: '电话号码',
-            dataIndex: 'phone',
+            title: '对应批次名称',
+            dataIndex: 'round.name',
             width: '20%',
+            align: 'center'
+        },
+        {
+            title: '商品名称',
+            dataIndex: 'good.name',
+            width: '20%',
+            align: 'center'
+        }, {
+            title: '商品数量',
+            dataIndex: 'goodCount',
+            width: '20%',
+            align: 'center'
+        }, {
+            title: '生产日期',
+            dataIndex: 'produceDate',
+            width: '30%',
             align: 'center'
         },
         {
             title: '处理人',
             dataIndex: 'user.name',
-            width: '20%',
+            width: '10%',
             align: 'center'
         },
         {
-            title: '编辑',
-            dataIndex: 'operation',
+            title: '检验',
+            dataIndex: 'state',
             align: 'center',
-            scopedSlots: {customRender: 'operation'}
-        }
+            scopedSlots: {customRender: 'state'}
+        },
+        // {
+        //   title: '编辑',
+        //   dataIndex: 'operation',
+        //   align: 'center',
+        //   scopedSlots: {customRender: 'operation'}
+        // }
     ]
     export default {
-        name: "manager",
+        name: "producing",
         components: {
-            ManagerModal
-        },
-        props: {
-            id: Number
+            ProducingModal
         },
         data() {
             return {
@@ -153,23 +129,18 @@
                     id: this.id
                 },
                 columns,
-                staffList: [],
+                producingList: [],
             }
         },
         mounted() {
             this.getData()
         },
         methods: {
-            ...mapGetters(['projectSelected']),
             getData() {
-                api.getManagerList()
+                api.getProducingList()
                     .then(data => {
                         console.log(data)
-                        data.timein = new moment(data.timein)
-                        console.log(data)
-                        this.staffList = data
-                        this.status.listLoading = false
-                        console.log(1)
+                        this.producingList = data
                     })
             },
             handleClose() {
@@ -188,11 +159,44 @@
                 this.modal.record = record
                 this.modal.visible = true
             },
+            qualified(record) {
+                let item={}
+                item.id=record.id
+                item.state = 1
+                item.good=record.good.id
+                item.round=record.round.id
+                item.goodCount=record.goodCount
+                item.produceDate=record.produceDate
+                item.handeler=record.handler
+                api.updateProducing(record.id, item)
+                    .then(data => {
+                        this.$notification.success({message: '成功', description: '更新成功', key: 'SUCCESS'})
+                        this.$emit('close')
+                    })
+                this.getData()
+            },
+            disqualified(record) {
+                let item={}
+                item.id=record.id
+                item.state = 2
+                item.good=record.good.id
+                item.round=record.round.id
+                item.goodCount=record.goodCount
+                item.produceDate=record.produceDate
+                item.handeler=record.handler
+                api.updateProducing(record.id, item)
+                    .then(data => {
+                        this.$notification.success({message: '成功', description: '更新成功', key: 'SUCCESS'})
+                        this.$emit('close')
+                    })
+                this.getData()
+            },
             handleDelete(record) {
-                api.deleteManager(record.id)
+                api.deleteProducing(record.id)
                     .then(data => {
                         this.$notification.success({message: '成功', description: '删除成功', key: 'SUCCESS'})
                     })
+                this.getData()
             },
         }
     }

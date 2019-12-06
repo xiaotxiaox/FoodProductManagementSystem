@@ -12,20 +12,40 @@
       :form="form">
       <a-form-item
         label="员工编号"
+        v-if="isEdit"
+        :label-col="{span: 8}"
+        :wrapper-col="{span: 12}"
+        v-bind="layout">
+        <a-input
+          type="number"
+          disabled
+          v-decorator="[
+            'id',
+            {
+              rules:[
+                { required: true, message: '请输入员工编号' }
+              ],
+              validateTrigger: 'blur',
+              initialValue: record ? record.id: null
+            }
+          ]">
+        </a-input>
+      </a-form-item>
+      <a-form-item
+        label="员工姓名"
         :label-col="{span: 8}"
         :wrapper-col="{span: 12}"
         v-bind="layout">
         <a-input
           type="text"
           v-decorator="[
-            'id',
+            'name',
             {
               rules:[
-                { required: true, message: '请输入订单编号' },
-                { max:16, message: '长度在16个汉字以内' }
+                { required: true, message: '请输入员工编号' }
               ],
               validateTrigger: 'blur',
-              initialValue: record ? record.id: null
+              initialValue: record ? record.name: null
             }
           ]">
         </a-input>
@@ -69,9 +89,9 @@
         <a-date-picker
           style="width:100%"
           v-decorator="[
-                'order_date',
+                'timein',
                 {rules: [{ type: 'object', required: true, message: '请输入入职时间' }],
-                 initialValue: isEdit ? record.starting_date : null}
+                 initialValue: isEdit ? record.timein : null}
               ]">
         </a-date-picker>
       </a-form-item>
@@ -82,13 +102,10 @@
           type="number"
           addonAfter="元/月"
           v-decorator="[
-            'item_num',
+            'pay',
             {
-              rules: [
-                { max:32, message: '长度在32个汉字以内' }
-              ],
               validateTrigger: 'blur',
-              initialValue: record ? record.item_num : null
+              initialValue: record ? record.pay : null
             }
           ]">
         </a-input>
@@ -101,33 +118,15 @@
           autocomplete="true"
           placeholder="13812341234"
           v-decorator="[
-                            'customer_telephone',
+                            'phone',
                             {rules: [
                                     {required: true, message: '请输入联系电话'},
                                     {pattern:/^[1][3,4,5,7,8][0-9]{9}$/, message: '联系电话格式错误'}
                                     ],
                             validateTrigger: 'blur',
-                            initialValue: record ? record.customer_telephone : null}
+                            initialValue: record ? record.phone : null}
                             ]">
         </a-input>
-      </a-form-item>
-      <a-form-item
-        label="处理人"
-        v-bind="layout">
-        <a-select
-          placeholder="请选择处理人"
-          v-decorator="[
-                'staff',
-                {rules:[{required: true, message: '请选择处理人'}],
-                initialValue: record ? record.staff : null}
-              ]">
-          <a-select-option
-            v-for="item in typeList"
-            :key="item.value"
-            :value="item.value">
-            {{ item.label }}
-          </a-select-option>
-        </a-select>
       </a-form-item>
     </a-form>
   </a-modal>
@@ -135,6 +134,7 @@
 
 <script>
     import api from '../../../api/staff'
+    import moment from 'moment'
     import {mapGetters} from 'vuex'
 
     export default {
@@ -156,12 +156,21 @@
             }
         },
         mounted() {
+            this.getData();
         },
         methods: {
-            ...mapGetters(['projectSelected']),
+            getData() {
+                if (this.isEdit) {
+                    if (this.record.timein !== null) {
+                        this.record.timein = new moment(this.record.timein)
+                    }
+                }
+            },
             handleOk() {
                 this.form.validateFields((error, data) => {
                     if (!error) {
+                        console.log(data)
+                        data.timein = data.timein.format('YYYY-MM-DD')
                         if (this.isEdit) {
                             api.updateServicer(this.record.id, data)
                                 .then(data => {

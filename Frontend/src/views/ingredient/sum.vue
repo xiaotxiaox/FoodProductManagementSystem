@@ -1,14 +1,14 @@
 <template>
   <div>
-    <manager-modal
+    <sum-modal
       :record="modal.record"
       :visible="modal.visible"
       :type="modal.type"
       :id="modal.id"
       v-if="modal.visible"
       @close="handleClose()">
-    </manager-modal>
-    <a-card style="margin-bottom: 16px" title="管理者信息表">
+    </sum-modal>
+    <a-card style="margin-bottom: 16px" title="原料表">
       <a-row>
         <a-col
           class="item"
@@ -28,9 +28,8 @@
       <a-table
         bordered
         :columns="columns"
-        :dataSource="staffList"
-        :scroll="{ x: 1300 }"
-        rowKey="customer_id"
+        :dataSource="sumList"
+        rowKey="id"
         :pagination="false">
         <template slot="operation" slot-scope="text, record, index">
           <a-button @click="handleEdit(record)">编辑</a-button>
@@ -47,82 +46,36 @@
 </template>
 
 <script>
-    import ManagerModal from './components/ManagerModal'
-    import api from '../../api/staff'
-    import moment from 'moment'
+    import SumModal from './components/SumModal'
+    import api from '../../api/ingredient'
     import {mapGetters} from 'vuex'
-
-
     const columns = [
         {
-            title: '管理者编号',
+            title: '商品编号',
             dataIndex: 'id',
             width: '20%',
             align: 'center'
-        }, {
-            title: '姓名',
+        },
+        {
+            title: '商品名称',
             dataIndex: 'name',
             width: '20%',
             align: 'center'
-        }, {
-            title: '性别',
-            dataIndex: 'gender',
+        },{
+            title: '供货商',
+            dataIndex: 'purchaser',
             width: '20%',
-            align: 'center',
-            customRender: (text, record) => {
-                if (record.gender === 1)
-                    return '男'
-                else if (record.gender === 2)
-                    return '女'
-            },
+            align: 'center'
         }, {
-            title: '工作部门',
-            dataIndex: 'department',
-            width: '10%',
-            align: 'center',
-            customRender: (text, record) => {
-                if (record.department === 1)
-                    return "销售部"
-                else if (record.department === 2)
-                    return '财务部'
-                else if (record.department === 3)
-                    return '成品库部门'
-                else if (record.department === 4)
-                    return '生产计划科'
-                else if (record.department === 5)
-                    return '生产车间部门'
-                else if (record.department === 6)
-                    return '原材料库'
-                else if (record.department === 7)
-                    return '人事部'
-            }
-        },
-        {
-            title: '职位',
-            dataIndex: 'position',
-            width: '10%',
+            title: '商品单价',
+            dataIndex: 'price',
+            width: '30%',
             align: 'center'
         },
         {
-            title: '入职时间',
-            dataIndex: 'timein',
+            title: '计量单位',
+            dataIndex: 'unit',
             width: '10%',
-            align: 'center'
-        }, {
-            title: '工资',
-            dataIndex: 'pay',
-            width: '10%',
-            align: 'center'
-        }, {
-            title: '电话号码',
-            dataIndex: 'phone',
-            width: '20%',
-            align: 'center'
-        },
-        {
-            title: '处理人',
-            dataIndex: 'user.name',
-            width: '20%',
             align: 'center'
         },
         {
@@ -133,9 +86,9 @@
         }
     ]
     export default {
-        name: "manager",
+        name: "sum",
         components: {
-            ManagerModal
+            SumModal
         },
         props: {
             id: Number
@@ -153,23 +106,20 @@
                     id: this.id
                 },
                 columns,
-                staffList: [],
+                sumList:[],
             }
         },
-        mounted() {
+        mounted(){
             this.getData()
         },
         methods: {
             ...mapGetters(['projectSelected']),
-            getData() {
-                api.getManagerList()
+            getData(){
+                api.getSumList()
                     .then(data => {
                         console.log(data)
-                        data.timein = new moment(data.timein)
-                        console.log(data)
-                        this.staffList = data
+                        this.sumList = data
                         this.status.listLoading = false
-                        console.log(1)
                     })
             },
             handleClose() {
@@ -189,10 +139,11 @@
                 this.modal.visible = true
             },
             handleDelete(record) {
-                api.deleteManager(record.id)
+                api.deleteSum(record.id)
                     .then(data => {
                         this.$notification.success({message: '成功', description: '删除成功', key: 'SUCCESS'})
                     })
+                this.getData()
             },
         }
     }

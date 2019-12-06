@@ -17,20 +17,26 @@ export const asyncRouterMap = [
         path: '/sale',
         name: 'sale',
         // component: () => import(/* webpackChunkName: "project" */ '../views/project/Project'),
-        component: RouteView,
+        component: PageView,
         meta: {title: '销售部', icon: 'customer-service', permission: ['sale']},
         children: [
           {
-            path: '/customerInfo',
-            name: 'customerInfo',
-            component: () => import(/* webpackChunkName: "Implement" */ '../views/sale/customerInfo'),
-            meta: {title: '客户信息管理'}
+            path: '/product',
+            name: 'product',
+            component: () => import(/* webpackChunkName: "Implement" */ '../views/sale/product'),
+            meta: {title: '商品展示'}
           },
           {
             path: '/salePolicy',
             name: 'salePolicy',
             component: () => import(/* webpackChunkName: "Implement" */ '../views/sale/salePolicy'),
             meta: {title: '销售政策管理'}
+          },
+          {
+            path: '/customerInfo',
+            name: 'customerInfo',
+            component: () => import(/* webpackChunkName: "Implement" */ '../views/sale/customerInfo'),
+            meta: {title: '客户信息管理'}
           },
           {
             path: '/order',
@@ -49,7 +55,7 @@ export const asyncRouterMap = [
       {
         path: '/finance',
         name: 'finance',
-        component: RouteView,
+        component: PageView,
         // component: () => import(/* webpackChunkName: "project" */ '../views/project/Project'),
         meta: {title: '财务部', icon: 'pay-circle', permission: ['sale']},
         children: [
@@ -80,9 +86,9 @@ export const asyncRouterMap = [
         ]
       },
       {
-        path: '3',
-        name: '3',
-        component: RouteView,
+        path: '/finish',
+        name: 'finish',
+        component: PageView,
         meta: {title: '成品库部门', icon: 'home', permission: ['sale']},
         children: [
           {
@@ -94,22 +100,78 @@ export const asyncRouterMap = [
         ]
       },
       {
-        path: '4',
-        name: '4',
-        // component: () => import(/* webpackChunkName: "project" */ '../views/project/Project'),
-        meta: {title: '生产计划科', icon: 'calendar', permission: ['sale']}
+        path: '/plan',
+        name: 'plan',
+        component: PageView,
+        meta: {title: '生产计划科', icon: 'calendar', permission: ['sale']},
+        children: [
+          {
+            path: '/productIngredient',
+            name: 'productIngredient',
+            component: () => import(/* webpackChunkName: "Implement" */ '../views/plan/product'),
+            meta: {title: '商品原料管理'}
+          },
+          {
+            path: '/productIngredientEdit/:id',
+            name: 'productIngredientEdit',
+            prop:true,
+            hidden:true,
+            component: () => import(/* webpackChunkName: "Implement" */ '../views/plan/productIngredientEdit'),
+            meta: {title: '配料管理'}
+          }
+        ]
       },
       {
-        path: '5',
-        name: '5',
-        // component: () => import(/* webpackChunkName: "project" */ '../views/project/Project'),
-        meta: {title: '生产车间部门', icon: 'shop', permission: ['sale']}
+        path: '/produceDepartment',
+        name: 'produceDepartment',
+        component: PageView,
+        meta: {title: '生产车间部门', icon: 'shop', permission: ['sale']},
+        children: [
+          {
+            path: '/factory',
+            name: 'factory',
+            component: () => import(/* webpackChunkName: "Implement" */ '../views/produceDepartment/factory'),
+            meta: {title: '工厂管理'}
+          },
+          {
+            path: '/department',
+            name: 'department',
+            component: () => import(/* webpackChunkName: "Implement" */ '../views/produceDepartment/department'),
+            meta: {title: '车间管理'}
+          },
+          {
+            path: '/team',
+            name: 'team',
+            component: () => import(/* webpackChunkName: "Implement" */ '../views/produceDepartment/team'),
+            meta: {title: '班组管理'}
+          },
+          {
+            path: '/producing',
+            name: 'producing',
+            component: () => import(/* webpackChunkName: "Implement" */ '../views/produceDepartment/producing'),
+            meta: {title: '生产管理'}
+          },
+        ]
       },
       {
-        path: '6',
-        name: '6',
-        // component: () => import(/* webpackChunkName: "project" */ '../views/project/Project'),
-        meta: {title: '原材料库', icon: 'shopping-cart', permission: ['sale']}
+        path: '/ingredient',
+        name: 'ingredient',
+        component: PageView,
+        meta: {title: '原材料库', icon: 'shopping-cart', permission: ['sale']},
+        children: [
+          {
+            path: '/sum',
+            name: 'sum',
+            component: () => import(/* webpackChunkName: "Implement" */ '../views/ingredient/sum'),
+            meta: {title: '原材料总表'}
+          },
+          {
+            path: '/ingredientInventory',
+            name: 'ingredientInventory',
+            component: () => import(/* webpackChunkName: "Implement" */ '../views/ingredient/ingredientInventory'),
+            meta: {title: '原材料库存表'}
+          },
+        ]
       },
       {
         path: '/staff',
@@ -154,7 +216,7 @@ export const asyncRouterMap = [
             path: '',
             name: 'detail',
             component: () => import(/* webpackChunkName: "detail" */ '../views/detail/Detail'),
-            meta: {title: '项目概况'},
+            meta: {title: '订单详情'},
 
           },
           {

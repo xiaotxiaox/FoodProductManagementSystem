@@ -1,14 +1,14 @@
 <template>
   <div>
-    <manager-modal
+    <in-modal
       :record="modal.record"
       :visible="modal.visible"
       :type="modal.type"
       :id="modal.id"
       v-if="modal.visible"
       @close="handleClose()">
-    </manager-modal>
-    <a-card style="margin-bottom: 16px" title="管理者信息表">
+    </in-modal>
+    <a-card style="margin-bottom: 16px" title="原料入库表">
       <a-row>
         <a-col
           class="item"
@@ -28,7 +28,7 @@
       <a-table
         bordered
         :columns="columns"
-        :dataSource="staffList"
+        :dataSource="inList"
         :scroll="{ x: 1300 }"
         rowKey="customer_id"
         :pagination="false">
@@ -47,20 +47,19 @@
 </template>
 
 <script>
-    import ManagerModal from './components/ManagerModal'
-    import api from '../../api/staff'
+    import InModal from './components/InModal'
+    import api from '../../api/ingredient'
     import moment from 'moment'
     import {mapGetters} from 'vuex'
 
-
     const columns = [
         {
-            title: '管理者编号',
+            title: '入库编号',
             dataIndex: 'id',
             width: '20%',
             align: 'center'
         }, {
-            title: '姓名',
+            title: '商品名称',
             dataIndex: 'name',
             width: '20%',
             align: 'center'
@@ -95,13 +94,7 @@
                     return '原材料库'
                 else if (record.department === 7)
                     return '人事部'
-            }
-        },
-        {
-            title: '职位',
-            dataIndex: 'position',
-            width: '10%',
-            align: 'center'
+            },
         },
         {
             title: '入职时间',
@@ -133,9 +126,9 @@
         }
     ]
     export default {
-        name: "manager",
+        name: "servicer",
         components: {
-            ManagerModal
+            ServicerModal
         },
         props: {
             id: Number
@@ -162,7 +155,7 @@
         methods: {
             ...mapGetters(['projectSelected']),
             getData() {
-                api.getManagerList()
+                api.getServicerList()
                     .then(data => {
                         console.log(data)
                         data.timein = new moment(data.timein)
@@ -173,6 +166,7 @@
                     })
             },
             handleClose() {
+
                 this.modal.type = ''
                 this.modal.record = null
                 this.modal.visible = false
@@ -189,7 +183,7 @@
                 this.modal.visible = true
             },
             handleDelete(record) {
-                api.deleteManager(record.id)
+                api.deleteServicer(record.id)
                     .then(data => {
                         this.$notification.success({message: '成功', description: '删除成功', key: 'SUCCESS'})
                     })

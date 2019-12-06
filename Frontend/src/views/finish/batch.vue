@@ -4,7 +4,7 @@
       :record="modal.record"
       :visible="modal.visible"
       :type="modal.type"
-      :batch_id="modal.batch_id"
+      :id="modal.id"
       v-if="modal.visible"
       @close="handleClose()">
     </batch-modal>
@@ -64,40 +64,41 @@
 <script>
     import echarts from 'echarts'
     import BatchModal from './components/BatchModal'
-    import api from '../../api/sale'
+    import api from '../../api/finish'
+    import moment from 'moment'
     import {mapGetters} from 'vuex'
 
     const columns = [
         {
             title: '批次编号',
-            dataIndex: 'order_id',
+            dataIndex: 'id',
             width: '20%',
             align: 'center'
         }, {
             title: '商品名称',
-            dataIndex: 'customer_name',
+            dataIndex: 'goodsname',
             width: '10%',
             align: 'center'
         },
         {
             title: '商品数量',
-            dataIndex: 'item_name.label',
+            dataIndex: 'goodsnum',
             width: '10%',
             align: 'center'
         }, {
             title: '成品时间',
-            dataIndex: 'item_num',
+            dataIndex: 'timefinish',
             width: '10%',
             align: 'center'
         }, {
             title: '保质期',
-            dataIndex: 'order_date',
+            dataIndex: 'timeprotect',
             width: '20%',
             align: 'center'
         },
         {
             title: '处理人',
-            dataIndex: 'staff',
+            dataIndex: 'user.name',
             width: '20%',
             align: 'center'
         },
@@ -106,12 +107,6 @@
             dataIndex: 'operation',
             align: 'center',
             scopedSlots: {customRender: 'operation'}
-        }
-    ]
-    const batchList = [
-        {
-            batch_id: '123',
-            customer_name: '123'
         }
     ]
     export default {
@@ -194,10 +189,10 @@
                     record: null,
                     visible: false,
                     type: '1',
-                    batch_id: this.id
+                    id: this.id
                 },
                 columns,
-                batchList,
+                batchList:[],
                 // project_id: this.projectSelected().id
             }
         },
@@ -205,19 +200,18 @@
             this.chart1 = echarts.init(document.getElementById('echartContainer'))
             this.chart1.setOption(this.option1, true)
             window.onresize = this.chart1.resize
-            //this.getData(),
+            this.getData(),
             this.$nextTick(function () {
                 this.drawPie('main')
             })
         },
         methods: {
-            ...mapGetters(['projectSelected']),
             getData() {
-                api.getCustomerInfoList(this.project_id)
+                api.getBatchList(this.project_id)
                     .then(data => {
-                        data.order_date = new moment(data.order_date)
-                        data.get_date = new moment(data.get_date)
-                        this.orderList = data
+                        data.timefinish = new moment(data.timefinish)
+                        console.log(data)
+                        this.batchList = data
                         this.status.listLoading = false
                     })
                 api.getQualityList(this.project_id)

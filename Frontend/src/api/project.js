@@ -10,8 +10,11 @@ export default {
   createProject (project) {
     return fetchAPI('project/', 'post', project)
   },
+  // getProject (params,id) {
+  //   return fetchAPI(`sale/order/one/`, 'get', null, params:id)
+  // },
   getProject (id) {
-    return fetchAPI(`project/${id}/`, 'get')
+    return fetchAPI('sale/order/one/', 'get', null, { id })
   },
   updateProject (project) {
     return fetchAPI(`project/${project.id}/`, 'put', project)
