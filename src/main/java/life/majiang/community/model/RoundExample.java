@@ -503,6 +503,126 @@ public class RoundExample {
             addCriterion("production_plan not between", value1, value2, "productionPlan");
             return (Criteria) this;
         }
+
+        public Criteria andTeamIsNull() {
+            addCriterion("team is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTeamIsNotNull() {
+            addCriterion("team is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTeamEqualTo(Integer value) {
+            addCriterion("team =", value, "team");
+            return (Criteria) this;
+        }
+
+        public Criteria andTeamNotEqualTo(Integer value) {
+            addCriterion("team <>", value, "team");
+            return (Criteria) this;
+        }
+
+        public Criteria andTeamGreaterThan(Integer value) {
+            addCriterion("team >", value, "team");
+            return (Criteria) this;
+        }
+
+        public Criteria andTeamGreaterThanOrEqualTo(Integer value) {
+            addCriterion("team >=", value, "team");
+            return (Criteria) this;
+        }
+
+        public Criteria andTeamLessThan(Integer value) {
+            addCriterion("team <", value, "team");
+            return (Criteria) this;
+        }
+
+        public Criteria andTeamLessThanOrEqualTo(Integer value) {
+            addCriterion("team <=", value, "team");
+            return (Criteria) this;
+        }
+
+        public Criteria andTeamIn(List<Integer> values) {
+            addCriterion("team in", values, "team");
+            return (Criteria) this;
+        }
+
+        public Criteria andTeamNotIn(List<Integer> values) {
+            addCriterion("team not in", values, "team");
+            return (Criteria) this;
+        }
+
+        public Criteria andTeamBetween(Integer value1, Integer value2) {
+            addCriterion("team between", value1, value2, "team");
+            return (Criteria) this;
+        }
+
+        public Criteria andTeamNotBetween(Integer value1, Integer value2) {
+            addCriterion("team not between", value1, value2, "team");
+            return (Criteria) this;
+        }
+
+        public Criteria andHandlerIsNull() {
+            addCriterion("handler is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHandlerIsNotNull() {
+            addCriterion("handler is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHandlerEqualTo(Integer value) {
+            addCriterion("handler =", value, "handler");
+            return (Criteria) this;
+        }
+
+        public Criteria andHandlerNotEqualTo(Integer value) {
+            addCriterion("handler <>", value, "handler");
+            return (Criteria) this;
+        }
+
+        public Criteria andHandlerGreaterThan(Integer value) {
+            addCriterion("handler >", value, "handler");
+            return (Criteria) this;
+        }
+
+        public Criteria andHandlerGreaterThanOrEqualTo(Integer value) {
+            addCriterion("handler >=", value, "handler");
+            return (Criteria) this;
+        }
+
+        public Criteria andHandlerLessThan(Integer value) {
+            addCriterion("handler <", value, "handler");
+            return (Criteria) this;
+        }
+
+        public Criteria andHandlerLessThanOrEqualTo(Integer value) {
+            addCriterion("handler <=", value, "handler");
+            return (Criteria) this;
+        }
+
+        public Criteria andHandlerIn(List<Integer> values) {
+            addCriterion("handler in", values, "handler");
+            return (Criteria) this;
+        }
+
+        public Criteria andHandlerNotIn(List<Integer> values) {
+            addCriterion("handler not in", values, "handler");
+            return (Criteria) this;
+        }
+
+        public Criteria andHandlerBetween(Integer value1, Integer value2) {
+            addCriterion("handler between", value1, value2, "handler");
+            return (Criteria) this;
+        }
+
+        public Criteria andHandlerNotBetween(Integer value1, Integer value2) {
+            addCriterion("handler not between", value1, value2, "handler");
+            return (Criteria) this;
+        }
     }
 
     /**

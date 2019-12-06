@@ -704,66 +704,6 @@ public class MaterialExample {
             return (Criteria) this;
         }
 
-        public Criteria andTotalPriceIsNull() {
-            addCriterion("total_price is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTotalPriceIsNotNull() {
-            addCriterion("total_price is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTotalPriceEqualTo(Integer value) {
-            addCriterion("total_price =", value, "totalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andTotalPriceNotEqualTo(Integer value) {
-            addCriterion("total_price <>", value, "totalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andTotalPriceGreaterThan(Integer value) {
-            addCriterion("total_price >", value, "totalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andTotalPriceGreaterThanOrEqualTo(Integer value) {
-            addCriterion("total_price >=", value, "totalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andTotalPriceLessThan(Integer value) {
-            addCriterion("total_price <", value, "totalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andTotalPriceLessThanOrEqualTo(Integer value) {
-            addCriterion("total_price <=", value, "totalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andTotalPriceIn(List<Integer> values) {
-            addCriterion("total_price in", values, "totalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andTotalPriceNotIn(List<Integer> values) {
-            addCriterion("total_price not in", values, "totalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andTotalPriceBetween(Integer value1, Integer value2) {
-            addCriterion("total_price between", value1, value2, "totalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andTotalPriceNotBetween(Integer value1, Integer value2) {
-            addCriterion("total_price not between", value1, value2, "totalPrice");
-            return (Criteria) this;
-        }
-
         public Criteria andPurchaserIsNull() {
             addCriterion("purchaser is null");
             return (Criteria) this;
@@ -831,6 +771,66 @@ public class MaterialExample {
 
         public Criteria andPurchaserNotBetween(String value1, String value2) {
             addCriterion("purchaser not between", value1, value2, "purchaser");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalPriceIsNull() {
+            addCriterion("total_price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalPriceIsNotNull() {
+            addCriterion("total_price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalPriceEqualTo(Integer value) {
+            addCriterion("total_price =", value, "totalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalPriceNotEqualTo(Integer value) {
+            addCriterion("total_price <>", value, "totalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalPriceGreaterThan(Integer value) {
+            addCriterion("total_price >", value, "totalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalPriceGreaterThanOrEqualTo(Integer value) {
+            addCriterion("total_price >=", value, "totalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalPriceLessThan(Integer value) {
+            addCriterion("total_price <", value, "totalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalPriceLessThanOrEqualTo(Integer value) {
+            addCriterion("total_price <=", value, "totalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalPriceIn(List<Integer> values) {
+            addCriterion("total_price in", values, "totalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalPriceNotIn(List<Integer> values) {
+            addCriterion("total_price not in", values, "totalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalPriceBetween(Integer value1, Integer value2) {
+            addCriterion("total_price between", value1, value2, "totalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalPriceNotBetween(Integer value1, Integer value2) {
+            addCriterion("total_price not between", value1, value2, "totalPrice");
             return (Criteria) this;
         }
     }
