@@ -64,7 +64,7 @@ public class FinanceStatisticController {
         List<Order> orders = orderMapper.selectByExample(example3);
         for (Order order : orders) {
             //计算订单收入，（有结款日期的才算，为支付金额的累计）
-            if(order.getPaidMoney()!=null || order.getFinalDate()!=null) {
+            if(order.getPaidMoney()!=null && order.getFinalDate()!=null) {
                 String[] temp = order.getFinalDate().split("-");
                 int month = Integer.parseInt(temp[1]);
                 if(month>=1 && month<=12) {
@@ -73,7 +73,7 @@ public class FinanceStatisticController {
                 }
             }
             //退款花费,(退款日期不为空，++退款金额)
-            if(order.getBackDate()!=null || order.getBackMoney()!=null) {
+            if(order.getBackDate()!=null && order.getBackMoney()!=null) {
                 String[] temp2 = order.getBackDate().split("-");
                 int month = Integer.parseInt(temp2[1]);
                 if(month>=1 && month<=12) {
