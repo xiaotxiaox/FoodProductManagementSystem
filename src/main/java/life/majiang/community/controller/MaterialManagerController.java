@@ -19,7 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -60,15 +62,13 @@ public class MaterialManagerController {
         if (user == null) {
             return ResultDTO.errorOf(CustomizeErrorCode.NO_LOGIN);
         }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date d = new Date();
+        String dateNowStr = sdf.format(d);//获取保质期
         material.setPerson(user.getId());
-        material.setTotalPrice(material.getPrice() * material.getNum());
+        material.setTimeApply(dateNowStr);
+        material.setTotalPrice(materialtotalMapper.selectByPrimaryKey(material.getMaterialid()).getPrice() * material.getNum());
         materialMapper.insert(material);
-        Inventory inventory=new Inventory();
-        inventory.setName(material.getName());
-        inventory.setNum(material.getNum());
-        inventory.setTimeprotect(material.getTimeprotect());
-        inventory.setMaterialid(material.getMaterialid());
-        inventorymapper.insert(inventory);
         return CommonResult.success("创建成功！");
     }
 
@@ -86,6 +86,18 @@ public class MaterialManagerController {
         example.createCriteria()
                 .andIdEqualTo(id);
         materialMapper.updateByExampleSelective(material, example);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date d = new Date();
+        String dateNowStr = sdf.format(d);//获取保质期
+        Material material1 = materialMapper.selectByPrimaryKey(id);
+        if (material1.getTimeHandle() == dateNowStr) {
+            Inventory inventory = new Inventory();
+            inventory.setName(material.getName());
+            inventory.setNum(material.getNum());
+            inventory.setTimeprotect(material.getTimeprotect());
+            inventory.setMaterialid(material.getMaterialid());
+            inventorymapper.insert(inventory);
+        }
         return material;
     }
 

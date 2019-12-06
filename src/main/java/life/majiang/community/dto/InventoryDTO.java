@@ -8,4 +8,5 @@ public class InventoryDTO {
     private String name;
     private Integer num;
     private String timeprotect;
+    private Integer materialid;
 }
