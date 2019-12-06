@@ -90,7 +90,7 @@ public class MaterialManagerController {
         Date d = new Date();
         String dateNowStr = sdf.format(d);//获取保质期
         Material material1 = materialMapper.selectByPrimaryKey(id);
-        if (material1.getTimeHandle() == dateNowStr) {
+        if (material1.getTimeHandle().equals(dateNowStr)) {
             Inventory inventory = new Inventory();
             inventory.setName(material.getName());
             inventory.setNum(material.getNum());
