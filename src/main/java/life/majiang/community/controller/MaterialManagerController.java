@@ -1,12 +1,15 @@
 package life.majiang.community.controller;
 
+import io.swagger.oas.models.security.SecurityScheme;
 import life.majiang.api.CommonResult;
 import life.majiang.community.dto.MaterialDTO;
 import life.majiang.community.dto.ResultDTO;
 import life.majiang.community.dto.StateDTO;
 import life.majiang.community.exception.CustomizeErrorCode;
+import life.majiang.community.mapper.InventoryMapper;
 import life.majiang.community.mapper.MaterialMapper;
 import life.majiang.community.mapper.UserMapper;
+import life.majiang.community.model.Inventory;
 import life.majiang.community.model.Material;
 import life.majiang.community.model.MaterialExample;
 import life.majiang.community.model.User;
@@ -25,6 +28,9 @@ public class MaterialManagerController {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private InventoryMapper inventorymapper;
 
     @RequestMapping(value = "/api/material", method = RequestMethod.GET)
     public List<MaterialDTO> get() {
@@ -52,6 +58,11 @@ public class MaterialManagerController {
         material.setPerson(user.getId());
         material.setTotalPrice(material.getPrice() * material.getNum());
         materialMapper.insert(material);
+        Inventory inventory=new Inventory();
+        inventory.setName(material.getName());
+        inventory.setNum(material.getNum());
+        inventory.setTimeprotect(material.getTimeprotect());
+        inventorymapper.insert(inventory);
         return CommonResult.success("创建成功！");
     }
 

@@ -13,6 +13,7 @@ public class MaterialDTO {
     private int person;
     private String time_apply;
     private String time_handle;
+    private String timeprotect;
     private User user;
 
 }

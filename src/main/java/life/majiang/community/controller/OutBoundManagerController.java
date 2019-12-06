@@ -1,16 +1,15 @@
 package life.majiang.community.controller;
 
+import io.swagger.oas.models.security.SecurityScheme;
 import life.majiang.api.CommonResult;
 import life.majiang.community.dto.OutBoundDTO;
 import life.majiang.community.dto.ResultDTO;
 import life.majiang.community.exception.CustomizeErrorCode;
+import life.majiang.community.mapper.InventoryMapper;
 import life.majiang.community.mapper.MaterialtotalMapper;
 import life.majiang.community.mapper.OutboundMapper;
 import life.majiang.community.mapper.UserMapper;
-import life.majiang.community.model.Materialtotal;
-import life.majiang.community.model.Outbound;
-import life.majiang.community.model.OutboundExample;
-import life.majiang.community.model.User;
+import life.majiang.community.model.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +24,9 @@ public class OutBoundManagerController {
 
     @Autowired
     private MaterialtotalMapper materialtotalmapper;
+
+    @Autowired
+    private InventoryMapper inventorymapper;
 
     @RequestMapping(value = "/api/outbound", method = RequestMethod.GET)
     public List<OutBoundDTO> get() {
@@ -48,6 +50,13 @@ public class OutBoundManagerController {
         if (user == null) {
             return ResultDTO.errorOf(CustomizeErrorCode.NO_LOGIN);
         }
+        InventoryExample example = new InventoryExample();
+        example.createCriteria().andIdEqualTo(outbound.getMaterialid());
+        List<Inventory> inventorys=inventorymapper.selectByExample(example);
+        if (inventorys.size()==0){
+
+        }
+
         outboundmapper.insert(outbound);
         return CommonResult.success("创建成功！");
     }

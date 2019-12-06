@@ -893,6 +893,76 @@ public class MaterialExample {
             addCriterion("materialid not between", value1, value2, "materialid");
             return (Criteria) this;
         }
+
+        public Criteria andTimeprotectIsNull() {
+            addCriterion("timeprotect is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeprotectIsNotNull() {
+            addCriterion("timeprotect is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeprotectEqualTo(String value) {
+            addCriterion("timeprotect =", value, "timeprotect");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeprotectNotEqualTo(String value) {
+            addCriterion("timeprotect <>", value, "timeprotect");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeprotectGreaterThan(String value) {
+            addCriterion("timeprotect >", value, "timeprotect");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeprotectGreaterThanOrEqualTo(String value) {
+            addCriterion("timeprotect >=", value, "timeprotect");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeprotectLessThan(String value) {
+            addCriterion("timeprotect <", value, "timeprotect");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeprotectLessThanOrEqualTo(String value) {
+            addCriterion("timeprotect <=", value, "timeprotect");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeprotectLike(String value) {
+            addCriterion("timeprotect like", value, "timeprotect");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeprotectNotLike(String value) {
+            addCriterion("timeprotect not like", value, "timeprotect");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeprotectIn(List<String> values) {
+            addCriterion("timeprotect in", values, "timeprotect");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeprotectNotIn(List<String> values) {
+            addCriterion("timeprotect not in", values, "timeprotect");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeprotectBetween(String value1, String value2) {
+            addCriterion("timeprotect between", value1, value2, "timeprotect");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeprotectNotBetween(String value1, String value2) {
+            addCriterion("timeprotect not between", value1, value2, "timeprotect");
+            return (Criteria) this;
+        }
     }
 
     /**
