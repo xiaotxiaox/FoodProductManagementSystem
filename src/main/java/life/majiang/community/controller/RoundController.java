@@ -37,6 +37,12 @@ public class RoundController {
     @Autowired
     private GoodsMapper goodsMapper;
 
+    @Autowired
+    private Good_materialMapper good_materialMapper;
+
+    @Autowired
+    private RoundMaterialMapper roundMaterialMapper;
+
     @RequestMapping(value = "/api/workshop/round",method = RequestMethod.GET)
     public List<RoundDTO> get(HttpServletRequest request){
         RoundExample example = new RoundExample();
@@ -71,6 +77,23 @@ public class RoundController {
         }
         round.setHandler(user.getId());
         roundMapper.insert(round);
+
+        RoundMaterial roundMaterial = new RoundMaterial();
+        Integer id = round.getId();
+        Integer count = round.getCount();
+
+        Good_materialExample example = new Good_materialExample();
+        example.createCriteria().andGoodEqualTo(round.getGoods());
+        List<Good_material> good_materials = good_materialMapper.selectByExample(example);
+
+        for (Good_material good_material : good_materials) {
+            roundMaterial.setRound(id);
+            roundMaterial.setCount(good_material.getCount());
+            roundMaterial.setMaterial(good_material.getMaterial());
+            roundMaterial.setNote(good_material.getNote());
+            roundMaterialMapper.insert(roundMaterial);
+        }
+
         return null;
     }
 
