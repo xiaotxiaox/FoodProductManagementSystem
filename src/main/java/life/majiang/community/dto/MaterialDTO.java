@@ -9,13 +9,13 @@ public class MaterialDTO {
     private Integer id;
     private String name;
     private Integer num;
+    private String timeApply;
+    private String timeHandle;
     private Integer state;
     private Integer person;
-    private Integer total_price;
-    private String time_apply;
-    private String time_handle;//进货日期
-    private String timeprotect;
+    private Integer totalPrice;
     private Integer materialid;
+    private String timeprotect;
     private Materialtotal materialtotal;
     private User user;
 
