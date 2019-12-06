@@ -53,9 +53,14 @@ public class OutBoundManagerController {
         InventoryExample example = new InventoryExample();
         example.createCriteria().andIdEqualTo(outbound.getMaterialid());
         List<Inventory> inventorys=inventorymapper.selectByExample(example);
-        if (inventorys.size()==0){
 
+        for (Inventory inventory : inventorys) {
+//            MaterialDTO temp = new MaterialDTO();
+//            BeanUtils.copyProperties(material, temp);
+//            temp.setUser(userMapper.selectByPrimaryKey(material.getPerson()));
+//            materialDTO.add(temp);
         }
+
 
         outboundmapper.insert(outbound);
         return CommonResult.success("创建成功！");

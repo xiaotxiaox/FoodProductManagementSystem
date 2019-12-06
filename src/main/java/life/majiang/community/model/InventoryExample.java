@@ -453,6 +453,66 @@ public class InventoryExample {
             addCriterion("timeprotect not between", value1, value2, "timeprotect");
             return (Criteria) this;
         }
+
+        public Criteria andMaterialidIsNull() {
+            addCriterion("materialid is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaterialidIsNotNull() {
+            addCriterion("materialid is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaterialidEqualTo(Integer value) {
+            addCriterion("materialid =", value, "materialid");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaterialidNotEqualTo(Integer value) {
+            addCriterion("materialid <>", value, "materialid");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaterialidGreaterThan(Integer value) {
+            addCriterion("materialid >", value, "materialid");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaterialidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("materialid >=", value, "materialid");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaterialidLessThan(Integer value) {
+            addCriterion("materialid <", value, "materialid");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaterialidLessThanOrEqualTo(Integer value) {
+            addCriterion("materialid <=", value, "materialid");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaterialidIn(List<Integer> values) {
+            addCriterion("materialid in", values, "materialid");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaterialidNotIn(List<Integer> values) {
+            addCriterion("materialid not in", values, "materialid");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaterialidBetween(Integer value1, Integer value2) {
+            addCriterion("materialid between", value1, value2, "materialid");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaterialidNotBetween(Integer value1, Integer value2) {
+            addCriterion("materialid not between", value1, value2, "materialid");
+            return (Criteria) this;
+        }
     }
 
     /**

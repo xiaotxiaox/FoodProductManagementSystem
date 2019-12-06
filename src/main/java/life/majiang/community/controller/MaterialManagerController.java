@@ -62,6 +62,7 @@ public class MaterialManagerController {
         inventory.setName(material.getName());
         inventory.setNum(material.getNum());
         inventory.setTimeprotect(material.getTimeprotect());
+        inventory.setMaterialid(material.getMaterialid());
         inventorymapper.insert(inventory);
         return CommonResult.success("创建成功！");
     }
