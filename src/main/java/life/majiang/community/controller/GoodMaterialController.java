@@ -64,6 +64,7 @@ public class GoodMaterialController {
     public Object put(@RequestBody Good_material good_material,
                       @PathVariable(name = "id") int id,
                       HttpServletRequest request){
+        good_material.setGood(good_materialMapper.selectByPrimaryKey(good_material.getId()).getGood());
         good_materialMapper.updateByPrimaryKey(good_material);
         return good_material;
     }

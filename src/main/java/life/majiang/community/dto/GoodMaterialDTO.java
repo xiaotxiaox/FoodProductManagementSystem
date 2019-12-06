@@ -12,7 +12,6 @@ import lombok.Data;
 @Data
 public class GoodMaterialDTO {
     private Integer id;
-    private Goods good;
     private Materialtotal material;
     private Integer count;
     private String note;
