@@ -31,6 +31,21 @@ public class FinanceStatisticController {
     @Autowired
     private MaterialMapper materialMapper;
 
+    @RequestMapping(value = "/api/finance/statistic/sumUp",method = RequestMethod.GET)
+    public FinanceStatisticDTO sumUp() {
+        FinanceStatisticDTO result = new FinanceStatisticDTO();
+        List<FinanceStatisticDTO> financeStatisticDTOS = get();
+        for (FinanceStatisticDTO financeStatisticDTO : financeStatisticDTOS) {
+            result.setProfit(result.getProfit().add( financeStatisticDTO.getProfit()));
+            result.setTotal_outcome(result.getTotal_outcome().add( financeStatisticDTO.getTotal_outcome()));
+            result.setTotal_income(result.getTotal_income().add( financeStatisticDTO.getTotal_income()));
+            result.setBack_outcome(result.getBack_outcome().add( financeStatisticDTO.getBack_outcome()));
+            result.setSalary_outcome(result.getSalary_outcome() + financeStatisticDTO.getSalary_outcome());
+            result.setOrder_income(result.getOrder_income().add( financeStatisticDTO.getOrder_income()));
+            result.setPurchase_outcome(result.getPurchase_outcome().add( financeStatisticDTO.getPurchase_outcome()));
+        }
+        return result;
+    }
     @RequestMapping(value = "/api/finance/statistic",method = RequestMethod.GET)
     public List<FinanceStatisticDTO> get(){
         List<FinanceStatisticDTO> financeStatisticDTOS = new ArrayList<FinanceStatisticDTO>();
