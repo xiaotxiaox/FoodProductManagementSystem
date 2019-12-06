@@ -83,5 +83,8 @@
         <table tableName="round" domainObjectName="Round">
             <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
         </table>
+        <table tableName="materialtotal" domainObjectName="Materialtotal">
+            <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
+        </table>
     </context>
 </generatorConfiguration>

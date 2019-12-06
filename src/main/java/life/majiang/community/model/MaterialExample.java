@@ -763,6 +763,76 @@ public class MaterialExample {
             addCriterion("total_price not between", value1, value2, "totalPrice");
             return (Criteria) this;
         }
+
+        public Criteria andPurchaserIsNull() {
+            addCriterion("purchaser is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaserIsNotNull() {
+            addCriterion("purchaser is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaserEqualTo(String value) {
+            addCriterion("purchaser =", value, "purchaser");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaserNotEqualTo(String value) {
+            addCriterion("purchaser <>", value, "purchaser");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaserGreaterThan(String value) {
+            addCriterion("purchaser >", value, "purchaser");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaserGreaterThanOrEqualTo(String value) {
+            addCriterion("purchaser >=", value, "purchaser");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaserLessThan(String value) {
+            addCriterion("purchaser <", value, "purchaser");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaserLessThanOrEqualTo(String value) {
+            addCriterion("purchaser <=", value, "purchaser");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaserLike(String value) {
+            addCriterion("purchaser like", value, "purchaser");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaserNotLike(String value) {
+            addCriterion("purchaser not like", value, "purchaser");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaserIn(List<String> values) {
+            addCriterion("purchaser in", values, "purchaser");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaserNotIn(List<String> values) {
+            addCriterion("purchaser not in", values, "purchaser");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaserBetween(String value1, String value2) {
+            addCriterion("purchaser between", value1, value2, "purchaser");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaserNotBetween(String value1, String value2) {
+            addCriterion("purchaser not between", value1, value2, "purchaser");
+            return (Criteria) this;
+        }
     }
 
     /**
