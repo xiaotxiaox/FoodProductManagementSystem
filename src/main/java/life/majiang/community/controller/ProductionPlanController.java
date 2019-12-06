@@ -16,7 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -54,6 +56,10 @@ public class ProductionPlanController {
         if (user == null) {
             return ResultDTO.errorOf(CustomizeErrorCode.NO_LOGIN);
         }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date d = new Date();
+        String dateNowStr = sdf.format(d);
+        productionplan.setTimecreate(dateNowStr);
         productionplan.setPerson(user.getId());
         productionplanMapper.insert(productionplan);
         return CommonResult.success("创建成功！");

@@ -30,7 +30,7 @@ public class LoginController {
 
         if (users.get(0).getPassword().equals(loginDTO.getPassword())) {
             request.getSession().setAttribute("user", users.get(0));
-            return CommonResult.success("user");
+            return CommonResult.success("登陆成功");
         }
         else{
             return CommonResult.failed("密码错误");
