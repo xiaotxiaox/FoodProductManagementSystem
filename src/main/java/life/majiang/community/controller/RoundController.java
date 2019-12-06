@@ -43,6 +43,82 @@ public class RoundController {
     @Autowired
     private RoundMaterialMapper roundMaterialMapper;
 
+    @RequestMapping(value = "/api/workshop/round/productPlan",method = RequestMethod.GET)
+    public List<RoundDTO> getProductionPlan(@RequestParam(value = "id",required = false) Integer id,
+            HttpServletRequest request){
+        List<RoundDTO> roundDTOS= get(request);
+        List<RoundDTO> result = new ArrayList<RoundDTO>();
+        for (RoundDTO roundDTO : roundDTOS) {
+            if(roundDTO.getProductionPlan().getId()==id) result.add(roundDTO);
+        }
+        return  result;
+    }
+
+    @RequestMapping(value = "/api/workshop/round/productPlan",method = RequestMethod.POST)
+    public Object postProductionPlan(@RequestParam(value = "id",required = false) Integer id,
+                                     @RequestBody Round round,
+                                     HttpServletRequest request){
+        User user = (User) request.getSession().getAttribute("user");
+        if (user == null) {
+            return ResultDTO.errorOf(CustomizeErrorCode.NO_LOGIN);
+        }
+        round.setHandler(user.getId());
+        round.setProductionPlan(id);
+        roundMapper.insert(round);
+
+        RoundMaterial roundMaterial = new RoundMaterial();
+        Integer sid = round.getId();
+        Integer count = round.getCount();
+
+        Good_materialExample example = new Good_materialExample();
+        example.createCriteria().andGoodEqualTo(round.getGoods());
+        List<Good_material> good_materials = good_materialMapper.selectByExample(example);
+
+        for (Good_material good_material : good_materials) {
+            roundMaterial.setRound(sid);
+            roundMaterial.setCount(good_material.getCount());
+            roundMaterial.setMaterial(good_material.getMaterial());
+            roundMaterial.setNote(good_material.getNote());
+            roundMaterialMapper.insert(roundMaterial);
+        }
+
+        return CommonResult.success("创建成功！");
+    }
+
+
+
+    @ResponseBody
+    @RequestMapping(value = "/api/workshop/round/productPlan/{id}",method = RequestMethod.PUT)
+    public Object postProductionPlan(@RequestBody Round round,
+                      @PathVariable(name = "id") int id,
+                      HttpServletRequest request){
+        User user = (User) request.getSession().getAttribute("user");
+        if (user == null) {
+            return ResultDTO.errorOf(CustomizeErrorCode.NO_LOGIN);
+        }
+        round.setHandler(user.getId());
+        round.setProductionPlan(roundMapper.selectByPrimaryKey(round.getId()).getProductionPlan());
+        roundMapper.updateByPrimaryKey(round);
+        return round;
+    }
+
+    @RequestMapping(value = "/api/workshop/round/productPlan/{id}",method = RequestMethod.DELETE)
+    public Object deleteProductionPlan(@PathVariable(name = "id") int id){
+        roundMapper.deleteByPrimaryKey(id);
+        return CommonResult.success("删除成功！");
+    }
+
+    @RequestMapping(value = "/api/workshop/round/team",method = RequestMethod.GET)
+    public List<RoundDTO> getTeam(@RequestParam(value = "id",required = false) Integer id,
+                                            HttpServletRequest request){
+        List<RoundDTO> roundDTOS= get(request);
+        List<RoundDTO> result = new ArrayList<RoundDTO>();
+        for (RoundDTO roundDTO : roundDTOS) {
+            if(roundDTO.getTeam().getId()==id) result.add(roundDTO);
+        }
+        return  result;
+    }
+
     @RequestMapping(value = "/api/workshop/round",method = RequestMethod.GET)
     public List<RoundDTO> get(HttpServletRequest request){
         RoundExample example = new RoundExample();
