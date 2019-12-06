@@ -33,6 +33,16 @@ public class DepartmentController {
     @Autowired
     private FactoryMapper factoryMapper;
 
+    @RequestMapping(value = "/api/workshop/department/part",method = RequestMethod.GET)
+    public List<DepartmentDTO> getPart(@RequestParam(value = "id",required = false) Integer id){
+        List<DepartmentDTO> all = get();
+        if(id==null) return all;
+        List<DepartmentDTO> departmentDTOS = new ArrayList<DepartmentDTO>();
+        for (DepartmentDTO departmentDTO : all) {
+            if(departmentDTO.getFactory().getId()==id) departmentDTOS.add(departmentDTO);
+        }
+        return departmentDTOS;
+    }
     @RequestMapping(value = "/api/workshop/department",method = RequestMethod.GET)
     public List<DepartmentDTO> get(){
         DepartmentExample example = new DepartmentExample();
