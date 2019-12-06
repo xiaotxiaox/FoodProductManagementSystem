@@ -94,7 +94,7 @@ public class RoundController {
             roundMaterialMapper.insert(roundMaterial);
         }
 
-        return null;
+        return CommonResult.success("创建成功！");
     }
 
     @ResponseBody

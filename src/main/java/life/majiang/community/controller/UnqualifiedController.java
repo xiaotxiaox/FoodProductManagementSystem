@@ -61,7 +61,7 @@ public class UnqualifiedController {
         }
         unqualified.setHandler(user.getId());
         unqualifiedMapper.insert(unqualified);
-        return null;
+        return CommonResult.success("创建成功！");
     }
 
     @ResponseBody

@@ -1,5 +1,6 @@
 package life.majiang.community.controller;
 
+import life.majiang.api.CommonResult;
 import life.majiang.community.dto.CustomDTO;
 import life.majiang.community.dto.ResultDTO;
 import life.majiang.community.exception.CustomizeErrorCode;
@@ -57,7 +58,7 @@ public class SaleCustomController {
         }
         custom.setHandler(user.getId());
         customMapper.insert(custom);
-        return null;
+        return CommonResult.success("创建成功！");
     }
 
     @ResponseBody
@@ -75,8 +76,9 @@ public class SaleCustomController {
     }
 
     @RequestMapping(value = "/api/sale/custom/{id}",method = RequestMethod.DELETE)
-    public void delete(@PathVariable(name = "id") int id){
+    public Object delete(@PathVariable(name = "id") int id){
         customMapper.deleteByPrimaryKey(id);
+        return CommonResult.success("删除成功！");
     }
 
 }

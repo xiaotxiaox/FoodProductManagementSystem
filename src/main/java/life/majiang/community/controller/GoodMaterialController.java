@@ -56,7 +56,7 @@ public class GoodMaterialController {
                        HttpServletRequest request){
         good_material.setGood(id);
         good_materialMapper.insert(good_material);
-        return null;
+        return CommonResult.success("创建成功！");
     }
 
     @ResponseBody
