@@ -5,6 +5,7 @@ import life.majiang.community.dto.ProductionplanDTO;
 import life.majiang.community.dto.ResultDTO;
 import life.majiang.community.dto.StateDTO;
 import life.majiang.community.exception.CustomizeErrorCode;
+import life.majiang.community.mapper.GoodsMapper;
 import life.majiang.community.mapper.ProductionplanMapper;
 import life.majiang.community.mapper.UserMapper;
 import life.majiang.community.model.Productionplan;
@@ -26,6 +27,9 @@ public class ProductionPlanController {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private GoodsMapper goodsMapper;
+
     @RequestMapping(value = "/api/productionplan", method = RequestMethod.GET)
     public List<ProductionplanDTO> get() {
         ProductionplanExample example = new ProductionplanExample();
@@ -34,6 +38,8 @@ public class ProductionPlanController {
         List<ProductionplanDTO> productionplanDTO = new ArrayList<ProductionplanDTO>();
         for (Productionplan productionplan : productionplans) {
             ProductionplanDTO temp = new ProductionplanDTO();
+            temp.setUser(userMapper.selectByPrimaryKey(productionplan.getPerson()));
+            temp.setGoods(goodsMapper.selectByPrimaryKey(productionplan.getGoodsid()));
             BeanUtils.copyProperties(productionplan, temp);
             productionplanDTO.add(temp);
         }
@@ -48,7 +54,7 @@ public class ProductionPlanController {
         if (user == null) {
             return ResultDTO.errorOf(CustomizeErrorCode.NO_LOGIN);
         }
-//        productionplan.setPerson(user.getId());
+        productionplan.setPerson(user.getId());
         productionplanMapper.insert(productionplan);
         return CommonResult.success("创建成功！");
     }
