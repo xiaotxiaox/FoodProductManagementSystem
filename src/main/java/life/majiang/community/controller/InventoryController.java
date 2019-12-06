@@ -1,6 +1,7 @@
 package life.majiang.community.controller;
 
 import life.majiang.community.dto.InventoryDTO;
+import life.majiang.community.dto.NumberOfTimeDTO;
 import life.majiang.community.mapper.InventoryMapper;
 import life.majiang.community.mapper.UserMapper;
 import life.majiang.community.model.Inventory;
@@ -11,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -22,16 +25,58 @@ public class InventoryController {
     @Autowired
     private UserMapper userMapper;
 
-    @RequestMapping(value = "/api/inventory", method = RequestMethod.GET)
-    public List<InventoryDTO> get() {
+    @RequestMapping(value = "/api/inventory/num", method = RequestMethod.GET)
+    public NumberOfTimeDTO get() {
+        InventoryExample example = new InventoryExample();
+        example.createCriteria();
+        List<Inventory> inventorys = inventorymapper.selectByExample(example);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date d = new Date();
+        String dateNowStr = sdf.format(d);//获取保质期
+        NumberOfTimeDTO numberOfTimeDTO = new NumberOfTimeDTO();
+        for (Inventory inventory : inventorys) {
+            if (inventory.getTimeprotect().compareTo(dateNowStr) >= 0) {
+                numberOfTimeDTO.setTimein(numberOfTimeDTO.getTimein()+1);
+            }
+            else numberOfTimeDTO.setTimeout(numberOfTimeDTO.getTimeout()+1);
+        }
+        return numberOfTimeDTO;
+    }
+
+    @RequestMapping(value = "/api/inventory/intime", method = RequestMethod.GET)
+    public List<InventoryDTO> getInTime() {
         InventoryExample example = new InventoryExample();
         example.createCriteria();
         List<Inventory> inventorys = inventorymapper.selectByExample(example);
         List<InventoryDTO> inventoryDTO = new ArrayList<InventoryDTO>();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date d = new Date();
+        String dateNowStr = sdf.format(d);//获取保质期
         for (Inventory inventory : inventorys) {
             InventoryDTO temp = new InventoryDTO();
             BeanUtils.copyProperties(inventory, temp);
-            inventoryDTO.add(temp);
+            if (inventory.getTimeprotect().compareTo(dateNowStr) > 0) {
+                inventoryDTO.add(temp);
+            }
+        }
+        return inventoryDTO;
+    }
+
+    @RequestMapping(value = "/api/inventory/outtime", method = RequestMethod.GET)
+    public List<InventoryDTO> getOutTime() {
+        InventoryExample example = new InventoryExample();
+        example.createCriteria();
+        List<Inventory> inventorys = inventorymapper.selectByExample(example);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date d = new Date();
+        String dateNowStr = sdf.format(d);//获取保质期
+        List<InventoryDTO> inventoryDTO = new ArrayList<InventoryDTO>();
+        for (Inventory inventory : inventorys) {
+            InventoryDTO temp = new InventoryDTO();
+            BeanUtils.copyProperties(inventory, temp);
+            if (inventory.getTimeprotect().compareTo(dateNowStr) < 0) {
+                inventoryDTO.add(temp);
+            }
         }
         return inventoryDTO;
     }
