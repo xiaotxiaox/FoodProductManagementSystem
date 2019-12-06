@@ -9,4 +9,5 @@ public class ProductionplanDTO {
     private Integer neednum;
     private String timelatest;
     private Integer state;
+
 }

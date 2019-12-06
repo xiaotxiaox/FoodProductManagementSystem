@@ -15,9 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
+@RestController
 public class OutBoundManagerController {
     @Autowired
     private OutboundMapper outboundmapper;
@@ -51,17 +55,29 @@ public class OutBoundManagerController {
             return ResultDTO.errorOf(CustomizeErrorCode.NO_LOGIN);
         }
         InventoryExample example = new InventoryExample();
-        example.createCriteria().andIdEqualTo(outbound.getMaterialid());
+        example.createCriteria().andMaterialidEqualTo(outbound.getMaterialid());
         List<Inventory> inventorys=inventorymapper.selectByExample(example);
-
+        CompareInventory compareInventory=new CompareInventory();
+        Collections.sort(inventorys,compareInventory);
+        int cnt=outbound.getNum();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date d = new Date();
+        String dateNowStr = sdf.format(d);//获取保质期
         for (Inventory inventory : inventorys) {
-//            MaterialDTO temp = new MaterialDTO();
-//            BeanUtils.copyProperties(material, temp);
-//            temp.setUser(userMapper.selectByPrimaryKey(material.getPerson()));
-//            materialDTO.add(temp);
+            if (inventory.getNum()<cnt&&inventory.getTimeprotect().compareTo(dateNowStr)>0) {//数量不够并且保质期在范围之内
+                cnt-=inventory.getNum();
+                inventorymapper.deleteByPrimaryKey(inventory.getId());
+            }
+            else{
+                if (inventory.getTimeprotect().compareTo(dateNowStr)>0){
+                    inventory.setNum(inventory.getNum()-cnt);
+                    inventorymapper.updateByPrimaryKey(inventory);
+                }
+            }
+            if (inventory.getNum()==0){
+                inventorymapper.deleteByPrimaryKey(inventory.getId());
+            }
         }
-
-
         outboundmapper.insert(outbound);
         return CommonResult.success("创建成功！");
     }

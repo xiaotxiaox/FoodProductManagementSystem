@@ -513,6 +513,196 @@ public class ProductionplanExample {
             addCriterion("state not between", value1, value2, "state");
             return (Criteria) this;
         }
+
+        public Criteria andTimeproduceIsNull() {
+            addCriterion("timeproduce is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeproduceIsNotNull() {
+            addCriterion("timeproduce is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeproduceEqualTo(String value) {
+            addCriterion("timeproduce =", value, "timeproduce");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeproduceNotEqualTo(String value) {
+            addCriterion("timeproduce <>", value, "timeproduce");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeproduceGreaterThan(String value) {
+            addCriterion("timeproduce >", value, "timeproduce");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeproduceGreaterThanOrEqualTo(String value) {
+            addCriterion("timeproduce >=", value, "timeproduce");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeproduceLessThan(String value) {
+            addCriterion("timeproduce <", value, "timeproduce");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeproduceLessThanOrEqualTo(String value) {
+            addCriterion("timeproduce <=", value, "timeproduce");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeproduceLike(String value) {
+            addCriterion("timeproduce like", value, "timeproduce");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeproduceNotLike(String value) {
+            addCriterion("timeproduce not like", value, "timeproduce");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeproduceIn(List<String> values) {
+            addCriterion("timeproduce in", values, "timeproduce");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeproduceNotIn(List<String> values) {
+            addCriterion("timeproduce not in", values, "timeproduce");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeproduceBetween(String value1, String value2) {
+            addCriterion("timeproduce between", value1, value2, "timeproduce");
+            return (Criteria) this;
+        }
+
+        public Criteria andTimeproduceNotBetween(String value1, String value2) {
+            addCriterion("timeproduce not between", value1, value2, "timeproduce");
+            return (Criteria) this;
+        }
+
+        public Criteria andPersonIsNull() {
+            addCriterion("person is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPersonIsNotNull() {
+            addCriterion("person is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPersonEqualTo(Integer value) {
+            addCriterion("person =", value, "person");
+            return (Criteria) this;
+        }
+
+        public Criteria andPersonNotEqualTo(Integer value) {
+            addCriterion("person <>", value, "person");
+            return (Criteria) this;
+        }
+
+        public Criteria andPersonGreaterThan(Integer value) {
+            addCriterion("person >", value, "person");
+            return (Criteria) this;
+        }
+
+        public Criteria andPersonGreaterThanOrEqualTo(Integer value) {
+            addCriterion("person >=", value, "person");
+            return (Criteria) this;
+        }
+
+        public Criteria andPersonLessThan(Integer value) {
+            addCriterion("person <", value, "person");
+            return (Criteria) this;
+        }
+
+        public Criteria andPersonLessThanOrEqualTo(Integer value) {
+            addCriterion("person <=", value, "person");
+            return (Criteria) this;
+        }
+
+        public Criteria andPersonIn(List<Integer> values) {
+            addCriterion("person in", values, "person");
+            return (Criteria) this;
+        }
+
+        public Criteria andPersonNotIn(List<Integer> values) {
+            addCriterion("person not in", values, "person");
+            return (Criteria) this;
+        }
+
+        public Criteria andPersonBetween(Integer value1, Integer value2) {
+            addCriterion("person between", value1, value2, "person");
+            return (Criteria) this;
+        }
+
+        public Criteria andPersonNotBetween(Integer value1, Integer value2) {
+            addCriterion("person not between", value1, value2, "person");
+            return (Criteria) this;
+        }
+
+        public Criteria andGoodsidIsNull() {
+            addCriterion("goodsid is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGoodsidIsNotNull() {
+            addCriterion("goodsid is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGoodsidEqualTo(Integer value) {
+            addCriterion("goodsid =", value, "goodsid");
+            return (Criteria) this;
+        }
+
+        public Criteria andGoodsidNotEqualTo(Integer value) {
+            addCriterion("goodsid <>", value, "goodsid");
+            return (Criteria) this;
+        }
+
+        public Criteria andGoodsidGreaterThan(Integer value) {
+            addCriterion("goodsid >", value, "goodsid");
+            return (Criteria) this;
+        }
+
+        public Criteria andGoodsidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("goodsid >=", value, "goodsid");
+            return (Criteria) this;
+        }
+
+        public Criteria andGoodsidLessThan(Integer value) {
+            addCriterion("goodsid <", value, "goodsid");
+            return (Criteria) this;
+        }
+
+        public Criteria andGoodsidLessThanOrEqualTo(Integer value) {
+            addCriterion("goodsid <=", value, "goodsid");
+            return (Criteria) this;
+        }
+
+        public Criteria andGoodsidIn(List<Integer> values) {
+            addCriterion("goodsid in", values, "goodsid");
+            return (Criteria) this;
+        }
+
+        public Criteria andGoodsidNotIn(List<Integer> values) {
+            addCriterion("goodsid not in", values, "goodsid");
+            return (Criteria) this;
+        }
+
+        public Criteria andGoodsidBetween(Integer value1, Integer value2) {
+            addCriterion("goodsid between", value1, value2, "goodsid");
+            return (Criteria) this;
+        }
+
+        public Criteria andGoodsidNotBetween(Integer value1, Integer value2) {
+            addCriterion("goodsid not between", value1, value2, "goodsid");
+            return (Criteria) this;
+        }
     }
 
     /**
