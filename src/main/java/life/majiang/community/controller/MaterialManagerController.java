@@ -49,6 +49,7 @@ public class MaterialManagerController {
             BeanUtils.copyProperties(material, temp);
             temp.setUser(userMapper.selectByPrimaryKey(material.getPerson()));
             temp.setMaterialtotal(materialtotalMapper.selectByPrimaryKey(material.getMaterialid()));
+//            temp.setTotalPrice(materialtotalMapper.selectByPrimaryKey(material.getMaterialid()).getPrice() * material.getNum());
             materialDTO.add(temp);
         }
         return materialDTO;
@@ -67,7 +68,7 @@ public class MaterialManagerController {
         String dateNowStr = sdf.format(d);//获取保质期
         material.setPerson(user.getId());
         material.setTimeApply(dateNowStr);
-        material.setTotalPrice(materialtotalMapper.selectByPrimaryKey(material.getMaterialid()).getPrice() * material.getNum());
+//        material.setTotalPrice(materialtotalMapper.selectByPrimaryKey(material.getMaterialid()).getPrice() * material.getNum());
         materialMapper.insert(material);
         return CommonResult.success("创建成功！");
     }
