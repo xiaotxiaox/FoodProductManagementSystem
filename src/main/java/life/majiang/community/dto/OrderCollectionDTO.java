@@ -16,7 +16,7 @@ public class OrderCollectionDTO {
     private Integer id;
     private Custom custom;
     private Integer count; //商品数量
-    private Integer goods; //商品名称 目前这个为一个数字（没表），可以先不传
+//    private Integer goods; //商品名称 目前这个为一个数字（没表），可以先不传
     private String orderDate; //订货日期
     private String pickDate;  //提货日期
     private Integer handler;  //处理人（这个字段没用）

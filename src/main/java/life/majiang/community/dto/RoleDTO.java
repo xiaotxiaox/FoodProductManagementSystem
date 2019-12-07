@@ -10,5 +10,5 @@ public class RoleDTO {
     private int id;
     private String name;
     private String description;
-    private List<Permissions> permissions;
+//    private List<Permissions> permissions;
 }
