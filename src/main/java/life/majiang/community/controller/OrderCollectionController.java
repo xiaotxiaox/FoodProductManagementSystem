@@ -118,7 +118,7 @@ public class OrderCollectionController {
             BeanUtils.copyProperties(order, temp);
             if (order.getCustom() != null) {
                 temp.setCustom(customMapper.selectByPrimaryKey(order.getCustom()));
-                temp.setGoods(goodsMapper.selectByPrimaryKey(order.getGoods()));
+                temp.setGood(goodsMapper.selectByPrimaryKey(order.getGoods()));
             }
             temp.setUser(userMapper.selectByPrimaryKey(order.getHandler()));
             orderCollectionDTOS.add(temp);
