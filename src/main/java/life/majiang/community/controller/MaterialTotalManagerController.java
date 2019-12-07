@@ -4,11 +4,10 @@ import life.majiang.api.CommonResult;
 import life.majiang.community.dto.MaterialTotalDTO;
 import life.majiang.community.dto.ResultDTO;
 import life.majiang.community.exception.CustomizeErrorCode;
+import life.majiang.community.mapper.MaterialMapper;
 import life.majiang.community.mapper.MaterialtotalMapper;
 import life.majiang.community.mapper.UserMapper;
-import life.majiang.community.model.Materialtotal;
-import life.majiang.community.model.MaterialtotalExample;
-import life.majiang.community.model.User;
+import life.majiang.community.model.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +23,9 @@ public class MaterialTotalManagerController {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private MaterialMapper materialMapper;
 
     @RequestMapping(value = "/api/materialtotal", method = RequestMethod.GET)
     public List<MaterialTotalDTO> get() {
@@ -64,6 +66,17 @@ public class MaterialTotalManagerController {
         example.createCriteria()
                 .andIdEqualTo(id);
         materialtotalMapper.updateByExampleSelective(materialtotal, example);
+
+        MaterialExample example1 = new MaterialExample();
+        example1.createCriteria();
+        List<Material> materials = materialMapper.selectByExample(example1);
+        for (Material material:materials)
+        {
+            if (material.getMaterialid().equals(materialtotal.getId())) {
+                material.setTotalPrice(material.getNum()*materialtotal.getPrice());
+                materialMapper.updateByPrimaryKey(material);
+            }
+        }
         return materialtotal;
     }
 
