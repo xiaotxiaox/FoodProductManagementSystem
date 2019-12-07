@@ -59,6 +59,7 @@ public class OutBoundManagerController {
         if (user == null) {
             return ResultDTO.errorOf(CustomizeErrorCode.NO_LOGIN);
         }
+        outbound.setPerson(user.getId());
         InventoryExample example = new InventoryExample();
         example.createCriteria().andMaterialidEqualTo(outbound.getMaterialid());
         List<Inventory> inventorys=inventorymapper.selectByExample(example);
