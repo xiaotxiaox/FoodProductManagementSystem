@@ -43,6 +43,9 @@ public class RoundController {
     @Autowired
     private RoundMaterialMapper roundMaterialMapper;
 
+    @Autowired
+    private UnqualifiedMapper unqualifiedMapper;
+
     @RequestMapping(value = "/api/workshop/team/round/change",method = RequestMethod.PUT)
     public Object putRoundState(@RequestParam(value = "id",required = false) Integer id,
                                   @RequestParam(value = "state",required = false) Integer state,
@@ -60,7 +63,7 @@ public class RoundController {
         List<RoundDTO> roundDTOS= get(request);
         List<RoundDTO> result = new ArrayList<RoundDTO>();
         for (RoundDTO roundDTO : roundDTOS) {
-            if(roundDTO.getProductionPlan().getId()==id && roundDTO.getState()==0) result.add(roundDTO);
+            if(roundDTO.getProductionPlan().getId()==id) result.add(roundDTO);
         }
         return  result;
     }
@@ -138,7 +141,6 @@ public class RoundController {
         List<Round> rounds = roundMapper.selectByExample(example);
         List<RoundDTO> roundDTOS = new ArrayList<RoundDTO>();
         for (Round round : rounds) {
-            if(round.getState()!=0) continue;
             RoundDTO temp = new RoundDTO();
             BeanUtils.copyProperties(round,temp);
             if(round.getGoods()!=null){
