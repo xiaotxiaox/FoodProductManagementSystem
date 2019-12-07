@@ -12,9 +12,7 @@ public class MaterialDTO {
     private String timeApply;
     private String timeHandle;
     private Integer state;
-    private Integer person;
     private Integer totalPrice;
-    private Integer materialid;
     private String timeprotect;
     private Materialtotal materialtotal;
     private User user;

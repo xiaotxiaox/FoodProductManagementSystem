@@ -37,4 +37,23 @@ public class LoginController {
         }
 
     }
+    @RequestMapping(value = "/api/user/add", method = RequestMethod.POST)
+    public Object signIn(@RequestBody LoginDTO loginDTO,
+                        HttpServletRequest request) {
+        UserExample userExample = new UserExample();
+        userExample.createCriteria()
+                .andNameEqualTo(loginDTO.getUsername());
+        List<User> users = userMapper.selectByExample(userExample);
+        if (users.size() == 0)
+            return CommonResult.failed("用户名不存在");
+
+        if (users.get(0).getPassword().equals(loginDTO.getPassword())) {
+            request.getSession().setAttribute("user", users.get(0));
+            return CommonResult.success("登陆成功");
+        }
+        else{
+            return CommonResult.failed("密码错误");
+        }
+
+    }
 }

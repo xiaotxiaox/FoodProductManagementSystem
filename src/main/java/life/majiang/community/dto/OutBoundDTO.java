@@ -9,8 +9,6 @@ public class OutBoundDTO {
     private Integer id;
     private Integer num;
     private String timeout;
-    private Integer materialid;
-    private Integer person;
     private User user;
     private Materialtotal materialtotal;
 }
