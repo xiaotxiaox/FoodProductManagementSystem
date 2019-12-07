@@ -21,5 +21,5 @@ public class RoundDTO {
     private int handler;
     private User user;
     private String introduction;
-    private Integer state;
+    private Integer state;//0为未处理，1为合格，2为不合格
 }

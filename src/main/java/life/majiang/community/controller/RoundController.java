@@ -43,6 +43,17 @@ public class RoundController {
     @Autowired
     private RoundMaterialMapper roundMaterialMapper;
 
+    @RequestMapping(value = "/api/workshop/team/round/change",method = RequestMethod.PUT)
+    public Object putRoundState(@RequestParam(value = "id",required = false) Integer id,
+                                  @RequestParam(value = "state",required = false) Integer state,
+                                  HttpServletRequest request){
+        if(id==null || state == null) return CommonResult.success("更新失败，请确认参数！");
+        Round round = roundMapper.selectByPrimaryKey(id);
+        round.setState(state);
+        roundMapper.updateByPrimaryKey(round);
+        return round;
+    }
+
     @RequestMapping(value = "/api/workshop/round/productPlan",method = RequestMethod.GET)
     public List<RoundDTO> getProductionPlan(@RequestParam(value = "id",required = false) Integer id,
             HttpServletRequest request){
