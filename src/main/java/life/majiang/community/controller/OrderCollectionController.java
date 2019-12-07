@@ -7,6 +7,7 @@ import life.majiang.community.dto.PolicyDTO;
 import life.majiang.community.dto.ResultDTO;
 import life.majiang.community.exception.CustomizeErrorCode;
 import life.majiang.community.mapper.CustomMapper;
+import life.majiang.community.mapper.GoodsMapper;
 import life.majiang.community.mapper.OrderMapper;
 import life.majiang.community.mapper.UserMapper;
 import life.majiang.community.model.*;
@@ -34,17 +35,20 @@ public class OrderCollectionController {
     @Autowired
     private CustomMapper customMapper;
 
-    @RequestMapping(value = "/api/sale/order/one",method = RequestMethod.GET)
-    public OrderCollectionDTO getOne(@RequestParam(value = "id",required = false) Integer id){
+    @Autowired
+    private GoodsMapper goodsMapper;
+
+    @RequestMapping(value = "/api/sale/order/one", method = RequestMethod.GET)
+    public OrderCollectionDTO getOne(@RequestParam(value = "id", required = false) Integer id) {
         List<OrderCollectionDTO> all = getAll();
         for (OrderCollectionDTO orderCollectionDTO : all) {
-            if(orderCollectionDTO.getId() == id) return orderCollectionDTO;
+            if (orderCollectionDTO.getId() == id) return orderCollectionDTO;
         }
         return null;
     }
 
-    @RequestMapping(value = "/api/sale/order/statistics",method = RequestMethod.GET)
-    public OrderStatisticsDTO statistics(){
+    @RequestMapping(value = "/api/sale/order/statistics", method = RequestMethod.GET)
+    public OrderStatisticsDTO statistics() {
         OrderStatisticsDTO orderStatisticsDTO = new OrderStatisticsDTO();
         OrderExample example = new OrderExample();
         example.createCriteria();
@@ -76,26 +80,26 @@ public class OrderCollectionController {
         return orderStatisticsDTO;
     }
 
-    @RequestMapping(value = "/api/sale/order/sell",method = RequestMethod.GET)
-    public List<OrderCollectionDTO> getSell(){
+    @RequestMapping(value = "/api/sale/order/sell", method = RequestMethod.GET)
+    public List<OrderCollectionDTO> getSell() {
         List<OrderCollectionDTO> all = getAll();
         List<OrderCollectionDTO> part = new ArrayList<OrderCollectionDTO>();
         for (OrderCollectionDTO orderCollectionDTO : all) {
             Integer state = orderCollectionDTO.getState();
-            if(state == 1 || state ==2 || state ==4){
+            if (state == 1 || state == 2 || state == 4) {
                 part.add(orderCollectionDTO);
             }
         }
         return part;
     }
 
-    @RequestMapping(value = "/api/sale/order/back",method = RequestMethod.GET)
-    public List<OrderCollectionDTO> getBack(){
+    @RequestMapping(value = "/api/sale/order/back", method = RequestMethod.GET)
+    public List<OrderCollectionDTO> getBack() {
         List<OrderCollectionDTO> all = getAll();
         List<OrderCollectionDTO> part = new ArrayList<OrderCollectionDTO>();
         for (OrderCollectionDTO orderCollectionDTO : all) {
             Integer state = orderCollectionDTO.getState();
-            if(state == 3 || state ==5 || state ==6){
+            if (state == 3 || state == 5 || state == 6) {
                 part.add(orderCollectionDTO);
             }
         }
@@ -103,17 +107,18 @@ public class OrderCollectionController {
     }
 
 
-    @RequestMapping(value = "/api/sale/order",method = RequestMethod.GET)
-    public List<OrderCollectionDTO> getAll(){
+    @RequestMapping(value = "/api/sale/order", method = RequestMethod.GET)
+    public List<OrderCollectionDTO> getAll() {
         OrderExample example = new OrderExample();
         example.createCriteria();
         List<Order> orders = orderMapper.selectByExample(example);
         List<OrderCollectionDTO> orderCollectionDTOS = new ArrayList<OrderCollectionDTO>();
         for (Order order : orders) {
             OrderCollectionDTO temp = new OrderCollectionDTO();
-            BeanUtils.copyProperties(order,temp);
-            if(order.getCustom()!= null){
+            BeanUtils.copyProperties(order, temp);
+            if (order.getCustom() != null) {
                 temp.setCustom(customMapper.selectByPrimaryKey(order.getCustom()));
+                temp.setGoods(goodsMapper.selectByPrimaryKey(order.getGoods()));
             }
             temp.setUser(userMapper.selectByPrimaryKey(order.getHandler()));
             orderCollectionDTOS.add(temp);
@@ -121,9 +126,9 @@ public class OrderCollectionController {
         return orderCollectionDTOS;
     }
 
-    @RequestMapping(value = "/api/sale/order",method = RequestMethod.POST)
+    @RequestMapping(value = "/api/sale/order", method = RequestMethod.POST)
     public Object post(@RequestBody Order order,
-                       HttpServletRequest request){
+                       HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
             return ResultDTO.errorOf(CustomizeErrorCode.NO_LOGIN);
@@ -133,10 +138,10 @@ public class OrderCollectionController {
         return CommonResult.success("创建成功！");
     }
 
-    @RequestMapping(value = "/api/sale/order/{id}",method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/sale/order/{id}", method = RequestMethod.PUT)
     public Object put(@RequestBody Order order,
                       @PathVariable(name = "id") int id,
-                      HttpServletRequest request){
+                      HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
             return ResultDTO.errorOf(CustomizeErrorCode.NO_LOGIN);
@@ -146,8 +151,8 @@ public class OrderCollectionController {
         return order;
     }
 
-    @RequestMapping(value = "/api/sale/order/{id}",method = RequestMethod.DELETE)
-    public Object delete(@PathVariable(name = "id") int id){
+    @RequestMapping(value = "/api/sale/order/{id}", method = RequestMethod.DELETE)
+    public Object delete(@PathVariable(name = "id") int id) {
         orderMapper.deleteByPrimaryKey(id);
         return CommonResult.success("删除成功！");
     }

@@ -9,4 +9,5 @@ public class GoodsDTO {
     private String name;
     private Integer price;
     private String unit;
+
 }

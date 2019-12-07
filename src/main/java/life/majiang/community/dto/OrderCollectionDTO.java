@@ -1,6 +1,7 @@
 package life.majiang.community.dto;
 
 import life.majiang.community.model.Custom;
+import life.majiang.community.model.Goods;
 import life.majiang.community.model.User;
 import lombok.Data;
 
@@ -30,4 +31,5 @@ public class OrderCollectionDTO {
     private String backAgreeDate;  //退货同意日期
     private Integer backMoneySymbol;  //退货款符号（0为+，1为-）
     private BigDecimal backMoney;  //退货款
+    private Goods goods;
 }
