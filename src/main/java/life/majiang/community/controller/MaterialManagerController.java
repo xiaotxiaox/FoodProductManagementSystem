@@ -138,4 +138,22 @@ public class MaterialManagerController {
         }
         return stateDTO;
     }
+
+    @RequestMapping(value = "/api/material/getone", method = RequestMethod.GET)
+    public List<MaterialDTO> getStateOne() {
+        MaterialExample example = new MaterialExample();
+        example.createCriteria();
+        List<Material> materials = materialMapper.selectByExample(example);
+        List<MaterialDTO> materialDTO = new ArrayList<MaterialDTO>();
+        for (Material material : materials) {
+            if (material.getState().equals(1)) {
+                MaterialDTO temp = new MaterialDTO();
+                BeanUtils.copyProperties(material, temp);
+                temp.setUser(userMapper.selectByPrimaryKey(material.getPerson()));
+                temp.setMaterialtotal(materialtotalMapper.selectByPrimaryKey(material.getMaterialid()));
+                materialDTO.add(temp);
+            }
+        }
+        return materialDTO;
+    }
 }
