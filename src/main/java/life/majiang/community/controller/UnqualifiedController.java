@@ -1,10 +1,7 @@
 package life.majiang.community.controller;
 
 import life.majiang.api.CommonResult;
-import life.majiang.community.dto.ProducingDTO;
-import life.majiang.community.dto.ResultDTO;
-import life.majiang.community.dto.RoundDTO;
-import life.majiang.community.dto.UnqualifiedDTO;
+import life.majiang.community.dto.*;
 import life.majiang.community.exception.CustomizeErrorCode;
 import life.majiang.community.mapper.*;
 import life.majiang.community.model.*;
@@ -33,6 +30,16 @@ public class UnqualifiedController {
     @Autowired
     private UserMapper userMapper;
 
+    @RequestMapping(value = "/api/workshop/unqualified/statistics",method = RequestMethod.GET)
+    public QualifiedStatisticsDTO getStatistics(HttpServletRequest request){
+        List<UnqualifiedDTO> all = get(request);
+        QualifiedStatisticsDTO qualifiedStatisticsDTO = new QualifiedStatisticsDTO();
+        for (UnqualifiedDTO unqualifiedDTO : all) {
+            if(unqualifiedDTO.getState()==1) qualifiedStatisticsDTO.setQualified(qualifiedStatisticsDTO.getQualified()+1);
+            else qualifiedStatisticsDTO.setUnqualified(qualifiedStatisticsDTO.getUnqualified()+1);
+        }
+        return qualifiedStatisticsDTO;
+    }
     @RequestMapping(value = "/api/workshop/unqualified/unqualified",method = RequestMethod.GET)
     public List<UnqualifiedDTO> getUnqualified(HttpServletRequest request){
         List<UnqualifiedDTO> all = get(request);

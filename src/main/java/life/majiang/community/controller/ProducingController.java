@@ -36,6 +36,35 @@ public class ProducingController {
     @Autowired
     private GoodsMapper goodsMapper;
 
+    @Autowired
+    private UnqualifiedMapper unqualifiedMapper;
+    @RequestMapping(value = "/api/workshop/producing/stateChange",method = RequestMethod.POST)
+    public Object getState0(@RequestParam(value = "id",required = false) Integer id,
+                            @RequestParam(value = "state",required = false) Integer state,
+                            HttpServletRequest request){
+        User user = (User) request.getSession().getAttribute("user");
+        if (user == null) {
+            return ResultDTO.errorOf(CustomizeErrorCode.NO_LOGIN);
+        }
+        if(id==null || state == null) return CommonResult.success("更新失败，请确认参数！");
+        Producing producing = producingMapper.selectByPrimaryKey(id);
+        producing.setState(state);
+        producingMapper.updateByPrimaryKey(producing);
+
+        Unqualified unqualified = new Unqualified();
+        unqualified.setState(state);
+        unqualified.setProducing(producing.getId());
+        unqualified.setHandler(user.getId());
+        unqualified.setWay("");
+        unqualified.setNote("");
+        unqualified.setIsHandle(0);
+        unqualifiedMapper.insert(unqualified);
+
+        return producing;
+    }
+
+
+
     @RequestMapping(value = "/api/workshop/producing/state0",method = RequestMethod.GET)
     public List<ProducingDTO> getState0(HttpServletRequest request){
         List<ProducingDTO> DTOs = get(request);

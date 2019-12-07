@@ -61,6 +61,7 @@ public class RoundController {
         if(id==null || state == null) return CommonResult.success("更新失败，请确认参数！");
         Round round = roundMapper.selectByPrimaryKey(id);
         round.setState(state);
+
         Producing producing = new Producing();
         producing.setRound(round.getId());
         producing.setState(0);
@@ -72,6 +73,7 @@ public class RoundController {
         producing.setProduceDate(dateNowStr);
         producing.setHandler(user.getId());
         producingMapper.insert(producing);
+
         roundMapper.updateByPrimaryKey(round);
         return round;
     }
