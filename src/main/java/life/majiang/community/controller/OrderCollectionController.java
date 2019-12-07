@@ -6,10 +6,7 @@ import life.majiang.community.dto.OrderStatisticsDTO;
 import life.majiang.community.dto.PolicyDTO;
 import life.majiang.community.dto.ResultDTO;
 import life.majiang.community.exception.CustomizeErrorCode;
-import life.majiang.community.mapper.CustomMapper;
-import life.majiang.community.mapper.GoodsMapper;
-import life.majiang.community.mapper.OrderMapper;
-import life.majiang.community.mapper.UserMapper;
+import life.majiang.community.mapper.*;
 import life.majiang.community.model.*;
 import net.bytebuddy.asm.Advice;
 import org.springframework.beans.BeanUtils;
@@ -17,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +32,9 @@ public class OrderCollectionController {
 
     @Autowired
     private CustomMapper customMapper;
+
+    @Autowired
+    private PolicyMapper policyMapper;
 
     @Autowired
     private GoodsMapper goodsMapper;
@@ -134,6 +135,18 @@ public class OrderCollectionController {
             return ResultDTO.errorOf(CustomizeErrorCode.NO_LOGIN);
         }
         order.setHandler(user.getId());
+
+        BigDecimal number = new BigDecimal(0);
+        int value = goodsMapper.selectByPrimaryKey(order.getGoods()).getPrice() * order.getCount();
+        number = BigDecimal.valueOf((int) value);
+
+        BigDecimal number1 = new BigDecimal(0);
+        int value1 = policyMapper.selectByPrimaryKey(customMapper.selectByPrimaryKey(order.getCustom()).getType()).getDiscount()/100;
+        number1 = BigDecimal.valueOf((int) value1);
+
+        order.setTotalCost(number);
+        order.setDiscountCost(order.getTotalCost().multiply(number1));
+
         orderMapper.insert(order);
         return CommonResult.success("创建成功！");
     }
