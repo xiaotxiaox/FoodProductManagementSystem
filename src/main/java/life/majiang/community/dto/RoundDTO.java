@@ -20,4 +20,6 @@ public class RoundDTO {
     private Team team;
     private int handler;
     private User user;
+    private String introduction;
+    private Integer state;
 }

@@ -49,7 +49,7 @@ public class RoundController {
         List<RoundDTO> roundDTOS= get(request);
         List<RoundDTO> result = new ArrayList<RoundDTO>();
         for (RoundDTO roundDTO : roundDTOS) {
-            if(roundDTO.getProductionPlan().getId()==id) result.add(roundDTO);
+            if(roundDTO.getProductionPlan().getId()==id && roundDTO.getState()==0) result.add(roundDTO);
         }
         return  result;
     }
@@ -64,6 +64,7 @@ public class RoundController {
         }
         round.setHandler(user.getId());
         round.setProductionPlan(id);
+        round.setState(0);
         roundMapper.insert(round);
 
         RoundMaterial roundMaterial = new RoundMaterial();
@@ -114,7 +115,7 @@ public class RoundController {
         List<RoundDTO> roundDTOS= get(request);
         List<RoundDTO> result = new ArrayList<RoundDTO>();
         for (RoundDTO roundDTO : roundDTOS) {
-            if(roundDTO.getTeam().getId()==id) result.add(roundDTO);
+            if(roundDTO.getTeam().getId()==id && roundDTO.getState()==0) result.add(roundDTO);
         }
         return  result;
     }
@@ -126,6 +127,7 @@ public class RoundController {
         List<Round> rounds = roundMapper.selectByExample(example);
         List<RoundDTO> roundDTOS = new ArrayList<RoundDTO>();
         for (Round round : rounds) {
+            if(round.getState()!=0) continue;
             RoundDTO temp = new RoundDTO();
             BeanUtils.copyProperties(round,temp);
             if(round.getGoods()!=null){
@@ -152,6 +154,7 @@ public class RoundController {
             return ResultDTO.errorOf(CustomizeErrorCode.NO_LOGIN);
         }
         round.setHandler(user.getId());
+        round.setState(0);
         roundMapper.insert(round);
 
         RoundMaterial roundMaterial = new RoundMaterial();
