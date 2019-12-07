@@ -3,6 +3,7 @@ package life.majiang.community.controller;
 import life.majiang.community.dto.CustomDTO;
 import life.majiang.community.dto.RoundMaterialDTO;
 import life.majiang.community.mapper.MaterialMapper;
+import life.majiang.community.mapper.MaterialtotalMapper;
 import life.majiang.community.mapper.RoundMaterialMapper;
 import life.majiang.community.model.RoundMaterial;
 import life.majiang.community.model.RoundMaterialExample;
@@ -27,7 +28,7 @@ public class RoundMaterialController {
     private RoundMaterialMapper roundMaterialMapper;
 
     @Autowired
-    private MaterialMapper materialMapper;
+    private MaterialtotalMapper materialtotalMapper;
     @RequestMapping(value = "/api/workshop/round/material",method = RequestMethod.GET)
     public List<RoundMaterialDTO> get(@RequestParam(value = "id",required = false) Integer id){
         List<RoundMaterialDTO> result = new ArrayList<RoundMaterialDTO>();
@@ -37,7 +38,7 @@ public class RoundMaterialController {
         for (RoundMaterial roundMaterial : all) {
             RoundMaterialDTO roundMaterialDTO = new RoundMaterialDTO();
             BeanUtils.copyProperties(roundMaterial,roundMaterialDTO);
-            roundMaterialDTO.setMaterial(materialMapper.selectByPrimaryKey(roundMaterial.getMaterial()));
+            roundMaterialDTO.setMaterial(materialtotalMapper.selectByPrimaryKey(roundMaterial.getMaterial()));
             result.add(roundMaterialDTO);
         }
         return result;

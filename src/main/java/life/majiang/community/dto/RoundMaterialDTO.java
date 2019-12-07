@@ -1,6 +1,7 @@
 package life.majiang.community.dto;
 
 import life.majiang.community.model.Material;
+import life.majiang.community.model.Materialtotal;
 import lombok.Data;
 
 /**
@@ -10,7 +11,7 @@ import lombok.Data;
 @Data
 public class RoundMaterialDTO {
     private Integer id;
-    private Material material;
+    private Materialtotal material;
     private Integer count;
     private String note;
 }
