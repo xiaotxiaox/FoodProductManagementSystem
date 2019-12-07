@@ -33,6 +33,26 @@ public class UnqualifiedController {
     @Autowired
     private UserMapper userMapper;
 
+    @RequestMapping(value = "/api/workshop/unqualified/unqualified",method = RequestMethod.GET)
+    public List<UnqualifiedDTO> getUnqualified(HttpServletRequest request){
+        List<UnqualifiedDTO> all = get(request);
+        List<UnqualifiedDTO> part = new ArrayList<UnqualifiedDTO>();
+        for (UnqualifiedDTO unqualifiedDTO : all) {
+            if(unqualifiedDTO.getState()==2) part.add(unqualifiedDTO);
+        }
+        return part;
+    }
+
+    @RequestMapping(value = "/api/workshop/unqualified/qualified",method = RequestMethod.GET)
+    public List<UnqualifiedDTO> getQualified(HttpServletRequest request){
+        List<UnqualifiedDTO> all = get(request);
+        List<UnqualifiedDTO> part = new ArrayList<UnqualifiedDTO>();
+        for (UnqualifiedDTO unqualifiedDTO : all) {
+            if(unqualifiedDTO.getState()==1) part.add(unqualifiedDTO);
+        }
+        return part;
+    }
+
     @RequestMapping(value = "/api/workshop/unqualified",method = RequestMethod.GET)
     public List<UnqualifiedDTO> get(HttpServletRequest request){
         UnqualifiedExample example = new UnqualifiedExample();

@@ -17,4 +17,5 @@ public class UnqualifiedDTO {
     private User user;
     private Integer isHandle;
     private String note;
+    private Integer state; //0为异常值，1为合格，2为不合格
 }
