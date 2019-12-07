@@ -91,7 +91,7 @@ public class RoundController {
 
         for (Good_material good_material : good_materials) {
             roundMaterial.setRound(sid);
-            roundMaterial.setCount(good_material.getCount());
+            roundMaterial.setCount(good_material.getCount() * count);
             roundMaterial.setMaterial(good_material.getMaterial());
             roundMaterial.setNote(good_material.getNote());
             roundMaterialMapper.insert(roundMaterial);
@@ -180,7 +180,7 @@ public class RoundController {
 
         for (Good_material good_material : good_materials) {
             roundMaterial.setRound(id);
-            roundMaterial.setCount(good_material.getCount());
+            roundMaterial.setCount(good_material.getCount() * count);
             roundMaterial.setMaterial(good_material.getMaterial());
             roundMaterial.setNote(good_material.getNote());
             roundMaterialMapper.insert(roundMaterial);
