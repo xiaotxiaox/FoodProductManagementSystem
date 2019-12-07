@@ -36,6 +36,16 @@ public class ProducingController {
     @Autowired
     private GoodsMapper goodsMapper;
 
+    @RequestMapping(value = "/api/workshop/producing/state0",method = RequestMethod.GET)
+    public List<ProducingDTO> getState0(HttpServletRequest request){
+        List<ProducingDTO> DTOs = get(request);
+        List<ProducingDTO> part = new ArrayList<ProducingDTO>();
+        for (ProducingDTO dto : DTOs) {
+            if(dto.getState()==0) part.add(dto);
+        }
+        return part;
+    }
+
     @RequestMapping(value = "/api/workshop/producing",method = RequestMethod.GET)
     public List<ProducingDTO> get(HttpServletRequest request){
         ProducingExample example = new ProducingExample();

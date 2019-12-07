@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,13 +48,30 @@ public class RoundController {
     @Autowired
     private UnqualifiedMapper unqualifiedMapper;
 
+    @Autowired
+    private ProducingMapper producingMapper;
     @RequestMapping(value = "/api/workshop/team/round/change",method = RequestMethod.PUT)
     public Object putRoundState(@RequestParam(value = "id",required = false) Integer id,
                                   @RequestParam(value = "state",required = false) Integer state,
                                   HttpServletRequest request){
+        User user = (User) request.getSession().getAttribute("user");
+        if (user == null) {
+            return ResultDTO.errorOf(CustomizeErrorCode.NO_LOGIN);
+        }
         if(id==null || state == null) return CommonResult.success("更新失败，请确认参数！");
         Round round = roundMapper.selectByPrimaryKey(id);
         round.setState(state);
+        Producing producing = new Producing();
+        producing.setRound(round.getId());
+        producing.setState(0);
+        producing.setGood(round.getGoods());
+        producing.setGoodCount(round.getCount());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date d = new Date();
+        String dateNowStr = sdf.format(d);
+        producing.setProduceDate(dateNowStr);
+        producing.setHandler(user.getId());
+        producingMapper.insert(producing);
         roundMapper.updateByPrimaryKey(round);
         return round;
     }
