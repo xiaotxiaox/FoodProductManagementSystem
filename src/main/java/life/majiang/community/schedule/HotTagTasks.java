@@ -35,7 +35,7 @@ public class HotTagTasks {
 
         Map<String, Integer> priorities = new HashMap<>();
         while (offset == 0 || list.size() == limit) {
-            list = questionMapper.selectByExampleWithRowbounds(new QuestionExample(), new RowBounds(offset, limit));
+//            list = questionMapper.selectByExampleWithRowbounds(new QuestionExample(), new RowBounds(offset, limit));
             for (Question question : list) {
                 String[] tags = StringUtils.split(question.getTag(), ",");
 //                for (String tag : tags) {
