@@ -49,7 +49,7 @@ public class MaterialManagerController {
             BeanUtils.copyProperties(material, temp);
             temp.setUser(userMapper.selectByPrimaryKey(material.getPerson()));
             temp.setMaterialtotal(materialtotalMapper.selectByPrimaryKey(material.getMaterialid()));
-//            temp.setTotalPrice(materialtotalMapper.selectByPrimaryKey(material.getMaterialid()).getPrice() * material.getNum());
+            temp.setTotalPrice(materialtotalMapper.selectByPrimaryKey(material.getMaterialid()).getPrice() * material.getNum());
             materialDTO.add(temp);
         }
         return materialDTO;
