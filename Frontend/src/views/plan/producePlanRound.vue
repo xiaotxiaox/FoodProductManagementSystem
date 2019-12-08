@@ -1,18 +1,33 @@
 <template>
   <div>
-    <producing-modal
+    <produce-round-modal
       :record="modal.record"
       :visible="modal.visible"
       :type="modal.type"
       :id="modal.id"
       v-if="modal.visible"
       @close="handleClose()">
-    </producing-modal>
-    <a-card style="margin-bottom: 16px" title="待检验产品表">
+    </produce-round-modal>
+    <a-card style="margin-bottom: 16px" title="生产计划-批次管理表">
+      <a-row>
+        <a-col
+          class="item"
+          :xs="{ span: 24 }"
+          :sm="{ span: 12 }"
+          :xl="{ span: 4 }">
+          <a-button
+            type="primary"
+            icon="plus"
+            style="width: 100%;float:right;margin-bottom: 16px"
+            @click="handleCreate()">
+            新建批次
+          </a-button>
+        </a-col>
+      </a-row>
       <a-table
         bordered
         :columns="columns"
-        :dataSource="producingList"
+        :dataSource="planRoundList"
         rowKey="id"
         :pagination="false">
         <template slot="operation" slot-scope="text, record, index">
@@ -23,82 +38,66 @@
             <a-button type="danger">删除</a-button>
           </a-popconfirm>
         </template>
-        <template slot="state" slot-scope="text, record, index">
-          <a-button @click="qualified(record)" type="primary" style="margin-bottom: 6px">检验合格</a-button>
-          <a-popconfirm
-            title="确认改批次产品不合格吗?"
-            @confirm="disqualified(record)">
-            <a-button type="danger">检验不合格</a-button>
-          </a-popconfirm>
-        </template>
       </a-table>
-      <!--</a-spin>-->
     </a-card>
   </div>
 </template>
 
 <script>
-    import ProducingModal from './components/ProducingModal'
-    import api from '../../api/produceDepartment'
-
+    import ProduceRoundModal from './components/ProduceRoundModal'
+    import api from '../../api/plan'
     const columns = [
         {
-            title: '流水编号',
+            title: '批次编号',
             dataIndex: 'id',
-            width: '20%',
+            width: '5%',
             align: 'center'
         },
         {
-            title: '对应批次编号',
-            dataIndex: 'round.id',
-            width: '20%',
-            align: 'center'
-        },
-        {
-            title: '对应批次名称',
-            dataIndex: 'round.name',
-            width: '20%',
-            align: 'center'
-        },
-        {
-            title: '商品名称',
-            dataIndex: 'good.name',
+            title: '批次任务说明',
+            dataIndex: 'name',
             width: '20%',
             align: 'center'
         }, {
-            title: '商品数量',
-            dataIndex: 'goodCount',
-            width: '20%',
+            title: '生产商品',
+            dataIndex: 'goods.name',
+            width: '10%',
             align: 'center'
         }, {
-            title: '完成日期',
-            dataIndex: 'produceDate',
-            width: '30%',
+            title: '生产数量',
+            dataIndex: 'count',
+            width: '10%',
             align: 'center'
-        },
-        {
+        },{
+            title: '计量单位',
+            dataIndex: 'goods.unit',
+            width: '10%',
+            align: 'center'
+        },{
+            title: '生产班组',
+            dataIndex: 'team.name',
+            width: '10%',
+            align: 'center'
+        },{
             title: '处理人',
             dataIndex: 'user.name',
             width: '10%',
             align: 'center'
         },
         {
-            title: '检验',
-            dataIndex: 'state',
+            title: '编辑',
+            dataIndex: 'operation',
             align: 'center',
-            scopedSlots: {customRender: 'state'}
-        },
-        // {
-        //   title: '编辑',
-        //   dataIndex: 'operation',
-        //   align: 'center',
-        //   scopedSlots: {customRender: 'operation'}
-        // }
+            scopedSlots: {customRender: 'operation'}
+        }
     ]
     export default {
-        name: "producing",
+        name: "producePlanRound",
         components: {
-            ProducingModal
+            ProduceRoundModal
+        },
+        props: {
+            id: String
         },
         data() {
             return {
@@ -113,18 +112,18 @@
                     id: this.id
                 },
                 columns,
-                producingList: [],
+                planRoundList:[],
             }
         },
-        mounted() {
+        mounted(){
             this.getData()
         },
         methods: {
-            getData() {
-                api.getProducingList()
+            getData(){
+                api.getPlanRoundList(this.id)
                     .then(data => {
                         console.log(data)
-                        this.producingList = data
+                        this.planRoundList = data
                     })
             },
             handleClose() {
@@ -143,22 +142,8 @@
                 this.modal.record = record
                 this.modal.visible = true
             },
-            qualified(record) {
-                api.changeRoundState(record.id,1)
-                    .then(data => {
-                        console.log(record.id)
-                    })
-                this.getData()
-            },
-            disqualified(record) {
-                api.changeRoundState(record.id,2)
-                    .then(data => {
-                        console.log(record.id)
-                    })
-                this.getData()
-            },
             handleDelete(record) {
-                api.deleteProducing(record.id)
+                api.deletePlanRound(record.id)
                     .then(data => {
                         this.$notification.success({message: '成功', description: '删除成功', key: 'SUCCESS'})
                     })

@@ -58,14 +58,14 @@
           v-decorator="[
                 'goods',
                 {
-                // rules:[{required: true, message: '请选择客户姓名'}],
-                initialValue: record ? record.goods : null}
+                rules:[{required: true, message: '请选择商品'}],
+                initialValue: record ? record.good.id : null}
               ]">
           <a-select-option
             v-for="item in typeList"
-            :key="item.value"
-            :value="item.value">
-            {{ item.label }}
+            :key="item.id"
+            :value="item.id">
+            {{ item.name }}
           </a-select-option>
         </a-select>
       </a-form-item>
@@ -106,7 +106,7 @@
           v-decorator="[
                 'pickDate',
                 {
-                // rules: [{ type: 'object', required: true, message: '请输入开工日期' }],
+                 rules: [{ type: 'object', required: true, message: '请输入提货日期' }],
                  initialValue: isEdit ? record.pickDate : null}
               ]"></a-date-picker>
       </a-form-item>
@@ -118,7 +118,7 @@
           v-decorator="[
                 'state',
                 {rules:[{required: true, message: '请选择订单状态'}],
-                initialValue: record ? record.state : null}
+                initialValue: record ? record.state : 1}
               ]">
           <a-select-option :key="1" :value="1">待付款</a-select-option>
           <a-select-option :key="2" :value="2">进行中</a-select-option>
@@ -165,6 +165,10 @@
                 api.getCustomerInfoList()
                     .then(data => {
                         this.customList = data
+                    })
+                api.getProductList()
+                    .then(data => {
+                        this.typeList = data
                     })
                 if (this.isEdit) {
                     if (this.record.orderDate !== null) {

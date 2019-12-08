@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-card style="margin-bottom: 16px">
+    <a-card style="margin-bottom: 16px" title="收支统计图表">
       <a-row>
         <a-col
           :xs="{ span: 24 }"
@@ -16,132 +16,78 @@
       </a-row>
     </a-card>
     <a-card style="margin-bottom: 16px" title="收支统计表">
-      <a-row>
-        <a-col
-          class="item"
-          :xs="{ span: 24 }"
-          :sm="{ span: 12 }"
-          :xl="{ span: 4 }">
-          <a-button
-            type="primary"
-            icon="plus"
-            style="width: 100%;float:right;margin-bottom: 16px"
-            @click="handleCreate()">
-            新建
-          </a-button>
-        </a-col>
-      </a-row>
-      <!--<a-spin :spinning="status.listLoading">-->
+
       <a-table
         bordered
         :columns="columns"
-        :dataSource="orderList"
+        :dataSource="statisticsList"
         :scroll="{ x: 1300 }"
         rowKey="customer_id"
         :pagination="false">
-        <template slot="operation" slot-scope="text, record, index">
-          <a-button @click="handleEdit(record)">编辑</a-button>
-          <a-popconfirm
-            title="确认删除吗?"
-            @confirm="handleDelete(record)">
-            <a-button type="danger">删除</a-button>
-          </a-popconfirm>
-        </template>
       </a-table>
-      <!--</a-spin>-->
     </a-card>
   </div>
 </template>
 
 <script>
     import echarts from 'echarts'
-    import api from '../../api/sale'
+    import api from '../../api/finance'
     import {mapGetters} from 'vuex'
 
     const columns = [
         {
-            title: '订单编号',
-            dataIndex: 'order_id',
+            title: '月份',
+            dataIndex: 'month',
             width: '20%',
             align: 'center'
         }, {
-            title: '客户姓名',
-            dataIndex: 'customer_name',
+            title: '订单收入',
+            dataIndex: 'order_income',
             width: '10%',
             align: 'center'
         },
         {
-            title: '商品名称',
-            dataIndex: 'item_name.label',
+            title: '工资支出',
+            dataIndex: 'salary_outcome',
             width: '10%',
             align: 'center'
         }, {
-            title: '商品数量',
-            dataIndex: 'item_num',
+            title: '退款支出',
+            dataIndex: 'back_outcome',
             width: '10%',
             align: 'center'
         }, {
-            title: '订货日期',
-            dataIndex: 'order_date',
+            title: '原料采买支出',
+            dataIndex: 'purchase_outcome',
             width: '20%',
             align: 'center'
         }, {
-            title: '提货日期',
-            dataIndex: 'get_date',
+            title: '总收入',
+            dataIndex: 'total_income',
             width: '20%',
             align: 'center'
         }, {
-            title: '订单状态',
-            dataIndex: 'state',
+            title: '总支出',
+            dataIndex: 'total_outcome',
             width: '20%',
             align: 'center',
-            customRender: (text, record) => {
-                if (record.choice_D === '1')
-                    return '待付款'
-                else if (record.choice_D === '2')
-                    return '进行中'
-                else if (record.choice_D === '3')
-                    return '退货中'
-                else if (record.choice_D === '4')
-                    return '订单完成'
-                else if (record.choice_D === '5')
-                    return '退货完成'
-                else if (record.choice_D === '6')
-                    return '异常'
-            },
         },
         {
-            title: '处理人',
-            dataIndex: 'staff',
+            title: '利润',
+            dataIndex: 'profit',
             width: '20%',
             align: 'center'
-        },
-        {
-            title: '编辑',
-            dataIndex: 'operation',
-            align: 'center',
-            scopedSlots: {customRender: 'operation'}
-        }
-    ]
-    const orderList = [
-        {
-            order_id: '123',
-            customer_name: '123'
         }
     ]
     export default {
         name: "statistics",
-
-        props: {
-            id: Number
-        },
         data() {
             return {
                 status: {
                     listLoading: true,
                     tableLoading: true
                 },
-                qualityList: [],
+                qualityList: {},
                 not_num: '',
                 reply_num: '',
                 option1: {
@@ -161,17 +107,6 @@
                             textStyle: {
                                 fontSize: 14
                             },
-                            formatter: function (value) {
-                                var texts = [];
-                                if (value == "1") {
-                                    texts.push('市级');
-                                } else if (value == "2") {
-                                    texts.push('省级');
-                                } else if (value == "3") {
-                                    texts.push('国级');
-                                }
-                                return texts;
-                            }
                         }
                     },
                     series: [{
@@ -198,27 +133,30 @@
                     }]
                 },
                 charts: '',
-                opinion: ['收入', '支出'],
+                opinion: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
                 opinionData: [
-                    { value: 10, name: '待付款', itemStyle: { color: '#00b0f0' } },
-                    { value: 20, name: '进行中', itemStyle: { color: '#7030a0' } }
+                    {value: 10, name: '1月', itemStyle: {color: '#CAE1FF'}},
+                    {value: 10, name: '2月', itemStyle: {color: '#C0FF3E'}},
+                    {value: 10, name: '3月', itemStyle: {color: '#BFEFFF'}},
+                    {value: 10, name: '4月', itemStyle: {color: '#FFD700'}},
+                    {value: 10, name: '5月', itemStyle: {color: '#EEAEEE'}},
+                    {value: 10, name: '6月', itemStyle: {color: '#9ACD32'}},
+                    {value: 10, name: '7月', itemStyle: {color: '#EE7600'}},
+                    {value: 10, name: '8月', itemStyle: {color: '#836FFF'}},
+                    {value: 10, name: '9月', itemStyle: {color: '#FFC0CB'}},
+                    {value: 10, name: '10月', itemStyle: {color: '#00EE00'}},
+                    {value: 10, name: '11月', itemStyle: {color: '#CD3700'}},
+                    {value: 10, name: '12月', itemStyle: {color: '#00B2EE'}},
                 ],
-                modal: {
-                    record: null,
-                    visible: false,
-                    type: '1',
-                    order_id: this.id
-                },
                 columns,
-                orderList,
-                // project_id: this.projectSelected().id
+                statisticsList: [],
             }
         },
         mounted() {
             this.chart1 = echarts.init(document.getElementById('echartContainer'))
             this.chart1.setOption(this.option1, true)
             window.onresize = this.chart1.resize
-            //this.getData(),
+            this.getData()
             this.$nextTick(function () {
                 this.drawPie('main')
             })
@@ -226,47 +164,36 @@
         methods: {
             ...mapGetters(['projectSelected']),
             getData() {
-                api.getCustomerInfoList(this.project_id)
+                api.getStatisticsList()
                     .then(data => {
-                        data.order_date = new moment(data.order_date)
-                        data.get_date = new moment(data.get_date)
-                        this.orderList = data
-                        this.status.listLoading = false
-                    })
-                api.getQualityList(this.project_id)
-                    .then(data => {
-                        console.log(data)
-                        this.qualityList = data
-                        this.change()
-                        this.status.listLoading = false
-                    })
-                api.getSecurityNotice(this.project_id)
-                    .then(data => {
-                        this.not_num = data.not_num
-                        this.reply_num = data.reply_num
-                        this.opinionData[0].value=this.reply_num
-                        this.opinionData[1].value=this.not_num
+                        this.statisticsList = data
+                        var i = 0
+                        for (var item of this.statisticsList) {
+                            console.log(item)
+                            this.opinionData[i].value = item.profit
+                            i = i + 1
+                        }
                         this.$nextTick(function () {
                             this.drawPie('main')
                         })
                     })
+                api.getsumUp()
+                    .then(data => {
+                        this.qualityList = data
+                        console.log("qualityList")
+                        console.log(this.qualityList)
+                        this.change()
+                    })
             },
             change() {
-                var arrName = []
-                var arrProgress = []
-                for (var building of this.qualityList) {
-                    console.log(this.qualityList)
-                    console.log(building)
-                    arrName.push(building.name)
-                    arrProgress.push(building.awards)
-                }
-                // console.log(building)
-                // console.log(arrName)
-                // console.log(arrProgress)
                 this.chart1.setOption({
+                    title:{
+                        text:'总收支统计',
+                        left: 'center',
+                    },
                     tooltip: {},
                     xAxis: {
-                        data: arrName,
+                        data: ['总收入', '总支出'],
                         axisLabel: {
                             show: true,
                             textStyle: {
@@ -280,17 +207,6 @@
                             textStyle: {
                                 fontSize: 14
                             },
-                            formatter: function (value) {
-                                var texts = [];
-                                if (value == "1") {
-                                    texts.push('市级');
-                                } else if (value == "2") {
-                                    texts.push('省级');
-                                } else if (value == "3") {
-                                    texts.push('国级');
-                                }
-                                return texts;
-                            }
                         }
                     },
                     series: [{
@@ -302,7 +218,7 @@
                         name: '总计',
                         type: 'bar',
                         barWidth: 50,
-                        data: arrProgress,
+                        data: [this.qualityList.total_income,this.qualityList.total_outcome],
                         itemStyle: {
                             normal: {
                                 //每根柱子颜色设置
@@ -313,9 +229,13 @@
                 }, true)
 
             },
-            drawPie (id) {
+            drawPie(id) {
                 this.charts = echarts.init(document.getElementById(id))
                 this.charts.setOption({
+                    title: {
+                        text: '每月利润统计',
+                        left: 'center',
+                    },
                     tooltip: {
                         trigger: 'item',
                     },
@@ -326,7 +246,7 @@
                     },
                     series: [
                         {
-                            name: '百分比',
+                            name: '利润',
                             type: 'pie',
                             radius: ['0%', '70%'],
                             avoidLabelOverlap: false,

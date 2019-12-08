@@ -16,8 +16,8 @@
                       scrolling="no"></iframe>
             </a-row>
             <a-row>
-              <a-card title="工作统计" :bordered=true>
-                <p style="text-align: center">累计处理订单{{this.state4}}个</p>
+              <a-card title="提醒" :bordered=true>
+                <p style="text-align: center">已过期原料{{this.timeout}}个</p>
               </a-card>
             </a-row>
           </a-col>
@@ -74,11 +74,11 @@
         {
             title: '库存编号',
             dataIndex: 'id',
-            width: '20%',
+            width: '10%',
             align: 'center'
         }, {
-            title: '商品名称',
-            dataIndex: 'name',
+            title: '原料名称',
+            dataIndex: 'materialtotal.name',
             width: '10%',
             align: 'center'
         }, {
@@ -91,12 +91,6 @@
             dataIndex: 'timeprotect',
             width: '20%',
             align: 'center'
-        },
-        {
-            title: '编辑',
-            dataIndex: 'operation',
-            align: 'center',
-            scopedSlots: {customRender: 'operation'}
         }
     ]
     export default {
@@ -133,7 +127,7 @@
                     })
                 api.getOuttimeList()
                     .then(data => {
-                        console.log(data)
+                        //console.log(data)
                         this.outList = data
                     })
                 api.getIngredientStatistics()

@@ -87,24 +87,6 @@
           </a-select-option>
         </a-select>
       </a-form-item>
-      <a-form-item
-        label="客户累计消费"
-        v-bind="layout">
-        <a-input
-          type="number"
-          addonAfter="元"
-          v-decorator="[
-            'count',
-            {
-              rules: [
-                //{ max:32, message: '长度在32个汉字以内' }
-              ],
-              validateTrigger: 'blur',
-              initialValue: record ? record.count : null
-            }
-          ]">
-        </a-input>
-      </a-form-item>
     </a-form>
   </a-modal>
 </template>

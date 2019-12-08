@@ -59,13 +59,13 @@
                 'goods',
                 {
                 // rules:[{required: true, message: '请选择客户姓名'}],
-                initialValue: record ? record.goods : null}
+                initialValue: record ? record.good.id : null}
               ]">
           <a-select-option
             v-for="item in typeList"
-            :key="item.value"
-            :value="item.value">
-            {{ item.label }}
+            :key="item.id"
+            :value="item.id">
+            {{ item.name }}
           </a-select-option>
         </a-select>
       </a-form-item>

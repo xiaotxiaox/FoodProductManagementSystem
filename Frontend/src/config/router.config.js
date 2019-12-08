@@ -11,7 +11,7 @@ export const asyncRouterMap = [
         path: '/project',
         name: 'project',
         component: () => import(/* webpackChunkName: "project" */ '../views/project/Project'),
-        meta: {title: '项目列表', icon: 'table', permission: ['sale']}
+        meta: {title: '项目列表', icon: 'table', permission: ['project']}
       },
       {
         path: '/sale',
@@ -56,8 +56,7 @@ export const asyncRouterMap = [
         path: '/finance',
         name: 'finance',
         component: PageView,
-        // component: () => import(/* webpackChunkName: "project" */ '../views/project/Project'),
-        meta: {title: '财务部', icon: 'pay-circle', permission: ['sale']},
+        meta: {title: '财务部', icon: 'pay-circle', permission: ['finance']},
         children: [
           {
             path: '/gathering',
@@ -86,24 +85,42 @@ export const asyncRouterMap = [
         ]
       },
       {
-        path: '/finish',
-        name: 'finish',
+        path: '/ingredient',
+        name: 'ingredient',
         component: PageView,
-        meta: {title: '成品库部门', icon: 'home', permission: ['sale']},
+        meta: {title: '原材料库', icon: 'shopping-cart', permission: ['ingredient']},
         children: [
           {
-            path: '/batch',
-            name: 'batch',
-            component: () => import(/* webpackChunkName: "Implement" */ '../views/finish/batch'),
-            meta: {title: '批次管理'}
-          }
+            path: '/sum',
+            name: 'sum',
+            component: () => import(/* webpackChunkName: "Implement" */ '../views/ingredient/sum'),
+            meta: {title: '原材料总表'}
+          },
+          {
+            path: '/ingredientInventory',
+            name: 'ingredientInventory',
+            component: () => import(/* webpackChunkName: "Implement" */ '../views/ingredient/ingredientInventory'),
+            meta: {title: '原材料库存表'}
+          },
+          {
+            path: '/in',
+            name: 'in',
+            component: () => import(/* webpackChunkName: "Implement" */ '../views/ingredient/in'),
+            meta: {title: '原材料进货表'}
+          },
+          {
+            path: '/out',
+            name: 'out',
+            component: () => import(/* webpackChunkName: "Implement" */ '../views/ingredient/out'),
+            meta: {title: '原材料出库表'}
+          },
         ]
       },
       {
         path: '/plan',
         name: 'plan',
         component: PageView,
-        meta: {title: '生产计划科', icon: 'calendar', permission: ['sale']},
+        meta: {title: '生产计划科', icon: 'calendar', permission: ['plan']},
         children: [
           {
             path: '/productIngredient',
@@ -114,10 +131,24 @@ export const asyncRouterMap = [
           {
             path: '/productIngredientEdit/:id',
             name: 'productIngredientEdit',
-            prop:true,
+            props:true,
             hidden:true,
             component: () => import(/* webpackChunkName: "Implement" */ '../views/plan/productIngredientEdit'),
             meta: {title: '配料管理'}
+          },
+          {
+            path: '/producePlan',
+            name: 'producePlan',
+            component: () => import(/* webpackChunkName: "Implement" */ '../views/plan/producePlan'),
+            meta: {title: '生产计划制定'}
+          },
+          {
+            path: '/producePlanRound/:id',
+            name: 'producePlanRound',
+            props:true,
+            hidden:true,
+            component: () => import(/* webpackChunkName: "Implement" */ '../views/plan/producePlanRound'),
+            meta: {title: '批次分配'}
           }
         ]
       },
@@ -125,7 +156,7 @@ export const asyncRouterMap = [
         path: '/produceDepartment',
         name: 'produceDepartment',
         component: PageView,
-        meta: {title: '生产车间部门', icon: 'shop', permission: ['sale']},
+        meta: {title: '生产车间部门', icon: 'shop', permission: ['workshop']},
         children: [
           {
             path: '/factory',
@@ -146,38 +177,48 @@ export const asyncRouterMap = [
             meta: {title: '班组管理'}
           },
           {
+            path: '/temRound/:id',
+            name: 'teamRound',
+            props:true,
+            hidden:true,
+            component: () => import(/* webpackChunkName: "Implement" */ '../views/produceDepartment/teamRound'),
+            meta: {title: '批次分配'}
+          },
+          {
+            path: '/peiliao/:id',
+            name: 'peiliao',
+            props:true,
+            hidden:true,
+            component: () => import(/* webpackChunkName: "Implement" */ '../views/produceDepartment/peiliao'),
+            meta: {title: '所需配料清单'}
+          },
+          {
             path: '/producing',
             name: 'producing',
             component: () => import(/* webpackChunkName: "Implement" */ '../views/produceDepartment/producing'),
-            meta: {title: '生产管理'}
+            meta: {title: '成品检验'}
           },
         ]
       },
       {
-        path: '/ingredient',
-        name: 'ingredient',
+        path: '/finish',
+        name: 'finish',
         component: PageView,
-        meta: {title: '原材料库', icon: 'shopping-cart', permission: ['sale']},
+        meta: {title: '成品库部门', icon: 'home', permission: ['finish']},
         children: [
           {
-            path: '/sum',
-            name: 'sum',
-            component: () => import(/* webpackChunkName: "Implement" */ '../views/ingredient/sum'),
-            meta: {title: '原材料总表'}
-          },
-          {
-            path: '/ingredientInventory',
-            name: 'ingredientInventory',
-            component: () => import(/* webpackChunkName: "Implement" */ '../views/ingredient/ingredientInventory'),
-            meta: {title: '原材料库存表'}
-          },
+            path: '/batch',
+            name: 'batch',
+            component: () => import(/* webpackChunkName: "Implement" */ '../views/finish/batch'),
+            meta: {title: '成品批次管理'}
+          }
         ]
       },
       {
         path: '/staff',
         name: 'staff',
         component: RouteView,
-        meta: {title: '人事管理', icon: 'usergroup-add', permission: ['sale']},
+        meta: {title: '人事管理', icon: 'usergroup-add', permission: ['stuff']},
         children: [
           {
             path: '/servicer',
@@ -192,6 +233,20 @@ export const asyncRouterMap = [
             meta: {title: '部门管理者管理'}
           }
           ]
+      },
+      {
+        path: '/users',
+        name: 'users',
+        component: PageView,
+        meta: {title: '用户管理', icon: 'user', permission: ['stuff']},
+        children: [
+          {
+            path: '/addUser',
+            name: 'addUser',
+            component: () => import(/* webpackChunkName: "Implement" */ '../views/users/addUser'),
+            meta: {title: '新建用户'}
+          }
+        ]
       },
       {
         path: '/project/create',
@@ -227,376 +282,7 @@ export const asyncRouterMap = [
             component: () => import(/* webpackChunkName: "detail" */ '../views/detail/GPS'),
             meta: {title: '项目定位'},
           },
-          // {
-          //   path: '/map',
-          //   name: 'map',
-          //   component: () => import(/* webpackChunkName: "detail" */ '../views/detail/map'),
-          //   meta: { title: 'hahahah' },
-          // },
-          {
-            path: 'contact',
-            name: 'contact',
-            component: () => import(/* webpackChunkName: "detail" */ '../views/detail/Contact'),
-            meta: {title: '通讯录'}
-          }
         ]
-      },
-      {
-        path: '/decision',
-        name: 'decision',
-        component: () => import(/* webpackChunkName: "decision" */ '../views/decision/Decision'),
-        meta: {title: '项目决策', icon: 'audit', permission: ['decision', 'project_selected']}
-      },
-      {
-        path: '/decision/edit:id',
-        name: 'DecisionEdit',
-        hidden: true,
-        prop: true,
-        component: () => import(/* webpackChunkName: "decision" */ '../views/decision/DecisionEdit'),
-        meta: {title: '项目决策编辑', permission: ['decision', 'project_selected']}
-      },
-      {
-        path: '/decision/:id',
-        name: 'decisionDetail',
-        component: () => import(/* webpackChunkName: "decision" */ '../views/decision/DecisionDetail'),
-        props: true,
-        hidden: true,
-        meta: {title: '决策详情', permission: ['decision', 'project_selected']}
-      },
-      {
-        path: 'decisionFile/:id',
-        name: 'DecisionFile',
-        props: true,
-        hidden: true,
-        component: () => import(/* webpackChunkName: "setting" */ '../views/decision/DecisionFile'),
-        meta: {title: '项目决策文件详情', permission: ['decision', 'project_selected']}
-      },
-      {
-        path: '/implement',
-        name: 'implement',
-        component: PageView,
-        meta: {title: '项目实施', icon: 'tool', permission: ['implement', 'project_selected']},
-        children: [
-          {
-            path: 'application',
-            name: 'implementApplication',
-            component: () => import(/* webpackChunkName: "Implement" */ '../views/implement/application/Application'),
-            meta: {title: '报批报建'}
-          },
-          {
-            path: 'application/Edit',
-            name: 'implementApplicationEdit',
-            hidden: true,
-            component: () => import(/* webpackChunkName: "Implement" */ '../views/implement/application/ApplicationEdit'),
-            meta: {title: '报批报建修改'}
-          },
-          {
-            path: 'application/:id',
-            name: 'implementApplicationDetail',
-            component: () => import(/* webpackChunkName: "Implement" */ '../views/implement/application/ApplicationDetail'),
-            props: true,
-            hidden: true,
-            meta: {title: '报批报建详情'}
-          },
-          {
-            path: 'bid',
-            name: 'implementBid',
-            component: () => import(/* webpackChunkName: "Implement" */ '../views/implement/bid/Bid'),
-            meta: {title: '招标采购'}
-          },
-          {
-            path: 'bid/:id',
-            name: 'BidFileDetail',
-            props: true,
-            hidden: true,
-            component: () => import(/* webpackChunkName: "Implement" */ '../views/implement/bid/BidFileDetail'),
-            meta: {title: '招标文件'}
-          },
-          {
-            path: 'winBid/：id',
-            name: 'WinBidFileDetail',
-            props: true,
-            hidden: true,
-            component: () => import(/* webpackChunkName: "Implement" */ '../views/implement/bid/WinBidFileDetail'),
-            meta: {title: '中标文件'}
-          },
-          {
-            path: 'design',
-            name: 'implementDesign',
-            component: () => import(/* webpackChunkName: "Implement" */ '../views/implement/design/Design'),
-            meta: {title: '设计管理'}
-          },
-          {
-            path: '/paymentDetail',
-            name: 'paymentDetail',
-            props: true,
-            hidden: true,
-            component: () => import(/* webpackChunkName: "setting" */ '../views/implement/design/PaymentDetail'),
-            meta: {title: '设计管理支付详情'}
-          },
-          {
-            path: 'design/:id',
-            name: 'implementDesignDetail',
-            props: true,
-            hidden: true,
-            component: () => import(/* webpackChunkName: "Implement" */ '../views/implement/design/DesignDetail'),
-            meta: {title: '设计管理详情'}
-          },
-
-          {
-            path: 'design/account',
-            name: 'implementDesignAccountDetail',
-            props: true,
-            hidden: true,
-            component: () => import(/* webpackChunkName: "Implement" */ '../views/implement/design/DesignAccountDetail'),
-            meta: {title: '设计管理记账表'}
-          },
-          {
-            path: 'design/account:id',
-            name: 'paymentDetail',
-            props: true,
-            hidden: true,
-            component: () => import(/* webpackChunkName: "Implement" */ '../views/implement/design/PaymentDetail'),
-            meta: {title: '支付详情'}
-          },
-          {
-            path: '/invest',
-            name: 'implementInvest',
-            component: RouteView,
-            meta: {title: '投资管理'},
-            children: [
-              // {
-              //   path: 'invest_module',
-              //   name: 'investModule',
-              //   props: true,
-              //   component: () => import(/* webpackChunkName: "Implement" */ '../views/implement/invest/invest_module/invest_module'),
-              //   meta: { title: '投资模块分配' }
-              // },
-              {
-                path: 'account',
-                name: 'investAccount',
-                props: true,
-                component: () => import(/* webpackChunkName: "Implement" */ '../views/implement/invest/invest_account/invest_account'),
-                meta: {title: '台账'}
-              },
-              {
-                path: 'InvestTable',
-                name: 'investTable',
-                props: true,
-                component: () => import(/* webpackChunkName: "Implement" */ '../views/implement/invest/invest_table/invest_table'),
-                meta: {title: '项目总投资表'}
-              },
-              {
-                path: 'InvestTree',
-                name: 'investTree',
-                props: true,
-                component: () => import(/* webpackChunkName: "Implement" */ '../views/implement/invest/invest_tree/invest_new_tree'),
-                meta: {title: '动态投资树'}
-              },
-              {
-                path: '/accountChanges/1',
-                name: 'accountChangesFile1',
-                props: true,
-                hidden: true,
-                component: () => import(/* webpackChunkName: "setting" */ '../views/implement/invest/invest_account/investChangeDetail1'),
-                meta: {title: '变更台账附件详情'}
-              },
-              {
-                path: '/accountProcess',
-                name: 'accountProcessDetail',
-                props: true,
-                hidden: true,
-                component: () => import(/* webpackChunkName: "setting" */ '../views/implement/invest/invest_account/AccountProcessDetail'),
-                meta: {title: '进度款支付详情'}
-              },
-              {
-                path: '/accountProcessFile',
-                name: 'accountProcessFile',
-                props: true,
-                hidden: true,
-                component: () => import(/* webpackChunkName: "setting" */ '../views/implement/invest/invest_account/AccountProcessFile'),
-                meta: {title: '中标清单详情'}
-              },
-              {
-                path: '/accountChanges/2',
-                name: 'accountChangesFile2',
-                props: true,
-                hidden: true,
-                component: () => import(/* webpackChunkName: "setting" */ '../views/implement/invest/invest_account/investChangeDetail2'),
-                meta: {title: '变更台账合同详情'}
-              },
-              // {
-              //   path: 'distribution',
-              //   name: 'investDistribution',
-              //   props: true,
-              //   component: () => import(/* webpackChunkName: "Implement" */ '../views/implement/invest/invest_distribution/invest_distribution'),
-              //   meta: { title: '投资分配图表' }
-              // },
-
-            ]
-          },
-          {
-            path: '/progress',
-            component: RouteView,
-            meta: {title: '进度管理'},
-            children: [
-              {
-                path: 'build',
-                name: 'implementProgressBuild',
-                component: () => import(/* webpackChunkName: "Implement" */ '../views/implement/progress/Build'),
-                meta: {title: '形象进度'}
-              },
-              {
-                path: 'claim',
-                name: 'implementProgressClaim',
-                component: () => import(/* webpackChunkName: "Implement" */ '../views/implement/progress/Claim'),
-                meta: {title: '工期索赔'}
-              },
-              {
-                path: 'claimDetail/:id',
-                name: 'implementProgressClaimDetail',
-                hidden: true,
-                props: true,
-                component: () => import(/* webpackChunkName: "Implement" */ '../views/implement/progress/ClaimDetail'),
-                meta: {title: '附件详情'}
-              },
-              {
-                path: 'gantt',
-                name: 'implementProgressGantt',
-                props: true,
-                component: () => import(/* webpackChunkName: "Implement" */ '../views/implement/progress/Show'),
-                meta: {title: '施工进度图'}
-              },]
-          },
-          {
-            path: '/quality',
-            name: 'quality',
-            component: () => import(/* webpackChunkName: "Implement" */ '../views/implement/quality/Quality'),
-            meta: {title: '质量管理'}
-          },
-          {
-            path: 'security',
-            name: 'implementSecurity',
-            component: () => import(/* webpackChunkName: "Implement" */ '../views/implement/security/Security'),
-            meta: {title: '安全管理'}
-          },
-          {
-            path: 'securityDetail/:id',
-            name: 'implementSecurityDetail',
-            hidden: true,
-            props: true,
-            component: () => import(/* webpackChunkName: "Implement" */ '../views/implement/security/SecurityDetail'),
-            meta: {title: '安全管理文件'}
-          },
-          {
-            path: '/contract',
-            name: 'contract',
-            component: () => import(/* webpackChunkName: "Implement" */ '../views/implement/contract/Contract'),
-            meta: {title: '合同管理'}
-          },
-          {
-            path: 'contractChange/:id',
-            name: 'ChangeDetail',
-            props: true,
-            hidden: true,
-            component: () => import(/* webpackChunkName: "Implement" */ '../views/implement/contract/ChangeDetail'),
-            meta: {title: '工程变更文件'}
-          },
-          {
-            path: 'contractReview/:id',
-            name: 'ReviewDetail',
-            props: true,
-            hidden: true,
-            component: () => import(/* webpackChunkName: "Implement" */ '../views/implement/contract/ReviewDetail'),
-            meta: {title: '延期审查文件'}
-          },
-          {
-            path: 'contractProject/:id',
-            name: 'ContractDetail',
-            props: true,
-            hidden: true,
-            component: () => import(/* webpackChunkName: "Implement" */ '../views/implement/contract/ContractDetail'),
-            meta: {title: '工程合同文件'}
-          },
-          {
-            path: 'information',
-            name: 'implementInformation',
-            component: () => import(/* webpackChunkName: "Implement" */ '../views/implement/information/Information'),
-            meta: {title: '信息管理'}
-          },
-          {
-            path: 'information/edit/:id',
-            name: 'implementInformationEdit',
-            hidden: true,
-            component: () => import(/* webpackChunkName: "Implement" */ '../views/implement/information/InformationEdit'),
-            meta: {title: '信息管理修改'}
-          },
-          {
-            path: 'information/:id',
-            name: 'implementInformationDetail',
-            props: true,
-            hidden: true,
-            component: () => import(/* webpackChunkName: "Implement" */ '../views/implement/information/InformationDetail'),
-            meta: {title: '信息管理详情'}
-          },
-        ]
-      },
-      {
-        path: '/completion',
-        name: 'completion',
-        component: PageView,
-        meta: {title: '项目竣工', icon: 'audit', permission: ['completion', 'project_selected']},
-        children: [
-          {
-            path: '/completionDocument',
-            name: 'completionDocument',
-            component: () => import(/* webpackChunkName: "Implement" */ '../views/completion/Completion'),
-            meta: {title: '竣工文件管理',}
-          },
-          {
-            path: 'DocumentDetail/:id',
-            name: 'documentDetail',
-            component: () => import(/* webpackChunkName: "Implement" */ '../views/completion/CompletionDetail'),
-            props: true,
-            hidden: true,
-            meta: {title: '竣工文件详情'}
-          },
-          {
-            path: 'else',
-            name: 'else',
-            component: () => import(/* webpackChunkName: "Implement" */ '../views/completion/elseDetail/Else'),
-            meta: {title: '项目竣工详情'}
-          },
-          {
-            path: 'else/Edit',
-            name: 'elseEdit',
-            hidden: true,
-            component: () => import(/* webpackChunkName: "Implement" */ '../views/completion/elseDetail/ElseEdit'),
-            meta: {title: '竣工详情修改'}
-          },
-          {
-            path: 'else/:id',
-            name: 'elseDetail',
-            component: () => import(/* webpackChunkName: "Implement" */ '../views/completion/elseDetail/ElseDetail'),
-            props: true,
-            hidden: true,
-            meta: {title: '项目竣工详情'}
-          }
-        ]
-      },
-      {
-        path: '/videoTable',
-        name: 'VideoTable',
-        component: () => import(/* webpackChunkName: "decision" */ '../views/video/VideoTable'),
-        meta: {title: '项目视频', icon: 'audit', permission: ['video', 'project_selected']}
-      },
-      {
-        path: '/video:id',
-        name: 'video',
-        props: true,
-        hidden: true,
-        component: () => import(/* webpackChunkName: "decision" */ '../views/video/Video'),
-        meta: {title: '项目视频编辑', icon: 'audit', permission: ['video', 'project_selected']}
       },
       {
         path: '/setting',

@@ -11,8 +11,10 @@
     <a-form
       :form="form">
       <a-form-item
-        v-if="isEdit"
         label="编号"
+        v-if="isEdit"
+        :label-col="{span: 8}"
+        :wrapper-col="{span: 12}"
         v-bind="layout">
         <a-input
           type="number"
@@ -20,78 +22,82 @@
           v-decorator="[
             'id',
             {
+              rules:[
+                { required: true, message: '请输入客户编号' }
+              ],
               validateTrigger: 'blur',
-              initialValue: record ? record.id : null
+              initialValue: record ? record.id: null
             }
           ]">
         </a-input>
       </a-form-item>
       <a-form-item
-        label="批次编号"
-        v-bind="layout">
-        <a-input
-          type="number"
-          v-decorator="[
-            'producing',
-            {
-              validateTrigger: 'blur',
-              initialValue: record ? record.producing.id : null
-            }
-          ]">
-        </a-input>
-      </a-form-item>
-      <a-form-item
-        label="处理"
+        label="用户名"
+        :label-col="{span: 8}"
+        :wrapper-col="{span: 12}"
         v-bind="layout">
         <a-input
           type="text"
           v-decorator="[
-            'way',
+            'name',
             {
+              rules:[
+                { required: true, message: '请输入用户名' },
+                { max:16, message: '长度在16个汉字以内' }
+              ],
               validateTrigger: 'blur',
-              initialValue: record ? record.way : null
+              initialValue: record ? record.name: null
             }
           ]">
         </a-input>
       </a-form-item>
       <a-form-item
-        label="处理状态"
+        label="角色"
         v-bind="layout">
         <a-select
-          placeholder="请选择处理状态"
+          placeholder="请选择角色类型"
           v-decorator="[
-                'isHandle',
-                {rules:[{required: true, message: '请选择处理状态'}],
-                initialValue: record ? record.isHandle : 0}
+                'roleId',
+                {rules:[{required: true, message: '请选择角色类型'}],
+                initialValue: record ? record.role.id : null}
               ]">
-          <a-select-option :key="0" :value="0">未处理</a-select-option>
-          <a-select-option :key="1" :value="1">已处理</a-select-option>
+          <a-select-option
+            v-for="item in typeList"
+            :key="item.id"
+            :value="item.id">
+            {{ item.description }}
+          </a-select-option>
         </a-select>
       </a-form-item>
       <a-form-item
-        label="备注"
+        label="邮箱"
         v-bind="layout">
-        <a-textarea
-          type="text"
+        <a-input
+          type="email"
+          autocomplete="true"
+          placeholder="123456@163.com"
           v-decorator="[
-            'note',
-            {
-              validateTrigger: 'blur',
-              initialValue: record ? record.note : null
+                'email',
+                {rules: [
+                { required: true, message: '请输入邮箱地址' },
+                {
+              type: 'email', message: '请输入正确邮箱地址',
             }
-          ]">
-        </a-textarea>
+                 ],
+                 validateTrigger: 'blur',
+                 initialValue: record ? record.email : null}
+              ]">
+        </a-input>
       </a-form-item>
     </a-form>
   </a-modal>
 </template>
 
 <script>
-    import api from '../../../api/finish'
-    import {mapGetters} from 'vuex'
+    import api from '../../../api/setting'
 
     export default {
-        name: 'BatchModal',
+        name: 'UsersModal',
         props: {
             record: Object,
             visible: Boolean,
@@ -99,7 +105,6 @@
         },
         data() {
             return {
-                //project_id: this.projectSelected().id,
                 layout: {
                     'label-col': {span: 8},
                     'wrapper-col': {span: 12}
@@ -110,20 +115,28 @@
             }
         },
         mounted() {
+            this.getData();
         },
         methods: {
-            ...mapGetters(['projectSelected']),
+            getData(){
+                api.getSettingRoles()
+                    .then(data => {
+                        this.typeList = data
+                        console.log(this.typeList)
+                    })
+            },
             handleOk() {
                 this.form.validateFields((error, data) => {
                     if (!error) {
                         if (this.isEdit) {
-                            api.updateBatch(this.record.id, data)
+                            api.updateSettingUsersMatter(this.record.id, data)
                                 .then(data => {
+                                    console.log(data)
                                     this.$notification.success({message: '成功', description: '更新成功', key: 'SUCCESS'})
                                     this.$emit('close')
                                 })
                         } else {
-                            api.createOrder( data)
+                            api.createSettingUsersMatter(data)
                                 .then(data => {
                                     this.$notification.success({message: '成功', description: '新建成功', key: 'SUCCESS'})
                                     this.$emit('close')

@@ -2,9 +2,14 @@ import fetchAPI from '../utils/fetch'
 
 export default {
   //用户信息管理
-  getCustomerInfoList () {
-    return fetchAPI('sale/custom/', 'get', null)
+  getStatisticsList () {
+    return fetchAPI('finance/statistic', 'get', null)
   },
+  getsumUp () {
+    return fetchAPI('finance/statistic/sumUp', 'get', null)
+  },
+
+
   createCustomerInfo (data) {
     return fetchAPI('sale/custom/', 'post', data)
   },
@@ -32,7 +37,6 @@ export default {
     return fetchAPI('sale/order/', 'get', null)
   },
   getOrderSellList () {
-
     return fetchAPI('sale/order/sell', 'get', null)
   },
   getStatistics () {
@@ -61,5 +65,8 @@ export default {
   },
   deleteProduct (id) {
     return fetchAPI(`goods/${id}/`, 'delete')
+  },
+  getInList () {
+    return fetchAPI('material/getone', 'get', null)
   },
 }

@@ -24,7 +24,7 @@
       :xl="{ span: 4 }"
       style="text-align: center">
       <br>
-      <div>已经安全生产了</div>
+      <div>订单开始时间</div>
       <div :class="[{expire: isExpire}]"><span style="font-size: 26px">{{ safeDay }}</span> &nbsp;<span>天</span></div>
     </a-col>
   </a-row>

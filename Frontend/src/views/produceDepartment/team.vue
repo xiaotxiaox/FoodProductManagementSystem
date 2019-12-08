@@ -31,6 +31,9 @@
         :dataSource="teamList"
         rowKey="id"
         :pagination="false">
+        <template slot="round" slot-scope="text, record, index">
+          <a-button @click="$router.push({'name': 'teamRound', params: {id: record.id}})">查看任务</a-button>
+        </template>
         <template slot="operation" slot-scope="text, record, index">
           <a-button @click="handleEdit(record)">编辑</a-button>
           <a-popconfirm
@@ -40,7 +43,6 @@
           </a-popconfirm>
         </template>
       </a-table>
-      <!--</a-spin>-->
     </a-card>
   </div>
 </template>
@@ -78,6 +80,12 @@
       width: '20%',
       align: 'center'
     },
+      {
+          title: '查看任务',
+          dataIndex: 'round',
+          align: 'center',
+          scopedSlots: {customRender: 'round'}
+      },
     {
       title: '编辑',
       dataIndex: 'operation',

@@ -12,7 +12,7 @@
       :form="form">
       <a-form-item
         v-if="isEdit"
-        label="编号"
+        label="入库编号"
         :label-col="{span: 8}"
         :wrapper-col="{span: 12}"
         v-bind="layout">
@@ -23,7 +23,7 @@
             'id',
             {
               rules:[
-                { required: true, message: '请输入原料编号' },
+                { required: true, message: '请输入入库编号' },
               ],
               validateTrigger: 'blur',
               initialValue: record ? record.id: null
@@ -37,9 +37,9 @@
         <a-select
           placeholder="请选择原料名称"
           v-decorator="[
-                'material',
+                'materialtotal',
                 {rules:[{required: true, message: '请选择原料名称'}],
-                initialValue: record ? record.material.id : null}
+                initialValue: record ? record.materialtotal.id : null}
               ]">
           <a-select-option
             v-for="item in typeList"
@@ -50,56 +50,78 @@
         </a-select>
       </a-form-item>
       <a-form-item
-        label="原料用量"
+        label="采购数量"
         :label-col="{span: 8}"
         :wrapper-col="{span: 12}"
         v-bind="layout">
         <a-input
           type="number"
           v-decorator="[
-            'count',
+            'num',
             {
               rules:[
-                { required: true, message: '请输入原料用量' },
+                { required: true, message: '请输入采购数量' },
               ],
               validateTrigger: 'blur',
-              initialValue: record ? record.count: null
+              initialValue: record ? record.num: null
             }
           ]">
         </a-input>
       </a-form-item>
       <a-form-item
-        label="备注"
-        :label-col="{span: 8}"
-        :wrapper-col="{span: 12}"
+        v-if="isEdit"
+        label="进货时间"
         v-bind="layout">
-        <a-textarea
-          type="text"
+        <a-date-picker
+          style="width:100%"
           v-decorator="[
-            'note',
-            {
-              validateTrigger: 'blur',
-              initialValue: record ? record.note: null
-            }
-          ]">
-        </a-textarea>
+                'timeHandle',
+                {rules: [{ type: 'object', required: true, message: '请输入进货时间' }],
+                 initialValue: isEdit ? record.timeHandle : null}
+              ]">
+        </a-date-picker>
+      </a-form-item>
+      <a-form-item
+        label="保质期"
+        v-bind="layout">
+        <a-date-picker
+          style="width:100%"
+          v-decorator="[
+                'timeprotect',
+                {rules: [{ type: 'object', required: true, message: '请输入进货时间' }],
+                 initialValue: isEdit ? record.timeprotect : null}
+              ]">
+        </a-date-picker>
+      </a-form-item>
+      <a-form-item
+        label="申请状态"
+        v-bind="layout">
+        <a-select
+          placeholder="请选择申请状态"
+          v-decorator="[
+                'state',
+                {rules:[{required: true, message: '请选择员工性别'}],
+                initialValue: record ? record.state : null}
+              ]">
+          <a-select-option :key="1" :value="1">申请中</a-select-option>
+          <a-select-option :key="2" :value="2">已同意</a-select-option>
+          <a-select-option :key="3" :value="3">未同意</a-select-option>
+        </a-select>
       </a-form-item>
     </a-form>
   </a-modal>
 </template>
 
 <script>
-  import api from '../../../api/plan'
-  import api1 from '../../../api/ingredient'
-  import {mapGetters} from 'vuex'
+  import api from '../../../api/ingredient'
+  import moment from 'moment'
 
   export default {
-    name: 'IngredientModal',
+    name: 'InModal',
     props: {
       record: Object,
       visible: Boolean,
       type: String,
-        id:String
     },
     data() {
       return {
@@ -117,22 +139,33 @@
     },
     methods: {
         getData(){
-            api1.getSumList()
+            if (this.isEdit) {
+                if (this.record.timeHandle !== null) {
+                    this.record.timeHandle = new moment(this.record.timeHandle)
+                }
+                if (this.record.timeprotect !== null) {
+                    this.record.timeprotect = new moment(this.record.timeprotect)
+                }
+            }
+            api.getSumList()
                 .then(data => {
                     this.typeList = data
+                    console.log(this.typeList)
                 })
         },
       handleOk() {
         this.form.validateFields((error, data) => {
           if (!error) {
+              data.timeprotect = data.timeprotect.format('YYYY-MM-DD')
             if (this.isEdit) {
-              api.updateIngredient(this.record.id, data)
+                data.timeHandle = data.timeHandle.format('YYYY-MM-DD')
+              api.updateInbound(this.record.id, data)
                 .then(data => {
                   this.$notification.success({message: '成功', description: '更新成功', key: 'SUCCESS'})
                   this.$emit('close')
                 })
             } else {
-              api.createIngredient(this.id,data)
+              api.createInbound(data)
                 .then(data => {
                   this.$notification.success({message: '成功', description: '新建成功', key: 'SUCCESS'})
                   this.$emit('close')

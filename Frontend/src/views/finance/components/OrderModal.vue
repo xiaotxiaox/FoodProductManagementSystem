@@ -58,14 +58,14 @@
           v-decorator="[
                 'goods',
                 {
-                // rules:[{required: true, message: '请选择客户姓名'}],
-                initialValue: record ? record.goods : null}
+
+                initialValue: record ? record.good.id : null}
               ]">
           <a-select-option
             v-for="item in typeList"
-            :key="item.value"
-            :value="item.value">
-            {{ item.label }}
+            :key="item.id"
+            :value="item.id">
+            {{ item.name }}
           </a-select-option>
         </a-select>
       </a-form-item>
@@ -86,40 +86,7 @@
           ]">
         </a-input>
       </a-form-item>
-      <a-form-item
-        label="订单总金额"
-        v-bind="layout">
-        <a-input
-          type="number"
-          v-decorator="[
-            'totalCost',
-            {
-              rules: [
-             {required: true, message: '请输入商品数量'}
-              ],
-              validateTrigger: 'blur',
-              initialValue: record ? record.totalCost : null
-            }
-          ]">
-        </a-input>
-      </a-form-item>
-      <a-form-item
-        label="优惠后总金额"
-        v-bind="layout">
-        <a-input
-          type="number"
-          v-decorator="[
-            'discountCost',
-            {
-              rules: [
-             {required: true, message: '请输入商品数量'}
-              ],
-              validateTrigger: 'blur',
-              initialValue: record ? record.discountCost : null
-            }
-          ]">
-        </a-input>
-      </a-form-item>
+
       <a-form-item
         label="已付金额"
         v-bind="layout">
@@ -128,11 +95,8 @@
           v-decorator="[
             'paidMoney',
             {
-              rules: [
-             {required: true, message: '请输入商品数量'}
-              ],
               validateTrigger: 'blur',
-              initialValue: record ? record.paidMoney : null
+              initialValue: record ? record.paidMoney : 0
             }
           ]">
         </a-input>
@@ -144,7 +108,7 @@
           style="width:100%"
           v-decorator="[
                 'willDate',
-                {rules: [{ type: 'object', required: true, message: '请输入订货日期' }],
+                {
                  initialValue: isEdit ? record.willDate : null}
               ]">
         </a-date-picker>
@@ -157,7 +121,7 @@
           v-decorator="[
                 'finalDate',
                 {
-                // rules: [{ type: 'object', required: true, message: '请输入开工日期' }],
+
                  initialValue: isEdit ? record.finalDate : null}
               ]"></a-date-picker>
       </a-form-item>
@@ -169,7 +133,7 @@
           v-decorator="[
                 'state',
                 {rules:[{required: true, message: '请选择订单状态'}],
-                initialValue: record ? record.state : null}
+                initialValue: record ? record.state : 1}
               ]">
           <a-select-option :key="1" :value="1">待付款</a-select-option>
           <a-select-option :key="2" :value="2">进行中</a-select-option>
@@ -213,6 +177,10 @@
         methods: {
             ...mapGetters(['projectSelected']),
             getData() {
+                api.getProductList()
+                    .then(data => {
+                        this.typeList = data
+                    })
                 api.getCustomerInfoList()
                     .then(data => {
                         this.customList = data
