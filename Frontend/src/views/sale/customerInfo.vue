@@ -53,7 +53,7 @@
       {
           title: '客户编号',
           dataIndex: 'id',
-          width: '20%',
+          width: '10%',
           align: 'center'
       },
     {
@@ -64,7 +64,7 @@
     }, {
       title: '客户电话',
       dataIndex: 'telephone',
-      width: '30%',
+      width: '20%',
       align: 'center'
     },
     {
@@ -72,16 +72,11 @@
       dataIndex: 'type.type',
       width: '10%',
       align: 'center'
-    }, {
-      title: '客户累计购买量',
-      dataIndex: 'count',
-      width: '20%',
-      align: 'center'
     },
     {
       title: '处理人',
       dataIndex: 'user.name',
-      width: '20%',
+      width: '10%',
       align: 'center'
     },
     {

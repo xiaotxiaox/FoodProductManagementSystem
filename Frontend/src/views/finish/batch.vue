@@ -14,36 +14,27 @@
           :xs="{ span: 24 }"
           :sm="{ span: 24 }"
           :xl="{ span: 24 }">
-          <div style="width: 50%;height:100%;float: left">
-            <div id="echartContainer" style="width: 100%; height: 400px;"></div>
-          </div>
-          <div style="width: 50%;height:100%;float: right">
+          <div style="width: 100%;height:100%">
             <div id="main" style="width: 100%;height: 400px;"></div>
           </div>
         </a-col>
       </a-row>
     </a-card>
-    <a-card style="margin-bottom: 16px" title="成品批次表">
-      <a-row>
-        <a-col
-          class="item"
-          :xs="{ span: 24 }"
-          :sm="{ span: 12 }"
-          :xl="{ span: 4 }">
-          <a-button
-            type="primary"
-            icon="plus"
-            style="width: 100%;float:right;margin-bottom: 16px"
-            @click="handleCreate()">
-            新建
-          </a-button>
-        </a-col>
-      </a-row>
-      <!--<a-spin :spinning="status.listLoading">-->
+    <a-card style="margin-bottom: 16px" title="合格成品批次表">
       <a-table
         bordered
-        :columns="columns"
+        :columns="columns1"
         :dataSource="batchList"
+        :scroll="{ x: 1300 }"
+        rowKey="batch_id"
+        :pagination="false">
+      </a-table>
+    </a-card>
+    <a-card style="margin-bottom: 16px" title="不合格成品批次表">
+      <a-table
+        bordered
+        :columns="columns2"
+        :dataSource="disqualifiedList"
         :scroll="{ x: 1300 }"
         rowKey="batch_id"
         :pagination="false">
@@ -56,7 +47,6 @@
           </a-popconfirm>
         </template>
       </a-table>
-      <!--</a-spin>-->
     </a-card>
   </div>
 </template>
@@ -66,34 +56,70 @@
     import BatchModal from './components/BatchModal'
     import api from '../../api/finish'
     import moment from 'moment'
-    import {mapGetters} from 'vuex'
 
-    const columns = [
+    const columns1 = [
         {
-            title: '批次编号',
+            title: '编号',
             dataIndex: 'id',
-            width: '20%',
+            width: '10%',
             align: 'center'
         }, {
-            title: '商品名称',
-            dataIndex: 'goodsname',
+            title: '批次编号',
+            dataIndex: 'producing.id',
             width: '10%',
             align: 'center'
         },
         {
-            title: '商品数量',
-            dataIndex: 'goodsnum',
-            width: '10%',
-            align: 'center'
-        }, {
-            title: '成品时间',
-            dataIndex: 'timefinish',
-            width: '10%',
-            align: 'center'
-        }, {
-            title: '保质期',
-            dataIndex: 'timeprotect',
+            title: '完成时间',
+            dataIndex: 'producing.produceDate',
             width: '20%',
+            align: 'center'
+        },
+        {
+            title: '处理人',
+            dataIndex: 'user.name',
+            width: '10%',
+            align: 'center'
+        }
+    ]
+    const columns2 = [
+        {
+            title: '编号',
+            dataIndex: 'id',
+            width: '20%',
+            align: 'center'
+        }, {
+            title: '批次编号',
+            dataIndex: 'producing.id',
+            width: '10%',
+            align: 'center'
+        },
+        {
+            title: '完成时间',
+            dataIndex: 'producing.produceDate',
+            width: '10%',
+            align: 'center'
+        }, {
+            title: '处理方式',
+            dataIndex: 'way',
+            width: '10%',
+            align: 'center'
+        }, {
+            title: '是否处理',
+            dataIndex: 'isHandle',
+            customRender: (text, record) => {
+                if (record.isHandle === 0)
+                    return "未处理"
+                else if (record.isHandle === 1)
+                    return '已处理'
+            },
+            width: '20%',
+            align: 'center'
+        },
+        {
+            title: '备注',
+            dataIndex: 'note',
+            width: '10%',
             align: 'center'
         },
         {
@@ -111,11 +137,8 @@
     ]
     export default {
         name: "batch",
-        components:{
+        components: {
             BatchModal
-        },
-        props: {
-            id: Number
         },
         data() {
             return {
@@ -126,64 +149,11 @@
                 qualityList: [],
                 not_num: '',
                 reply_num: '',
-                option1: {
-                    tooltip: {},
-                    xAxis: {
-                        data: [],
-                        axisLabel: {
-                            show: true,
-                            textStyle: {
-                                fontSize: 20
-                            }
-                        }
-                    },
-                    yAxis: {
-                        axisLabel: {
-                            show: true,
-                            textStyle: {
-                                fontSize: 14
-                            },
-                            formatter: function (value) {
-                                var texts = [];
-                                if (value == "1") {
-                                    texts.push('市级');
-                                } else if (value == "2") {
-                                    texts.push('省级');
-                                } else if (value == "3") {
-                                    texts.push('国级');
-                                }
-                                return texts;
-                            }
-                        }
-                    },
-                    series: [{
-                        label: {
-                            textStyle: {
-                                fontSize: 50
-                            }
-                        },
-                        name: '奖项',
-                        type: 'bar',
-                        barWidth: 50,
-                        data: [1, 2, 3, 3],
-                        itemStyle: {
-                            normal: {
-                                //每根柱子颜色设置
-                                color: function (params) {
-                                    let colorList = [
-                                        '#00B0F0'
-                                    ]
-                                    return colorList[params.dataIndex]
-                                }
-                            }
-                        }
-                    }]
-                },
                 charts: '',
-                opinion: ['收入', '支出'],
+                opinion: ['合格产品', '不合格产品'],
                 opinionData: [
-                    { value: 10, name: '待付款', itemStyle: { color: '#00b0f0' } },
-                    { value: 20, name: '进行中', itemStyle: { color: '#7030a0' } }
+                    { value: 10, name: '合格产品', itemStyle: { color: '#00b0f0' } },
+                    { value: 20, name: '不合格产品', itemStyle: { color: '#7030a0' } }
                 ],
                 modal: {
                     record: null,
@@ -191,42 +161,37 @@
                     type: '1',
                     id: this.id
                 },
-                columns,
+                columns1,
+                columns2,
                 batchList:[],
-                // project_id: this.projectSelected().id
+                disqualifiedList:[]
             }
         },
         mounted() {
-            this.chart1 = echarts.init(document.getElementById('echartContainer'))
-            this.chart1.setOption(this.option1, true)
-            window.onresize = this.chart1.resize
-            this.getData(),
+            this.getData()
             this.$nextTick(function () {
                 this.drawPie('main')
             })
         },
         methods: {
             getData() {
-                api.getBatchList(this.project_id)
+                api.getBatchList()
                     .then(data => {
-                        data.timefinish = new moment(data.timefinish)
                         console.log(data)
                         this.batchList = data
-                        this.status.listLoading = false
                     })
-                api.getQualityList(this.project_id)
+                api.getDisqualifiedList()
                     .then(data => {
                         console.log(data)
-                        this.qualityList = data
-                        this.change()
-                        this.status.listLoading = false
+                        this.disqualifiedList = data
                     })
-                api.getSecurityNotice(this.project_id)
+                api.getSecurityNotice()
                     .then(data => {
-                        this.not_num = data.not_num
-                        this.reply_num = data.reply_num
+                        this.not_num = data.qualified
+                        this.reply_num = data.unqualified
                         this.opinionData[0].value=this.reply_num
                         this.opinionData[1].value=this.not_num
+                        console.log(data)
                         this.$nextTick(function () {
                             this.drawPie('main')
                         })
@@ -307,7 +272,7 @@
                     },
                     series: [
                         {
-                            name: '百分比',
+                            name: '数量',
                             type: 'pie',
                             radius: ['0%', '70%'],
                             avoidLabelOverlap: false,

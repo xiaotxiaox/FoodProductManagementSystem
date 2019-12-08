@@ -1,18 +1,33 @@
 <template>
   <div>
-    <producing-modal
+    <produce-plan-modal
       :record="modal.record"
       :visible="modal.visible"
       :type="modal.type"
       :id="modal.id"
       v-if="modal.visible"
       @close="handleClose()">
-    </producing-modal>
-    <a-card style="margin-bottom: 16px" title="待检验产品表">
+    </produce-plan-modal>
+    <a-card style="margin-bottom: 16px" title="生产计划管理表">
+      <a-row>
+        <a-col
+          class="item"
+          :xs="{ span: 24 }"
+          :sm="{ span: 12 }"
+          :xl="{ span: 4 }">
+          <a-button
+            type="primary"
+            icon="plus"
+            style="width: 100%;float:right;margin-bottom: 16px"
+            @click="handleCreate()">
+            新建生产计划
+          </a-button>
+        </a-col>
+      </a-row>
       <a-table
         bordered
         :columns="columns"
-        :dataSource="producingList"
+        :dataSource="planList"
         rowKey="id"
         :pagination="false">
         <template slot="operation" slot-scope="text, record, index">
@@ -23,57 +38,56 @@
             <a-button type="danger">删除</a-button>
           </a-popconfirm>
         </template>
-        <template slot="state" slot-scope="text, record, index">
-          <a-button @click="qualified(record)" type="primary" style="margin-bottom: 6px">检验合格</a-button>
-          <a-popconfirm
-            title="确认改批次产品不合格吗?"
-            @confirm="disqualified(record)">
-            <a-button type="danger">检验不合格</a-button>
-          </a-popconfirm>
+        <template slot="ingredient" slot-scope="text, record, index">
+          <a-button @click="$router.push({'name': 'producePlanRound', params: {id: record.id}})">分配批次</a-button>
         </template>
       </a-table>
-      <!--</a-spin>-->
     </a-card>
   </div>
 </template>
 
 <script>
-    import ProducingModal from './components/ProducingModal'
-    import api from '../../api/produceDepartment'
-
+    import ProducePlanModal from './components/ProducePlanModal'
+    import api from '../../api/plan'
+    import moment from 'moment'
     const columns = [
         {
-            title: '流水编号',
+            title: '生产计划编号',
             dataIndex: 'id',
-            width: '20%',
-            align: 'center'
-        },
-        {
-            title: '对应批次编号',
-            dataIndex: 'round.id',
-            width: '20%',
-            align: 'center'
-        },
-        {
-            title: '对应批次名称',
-            dataIndex: 'round.name',
-            width: '20%',
+            width: '10%',
             align: 'center'
         },
         {
             title: '商品名称',
-            dataIndex: 'good.name',
-            width: '20%',
+            dataIndex: 'goods.name',
+            width: '10%',
             align: 'center'
         }, {
-            title: '商品数量',
-            dataIndex: 'goodCount',
-            width: '20%',
+            title: '计划生产数量',
+            dataIndex: 'neednum',
+            width: '10%',
             align: 'center'
-        }, {
-            title: '完成日期',
-            dataIndex: 'produceDate',
-            width: '30%',
+        },{
+            title: '计量单位',
+            dataIndex: 'goods.unit',
+            width: '10%',
+            align: 'center'
+        },{
+            title: '创建计划时间',
+            dataIndex: 'timecreate',
+            width: '15%',
+            align: 'center'
+        },
+        {
+            title: '开始生产时间',
+            dataIndex: 'timeproduce',
+            width: '15%',
+            align: 'center'
+        },
+        {
+            title: '计划结束时间',
+            dataIndex: 'timelastest',
+            width: '15%',
             align: 'center'
         },
         {
@@ -83,22 +97,25 @@
             align: 'center'
         },
         {
-            title: '检验',
-            dataIndex: 'state',
+            title: '编辑',
+            dataIndex: 'ingredient',
             align: 'center',
-            scopedSlots: {customRender: 'state'}
+            scopedSlots: {customRender: 'ingredient'}
         },
-        // {
-        //   title: '编辑',
-        //   dataIndex: 'operation',
-        //   align: 'center',
-        //   scopedSlots: {customRender: 'operation'}
-        // }
+        {
+            title: '编辑',
+            dataIndex: 'operation',
+            align: 'center',
+            scopedSlots: {customRender: 'operation'}
+        }
     ]
     export default {
-        name: "producing",
+        name: "producePlan",
         components: {
-            ProducingModal
+            ProducePlanModal
+        },
+        props: {
+            id: Number
         },
         data() {
             return {
@@ -113,18 +130,20 @@
                     id: this.id
                 },
                 columns,
-                producingList: [],
+                planList:[],
             }
         },
-        mounted() {
+        mounted(){
             this.getData()
         },
         methods: {
-            getData() {
-                api.getProducingList()
+            getData(){
+                api.getPlanList()
                     .then(data => {
-                        console.log(data)
-                        this.producingList = data
+                        data.timeCreate = new moment(data.timeCreate)
+                        data.timelastest = new moment(data.timelastest)
+                        data.timeproduce = new moment(data.timeproduce)
+                        this.planList = data
                     })
             },
             handleClose() {
@@ -143,22 +162,8 @@
                 this.modal.record = record
                 this.modal.visible = true
             },
-            qualified(record) {
-                api.changeRoundState(record.id,1)
-                    .then(data => {
-                        console.log(record.id)
-                    })
-                this.getData()
-            },
-            disqualified(record) {
-                api.changeRoundState(record.id,2)
-                    .then(data => {
-                        console.log(record.id)
-                    })
-                this.getData()
-            },
             handleDelete(record) {
-                api.deleteProducing(record.id)
+                api.deletePlan(record.id)
                     .then(data => {
                         this.$notification.success({message: '成功', description: '删除成功', key: 'SUCCESS'})
                     })

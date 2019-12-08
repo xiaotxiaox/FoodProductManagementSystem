@@ -93,7 +93,7 @@
             align: 'center'
         }, {
             title: '商品名称',
-            dataIndex: 'goods',
+            dataIndex: 'good.name',
             width: '10%',
             align: 'center'
         }, {
@@ -102,11 +102,6 @@
             width: '10%',
             align: 'center'
         }, {
-            title: '优惠后订单金额',
-            dataIndex: 'discountCost',
-            width: '10%',
-            align: 'center'
-        },{
             title: '已付金额',
             dataIndex: 'paidMoney',
             width: '10%',

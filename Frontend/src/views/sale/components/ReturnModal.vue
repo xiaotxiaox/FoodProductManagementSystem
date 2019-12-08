@@ -59,13 +59,13 @@
                 'goods',
                 {
                 // rules:[{required: true, message: '请选择客户姓名'}],
-                initialValue: record ? record.goods : null}
+                initialValue: record ? record.good.id : null}
               ]">
           <a-select-option
             v-for="item in typeList"
-            :key="item.value"
-            :value="item.value">
-            {{ item.label }}
+            :key="item.id"
+            :value="item.id">
+            {{ item.name }}
           </a-select-option>
         </a-select>
       </a-form-item>
@@ -82,40 +82,6 @@
               ],
               validateTrigger: 'blur',
               initialValue: record ? record.count : null
-            }
-          ]">
-        </a-input>
-      </a-form-item>
-      <a-form-item
-        label="优惠后订单金额"
-        v-bind="layout">
-        <a-input
-          type="number"
-          v-decorator="[
-            'discountCost',
-            {
-              rules: [
-             {required: true, message: '请输入商品数量'}
-              ],
-              validateTrigger: 'blur',
-              initialValue: record ? record.discountCost : null
-            }
-          ]">
-        </a-input>
-      </a-form-item>
-      <a-form-item
-        label="已付金额"
-        v-bind="layout">
-        <a-input
-          type="number"
-          v-decorator="[
-            'paidMoney',
-            {
-              rules: [
-             {required: true, message: '请输入已付金额'}
-              ],
-              validateTrigger: 'blur',
-              initialValue: record ? record.paidMoney : null
             }
           ]">
         </a-input>

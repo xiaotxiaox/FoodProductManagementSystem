@@ -11,105 +11,86 @@
 
     <a-card>
       <template slot="title">
-        <span style="font-size: 18px;">项目信息</span>
+        <span style="font-size: 18px;">订单详情</span>
       </template>
       <a-row>
         <a-col
           class="item"
           v-bind="layout">
-          <span class="label">项目名称:</span>{{ project.name }}
+          <span class="label">订单编号:</span>{{ project.id }}
         </a-col>
         <a-col
           class="item"
           v-bind="layout">
-          <span class="label">项目编号:</span>{{ project.id }}
+          <span class="label">客户姓名:</span>{{ project.custom.name }}
         </a-col>
         <a-col
           class="item"
           v-bind="layout">
-          <span class="label">建设地点:</span>{{ project.place }}
+          <span class="label">客户联系方式:</span>{{ project.custom.telephone }}
         </a-col>
         <a-col
           class="item"
           v-bind="layout">
-          <span class="label">工程规模:</span>{{ project.scale }}
+          <span class="label">商品名称:</span>{{ project.good.name }}
         </a-col>
         <a-col
           class="item"
           v-bind="layout">
-          <span class="label">性质:</span>{{ project.property }}
+          <span class="label">订货数量:</span>{{ project.count }}
         </a-col>
         <a-col
           class="item"
           v-bind="layout">
-          <span class="label">用途:</span>{{ project.purpose}}
+          <span class="label">订货日期:</span>{{ project.orderDate}}
         </a-col>
         <a-col
           class="item"
           v-bind="layout">
-          <span class="label">资金来源:</span><span v-for="item in project.fund_sources">{{ item.label }} </span>
+          <span class="label">提货日期:</span>{{ project.pickDate }}
         </a-col>
         <a-col
           class="item"
           v-bind="layout">
-          <span class="label">结构形式:</span>{{ project.style}}
+          <span class="label">总金额:</span>{{ project.totalCost}}元
         </a-col>
         <a-col
           class="item"
           v-bind="layout">
-          <span class="label">总建筑面积:</span>{{ project.area }}平方米
+          <span class="label">优惠后总金额:</span>{{ project.discountCost }}元
         </a-col>
         <a-col
           class="item"
           v-bind="layout">
-          <span class="label">开工日期:</span>{{ project.starting_date }}
+          <span class="label">已付金额:</span>{{ project.paidMoney }}元
         </a-col>
         <a-col
           class="item"
           v-bind="layout">
-          <span class="label">预计竣工日期:</span>{{ project.finishing_date }}
+          <span class="label">预付款日期:</span>{{ project.willDate }}
         </a-col>
         <a-col
           class="item"
           v-bind="layout">
-          <span class="label">工程总造价:</span>{{ project.cost }}
+          <span class="label">结款日期:</span>{{ project.finalDate }}
         </a-col>
         <a-col
           class="item"
           v-bind="layout">
-          <span class="label">投资额:</span>{{ project.investment }}
+          <span class="label">订单状态:</span>{{ project.state }}
         </a-col>
         <a-col
           class="item"
           v-bind="layout">
-          <span class="label">施工条件:</span>{{ project.condition }}
+          <span class="label">退款日期:</span>{{ project.backDate }}
         </a-col>
         <a-col
           class="item"
           v-bind="layout">
-          <span class="label">项目简介:</span>{{ project.introduction }}
+          <span class="label">退款同意日期:</span>{{ project.backAgreeDate }}
         </a-col>
       </a-row>
     </a-card>
-    <a-button
-      type="primary"
-      class="btn"
-      @click="$router.push({name: 'gps'})">
-      项目定位
-    </a-button>
-    <a-button
-      type="primary"
-      class="btn"
-      @click="$router.push({name: 'projectEdit'})">
-      编辑
-    </a-button>
-    <a-popconfirm title="是否完成了工程?" @confirm="handleFinish" okText="确定" cancelText="取消">
-      <a-button
-        type="danger"
-        class="btn">
-        竣工
-      </a-button>
-    </a-popconfirm>
   </a-card>
   <a-card v-else>
     <a-skeleton active/>
@@ -146,6 +127,18 @@
             if (data.investment) {
               data.investment += '万元'
             }
+              if (data.state === 1)
+                  data.state='待付款'
+              else if (data.state === 2)
+                  data.state='进行中'
+              else if (data.state === 3)
+                  data.state='退货中'
+              else if (data.state === 4)
+                  data.state='订单完成'
+              else if (data.state === 5)
+                  data.state='退货完成'
+              else if (data.state === 6)
+                  data.state='异常'
             console.log(data)
             this.project = data
           })

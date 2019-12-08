@@ -2,7 +2,7 @@ import fetchAPI from '../utils/fetch'
 
 export default {
   getSettingUsers () {
-    return fetchAPI('user/list/', 'get')
+    return fetchAPI('user/get/', 'get')
   },
    updateSettingUsers (users_id, data) {
     return fetchAPI(`user/${users_id}/`, 'put', data)
@@ -14,20 +14,20 @@ export default {
     return fetchAPI(`user/${id}/`, 'get')
   },
   updateSettingUsersMatter (id, data) {
-    return fetchAPI(`user/${id}/`, 'put', data)
+    return fetchAPI(`user/put/${id}/`, 'put', data)
   },
   udPswSettingUsersMatter (id, data) {
-    return fetchAPI(`user/${id}/resetPassword/`, 'post', data)
+    return fetchAPI(`user/changePassword/${id}/`, 'put', data)
   },
   createSettingUsersMatter (data) {
-    return fetchAPI('user/create/', 'post', data)
+    return fetchAPI('user/register/', 'post', data)
   },
   //roles
    getSettingRolesMatterList () {
     return fetchAPI('user/role/', 'get', null)
   },
   getSettingRoles () {
-    return fetchAPI(`user/role/`, 'get')
+    return fetchAPI(`stuff/role/`, 'get')
   },
   updateSettingRoles(roles_id, data) {
     return fetchAPI(`user/role/${roles_id}/`, 'put', data)

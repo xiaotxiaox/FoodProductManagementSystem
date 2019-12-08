@@ -56,7 +56,6 @@
           </a-button>
         </a-col>
       </a-row>
-      <!--<a-spin :spinning="status.listLoading">-->
       <a-table
         bordered
         :columns="columns"
@@ -68,7 +67,6 @@
           <a-button @click="handleEdit(record)">处理</a-button>
         </template>
       </a-table>
-      <!--</a-spin>-->
     </a-card>
   </div>
 </template>
@@ -94,7 +92,7 @@
         },
         {
             title: '商品名称',
-            dataIndex: 'goods',
+            dataIndex: 'good.name',
             width: '10%',
             align: 'center'
         }, {

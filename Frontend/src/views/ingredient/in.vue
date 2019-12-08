@@ -30,7 +30,7 @@
         :columns="columns"
         :dataSource="inList"
         :scroll="{ x: 1300 }"
-        rowKey="customer_id"
+        rowKey="id"
         :pagination="false">
         <template slot="operation" slot-scope="text, record, index">
           <a-button @click="handleEdit(record)">编辑</a-button>
@@ -50,7 +50,6 @@
     import InModal from './components/InModal'
     import api from '../../api/ingredient'
     import moment from 'moment'
-    import {mapGetters} from 'vuex'
 
     const columns = [
         {
@@ -59,58 +58,50 @@
             width: '20%',
             align: 'center'
         }, {
-            title: '商品名称',
-            dataIndex: 'name',
+            title: '原料名称',
+            dataIndex: 'materialtotal.name',
             width: '20%',
             align: 'center'
-        }, {
-            title: '性别',
-            dataIndex: 'gender',
-            width: '20%',
-            align: 'center',
-            customRender: (text, record) => {
-                if (record.gender === 1)
-                    return '男'
-                else if (record.gender === 2)
-                    return '女'
-            },
-        }, {
-            title: '工作部门',
-            dataIndex: 'department',
-            width: '10%',
-            align: 'center',
-            customRender: (text, record) => {
-                if (record.department === 1)
-                    return "销售部"
-                else if (record.department === 2)
-                    return '财务部'
-                else if (record.department === 3)
-                    return '成品库部门'
-                else if (record.department === 4)
-                    return '生产计划科'
-                else if (record.department === 5)
-                    return '生产车间部门'
-                else if (record.department === 6)
-                    return '原材料库'
-                else if (record.department === 7)
-                    return '人事部'
-            },
         },
         {
-            title: '入职时间',
-            dataIndex: 'timein',
+            title: '采购数量',
+            dataIndex: 'num',
             width: '10%',
             align: 'center'
         }, {
-            title: '工资',
-            dataIndex: 'pay',
+            title: '总计花费',
+            dataIndex: 'totalPrice',
             width: '10%',
             align: 'center'
         }, {
-            title: '电话号码',
-            dataIndex: 'phone',
+            title: '申请日期',
+            dataIndex: 'timeApply',
+            width: '10%',
+            align: 'center'
+        }, {
+            title: '进货日期',
+            dataIndex: 'timeHandle',
             width: '20%',
             align: 'center'
+        },{
+            title: '保质期',
+            dataIndex: 'timeprotect',
+            width: '20%',
+            align: 'center'
+        },
+        {
+            title: '申请状态',
+            dataIndex: 'state',
+            width: '10%',
+            align: 'center',
+            customRender: (text, record) => {
+                if (record.state === 1)
+                    return "申请中"
+                else if (record.state === 2)
+                    return '已同意'
+                else if (record.state === 3)
+                    return '未同意'
+            },
         },
         {
             title: '处理人',
@@ -126,12 +117,9 @@
         }
     ]
     export default {
-        name: "servicer",
+        name: "in",
         components: {
-            ServicerModal
-        },
-        props: {
-            id: Number
+            InModal
         },
         data() {
             return {
@@ -146,27 +134,23 @@
                     id: this.id
                 },
                 columns,
-                staffList: [],
+                inList: [],
             }
         },
         mounted() {
             this.getData()
         },
         methods: {
-            ...mapGetters(['projectSelected']),
             getData() {
-                api.getServicerList()
+                api.getInList()
                     .then(data => {
-                        console.log(data)
-                        data.timein = new moment(data.timein)
-                        console.log(data)
-                        this.staffList = data
-                        this.status.listLoading = false
-                        console.log(1)
+                        data.timeApply = new moment(data.timeApply)
+                        data.timeHandle = new moment(data.timeHandle)
+                        data.timeprotect = new moment(data.timeprotect)
+                        this.inList = data
                     })
             },
             handleClose() {
-
                 this.modal.type = ''
                 this.modal.record = null
                 this.modal.visible = false
@@ -183,7 +167,7 @@
                 this.modal.visible = true
             },
             handleDelete(record) {
-                api.deleteServicer(record.id)
+                api.deleteInbound(record.id)
                     .then(data => {
                         this.$notification.success({message: '成功', description: '删除成功', key: 'SUCCESS'})
                     })

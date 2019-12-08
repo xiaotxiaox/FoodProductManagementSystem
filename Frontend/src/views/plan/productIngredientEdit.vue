@@ -4,7 +4,7 @@
       :record="modal.record"
       :visible="modal.visible"
       :type="modal.type"
-      :ingredient_id="modal.ingredient_id"
+      :id="modal.id"
       v-if="modal.visible"
       @close="handleClose()">
     </ingredient-modal>
@@ -47,24 +47,38 @@
 
 <script>
     import IngredientModal from './components/IngredientModal'
-    import api from '../../api/sale'
-    import {mapGetters} from 'vuex'
+    import api from '../../api/plan'
     const columns = [
         {
-            title: '原料编号',
+            title: '编号',
             dataIndex: 'id',
-            width: '20%',
+            width: '10%',
             align: 'center'
         },
         {
             title: '原料名称',
-            dataIndex: 'name',
+            dataIndex: 'material.name',
             width: '20%',
             align: 'center'
         }, {
-            title: '原料数量',
-            dataIndex: 'discount',
-            width: '30%',
+            title: '供货商',
+            dataIndex: 'material.purchaser',
+            width: '20%',
+            align: 'center'
+        }, {
+            title: '原料用量',
+            dataIndex: 'count',
+            width: '10%',
+            align: 'center'
+        },{
+            title: '计量单位',
+            dataIndex: 'material.unit',
+            width: '10%',
+            align: 'center'
+        },{
+            title: '备注',
+            dataIndex: 'note',
+            width: '10%',
             align: 'center'
         },
         {
@@ -80,7 +94,7 @@
             IngredientModal
         },
         props: {
-            id: Number
+            id: String
         },
         data() {
             return {
@@ -99,12 +113,14 @@
             }
         },
         mounted(){
-            //this.getData()
+            console.log(this.id)
+            this.getData()
         },
         methods: {
             getData(){
-                api.getIngredientList()
+                api.getGoodMaterialList(this.id)
                     .then(data => {
+                        console.log(data)
                         this.ingredientList = data
                         this.status.listLoading = false
                     })
@@ -127,10 +143,11 @@
                 this.modal.visible = true
             },
             handleDelete(record) {
-                api.deleteProduct(record.id)
+                api.deleteIngredient(record.id)
                     .then(data => {
                         this.$notification.success({message: '成功', description: '删除成功', key: 'SUCCESS'})
                     })
+                this.getData()
             },
         }
     }

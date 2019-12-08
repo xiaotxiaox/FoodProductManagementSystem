@@ -1,7 +1,7 @@
 import fetchAPI from '../utils/fetch'
 
 export default {
-  //用户信息管理
+  //
   getSumList () {
     return fetchAPI('materialtotal', 'get', null)
   },
@@ -41,6 +41,8 @@ export default {
     return fetchAPI('material', 'get', null)
   },
   createInbound (data) {
+    console.log(111)
+    console.log(data)
     return fetchAPI('material', 'post', data)
   },
   updateInbound (id, data) {
@@ -48,5 +50,19 @@ export default {
   },
   deleteInbound (id) {
     return fetchAPI(`material/${id}/`, 'delete')
+  },
+  //出库
+  getOutList () {
+    return fetchAPI('outbound', 'get', null)
+  },
+  createOutbound (data) {
+    console.log(data)
+    return fetchAPI('outbound', 'post', data)
+  },
+  updateOutbound (id, data) {
+    return fetchAPI(`outbound/${id}/`, 'put', data)
+  },
+  deleteOutbound (id) {
+    return fetchAPI(`outbound/${id}/`, 'delete')
   },
 }

@@ -94,7 +94,7 @@
         },
         {
             title: '商品名称',
-            dataIndex: 'goods',
+            dataIndex: 'good.name',
             width: '10%',
             align: 'center'
         }, {

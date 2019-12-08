@@ -51,9 +51,9 @@
   import {mapGetters} from 'vuex'
   const columns = [
       {
-          title: '客户编号',
+          title: '编号',
           dataIndex: 'id',
-          width: '20%',
+          width: '10%',
           align: 'center'
       },
       {
@@ -62,15 +62,15 @@
       width: '20%',
       align: 'center'
     }, {
-      title: '折扣比例',
+      title: '折扣比例(%)',
       dataIndex: 'discount',
-      width: '30%',
+      width: '20%',
       align: 'center'
     },
     {
-      title: '预付款比例',
+      title: '预付款比例(%)',
       dataIndex: 'rate',
-      width: '10%',
+      width: '20%',
       align: 'center'
     },
     {

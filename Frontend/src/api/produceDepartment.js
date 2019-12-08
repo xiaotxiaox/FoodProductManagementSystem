@@ -44,17 +44,27 @@ export default {
     return fetchAPI('workshop/department/part', 'get', null, { id })
   },
   getProducingList () {
-    return fetchAPI('workshop/producing', 'get', null)
+    return fetchAPI('workshop/producing/state0', 'get', null)
   },
   createProducing (data) {
     return fetchAPI('workshop/producing', 'post', data)
   },
   updateProducing (id, data) {
-    console.log(111)
-    console.log(data)
     return fetchAPI(`workshop/producing/${id}`, 'put', data)
   },
   deleteProducing (id) {
     return fetchAPI(`workshop/producing/${id}`, 'delete')
+  },
+  getTeamRoundList (id) {
+    return fetchAPI('workshop/round/team', 'get', null, { id })
+  },
+  getRoundIngredientList (id) {
+    return fetchAPI('workshop/round/material', 'get', null, { id })
+  },
+  changeState(id,state){
+    return fetchAPI('workshop/team/round/change', 'put', null, { id,state })
+  },
+  changeRoundState(id,state){
+    return fetchAPI('workshop/producing/stateChange', 'post', null, { id,state })
   },
 }

@@ -12,7 +12,7 @@
       :form="form">
       <a-form-item
         v-if="isEdit"
-        label="原料编号"
+        label="入库编号"
         :label-col="{span: 8}"
         :wrapper-col="{span: 12}"
         v-bind="layout">
@@ -23,7 +23,7 @@
             'id',
             {
               rules:[
-                { required: true, message: '请输入原料编号' },
+                { required: true, message: '请输入入库编号' },
               ],
               validateTrigger: 'blur',
               initialValue: record ? record.id: null
@@ -34,71 +34,79 @@
       <a-form-item
         label="原料名称"
         v-bind="layout">
-        <a-input
-          type="text"
+        <a-select
+          placeholder="请选择原料名称"
           v-decorator="[
-            'name',
+                'materialid',
+                {rules:[{required: true, message: '请选择原料名称'}],
+                initialValue: record ? record.materialtotal.id : null}
+              ]">
+          <a-select-option
+            v-for="item in typeList"
+            :key="item.id"
+            :value="item.id">
+            {{ item.name }}
+          </a-select-option>
+        </a-select>
+      </a-form-item>
+      <a-form-item
+        label="采购数量"
+        :label-col="{span: 8}"
+        :wrapper-col="{span: 12}"
+        v-bind="layout">
+        <a-input
+          type="number"
+          v-decorator="[
+            'num',
             {
-              rules: [
-              {required: true, message: '请输入原料名称'}
+              rules:[
+                { required: true, message: '请输入采购数量' },
               ],
               validateTrigger: 'blur',
-              initialValue: record ? record.name: null
+              initialValue: record ? record.num: null
             }
           ]">
         </a-input>
       </a-form-item>
       <a-form-item
-        label="供货商"
+        v-if="isEdit"
+        label="进货时间"
         v-bind="layout">
-        <a-input
-          type="text"
+        <a-date-picker
+          style="width:100%"
           v-decorator="[
-            'purchaser',
-            {
-              rules: [
-              {required: true, message: '请输入原料名称'}
-              ],
-              validateTrigger: 'blur',
-              initialValue: record ? record.purchaser: null
-            }
-          ]">
-        </a-input>
+                'timeHandle',
+                {rules: [{ type: 'object', required: true, message: '请输入进货时间' }],
+                 initialValue: isEdit ? record.timeHandle : null}
+              ]">
+        </a-date-picker>
       </a-form-item>
       <a-form-item
-        label="原料单价"
+        label="保质期"
         v-bind="layout">
-        <a-input
-          type="text"
-          addonAfter="元"
+        <a-date-picker
+          style="width:100%"
           v-decorator="[
-            'price',
-            {
-              rules: [
-              {required: true, message: '请输入商品单价'}
-              ],
-              validateTrigger: 'blur',
-              initialValue: record ? record.price: null
-            }
-          ]">
-        </a-input>
+                'timeprotect',
+                {rules: [{ type: 'object', required: true, message: '请输入进货时间' }],
+                 initialValue: isEdit ? record.timeprotect : null}
+              ]">
+        </a-date-picker>
       </a-form-item>
       <a-form-item
-        label="计量单位"
+        label="申请状态"
         v-bind="layout">
-        <a-input
-          type="text"
+        <a-select
+          placeholder="请选择申请状态"
           v-decorator="[
-            'unit',
-            {
-              rules: [
-              {required: true, message: '请输入原料计量单位'}
-              ],
-              validateTrigger: 'blur',
-              initialValue: record ? record.unit: null
-            }
-          ]">
-        </a-input>
+                'state',
+                {rules:[{required: true, message: '请选择员工性别'}],
+                initialValue: record ? record.state : null}
+              ]">
+          <a-select-option :key="1" :value="1">申请中</a-select-option>
+          <a-select-option :key="2" :value="2">已同意</a-select-option>
+          <a-select-option :key="3" :value="3">未同意</a-select-option>
+        </a-select>
       </a-form-item>
     </a-form>
   </a-modal>
@@ -106,7 +114,7 @@
 
 <script>
   import api from '../../../api/ingredient'
-  import {mapGetters} from 'vuex'
+  import moment from 'moment'
 
   export default {
     name: 'InModal',
@@ -127,20 +135,37 @@
       }
     },
     mounted() {
+        this.getData()
     },
     methods: {
-      ...mapGetters(['projectSelected']),
+        getData(){
+            if (this.isEdit) {
+                if (this.record.timeHandle !== null) {
+                    this.record.timeHandle = new moment(this.record.timeHandle)
+                }
+                if (this.record.timeprotect !== null) {
+                    this.record.timeprotect = new moment(this.record.timeprotect)
+                }
+            }
+            api.getSumList()
+                .then(data => {
+                    this.typeList = data
+                    console.log(this.typeList)
+                })
+        },
       handleOk() {
         this.form.validateFields((error, data) => {
           if (!error) {
+              data.timeprotect = data.timeprotect.format('YYYY-MM-DD')
             if (this.isEdit) {
-              api.updateSum(this.record.id, data)
+                data.timeHandle = data.timeHandle.format('YYYY-MM-DD')
+              api.updateInbound(this.record.id, data)
                 .then(data => {
                   this.$notification.success({message: '成功', description: '更新成功', key: 'SUCCESS'})
                   this.$emit('close')
                 })
             } else {
-              api.createSum(data)
+              api.createInbound(data)
                 .then(data => {
                   this.$notification.success({message: '成功', description: '新建成功', key: 'SUCCESS'})
                   this.$emit('close')

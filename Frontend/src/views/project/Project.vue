@@ -1,6 +1,29 @@
 <template>
   <page-layout title="订单列表">
     <a-card class="project">
+      <a-card style="margin-bottom: 16px;">
+        <baidu-map class="map" center="威海" ak="GEhXNIBI6zKpsnemMOEVMxaUvSjQks3o" @ready="handler"
+                   :scroll-wheel-zoom="true">
+          <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
+          <bm-geolocation anchor="BMAP_ANCHOR_BOTTOM_RIGHT" :showAddressBar="true"
+                          :autoLocation="true"></bm-geolocation>
+          <bm-map-type :map-types="['BMAP_NORMAL_MAP', 'BMAP_HYBRID_MAP']" anchor="BMAP_ANCHOR_BOTTOM_RIGHT"
+                       offset="(300px,200px)"></bm-map-type>
+          <bm-marker v-for="item in mapList" :position="{lng: item.longitude, lat: item.latitude}" @click="output(item)" animation="BMAP_ANIMATION_BOUNCE">
+            <!--&lt;!&ndash;      <bm-label content="我爱北京天安门" :labelStyle="{color: 'red', fontSize : '24px'}" :offset="{width: -35, height: 30}"/>&ndash;&gt;-->
+            <!--<bm-info-window :show="show" @close="infoWindowClose" @open="infoWindowOpen">{{item.data}}</bm-info-window>$router.push({'name': 'detail', params: {id: item.project}})-->
+          </bm-marker>
+          <bm-control :offset="{width: '50px', height: '10px'}">
+            <bm-auto-complete v-model="keyword" :sugStyle="{zIndex: 1}">
+              <a-input-search
+                placeholder="请输入文字"
+                style="width: 200px"
+              />
+            </bm-auto-complete>
+          </bm-control>
+          <bm-local-search :keyword="keyword" :auto-viewport="true"></bm-local-search>
+        </baidu-map>
+      </a-card>
       <a-card
         class="card card-selected"
         v-if="project">
@@ -12,93 +35,93 @@
         v-else>
         未选择项目
       </a-card>
-      <a-input-group class="tool">
-        <a-row :gutter="6">
-          <a-col
-            class="item"
-            :xs="{ span: 12 }"
-            :sm="{ span: 8 }"
-            :xl="{ span: 4 }">
-            <a-select
-              v-model="params.ordering"
-              style="width: 100%"
-              @change="getData">
-              <a-select-option value="starting_date">开始时间正排序</a-select-option>
-              <a-select-option value="-starting_date">开始时间倒排序</a-select-option>
-              <a-select-option value="finishing_date">结束时间正排序</a-select-option>
-              <a-select-option value="-finishing_date">结束时间倒排序</a-select-option>
-              <a-select-option value="investment">订单金额正排序</a-select-option>
-              <a-select-option value="-investment">订单金额倒排序</a-select-option>
-            </a-select>
-          </a-col>
-          <a-col
-            class="item"
-            :xs="{ span: 12 }"
-            :sm="{ span: 8 }"
-            :xl="{ span: 4 }">
-            <a-select
-              v-model="filter.investment"
-              style="width: 100%"
-              @change="handleFilterByInvestment">
-              <a-select-option value="">订单金额筛选</a-select-option>
-              <a-select-option :value="1">100元以下</a-select-option>
-              <a-select-option :value="2">1000元~5000元</a-select-option>
-              <a-select-option :value="3">5000元~20000元</a-select-option>
-              <a-select-option :value="4">20000元以上</a-select-option>
-            </a-select>
-          </a-col>
-          <a-col
-            class="item"
-            :xs="{ span: 12 }"
-            :sm="{ span: 8 }"
-            :xl="{ span: 4 }">
-            <a-select
-              v-model="filter.year"
-              style="width: 100%"
-              @change="handleFilterByYear">
-              <a-select-option value="">订单开始年份筛选</a-select-option>
-              <a-select-option v-for="(year, index) in yearList" :key="index" :value="index">{{ year }}年
-              </a-select-option>
-              <a-select-option :value="4">{{ yearList[yearList.length - 1] }}年之前</a-select-option>
-            </a-select>
-          </a-col>
-          <a-col
-            class="item"
-            :xs="{ span: 24 }"
-            :sm="{ span: 8 }"
-            :xl="{ span: 4 }">
-            <a-input
-              v-model="params.search"
-              style="width: 100%"
-              placeholder="项目名称，建设地点">
-            </a-input>
-          </a-col>
-          <a-col
-            class="item"
-            :xs="{ span: 12 }"
-            :sm="{ span: 8 }"
-            :xl="{ span: 4 }">
-            <a-button
-              style="width: 100%"
-              icon="search"
-              @click="handleSearch">
-              搜索
-            </a-button>
-          </a-col>
-          <a-col
-            class="item"
-            :xs="{ span: 12 }"
-            :sm="{ span: 8 }"
-            :xl="{ span: 4 }">
-            <a-button
-              style="width: 100%"
-              icon="delete"
-              @click="handleClearParams">
-              重置
-            </a-button>
-          </a-col>
-        </a-row>
-      </a-input-group>
+<!--      <a-input-group class="tool">-->
+<!--        <a-row :gutter="6">-->
+<!--          <a-col-->
+<!--            class="item"-->
+<!--            :xs="{ span: 12 }"-->
+<!--            :sm="{ span: 8 }"-->
+<!--            :xl="{ span: 4 }">-->
+<!--            <a-select-->
+<!--              v-model="params.ordering"-->
+<!--              style="width: 100%"-->
+<!--              @change="getData">-->
+<!--              <a-select-option value="starting_date">开始时间正排序</a-select-option>-->
+<!--              <a-select-option value="-starting_date">开始时间倒排序</a-select-option>-->
+<!--              <a-select-option value="finishing_date">结束时间正排序</a-select-option>-->
+<!--              <a-select-option value="-finishing_date">结束时间倒排序</a-select-option>-->
+<!--              <a-select-option value="investment">订单金额正排序</a-select-option>-->
+<!--              <a-select-option value="-investment">订单金额倒排序</a-select-option>-->
+<!--            </a-select>-->
+<!--          </a-col>-->
+<!--          <a-col-->
+<!--            class="item"-->
+<!--            :xs="{ span: 12 }"-->
+<!--            :sm="{ span: 8 }"-->
+<!--            :xl="{ span: 4 }">-->
+<!--            <a-select-->
+<!--              v-model="filter.investment"-->
+<!--              style="width: 100%"-->
+<!--              @change="handleFilterByInvestment">-->
+<!--              <a-select-option value="">订单金额筛选</a-select-option>-->
+<!--              <a-select-option :value="1">100元以下</a-select-option>-->
+<!--              <a-select-option :value="2">1000元~5000元</a-select-option>-->
+<!--              <a-select-option :value="3">5000元~20000元</a-select-option>-->
+<!--              <a-select-option :value="4">20000元以上</a-select-option>-->
+<!--            </a-select>-->
+<!--          </a-col>-->
+<!--          <a-col-->
+<!--            class="item"-->
+<!--            :xs="{ span: 12 }"-->
+<!--            :sm="{ span: 8 }"-->
+<!--            :xl="{ span: 4 }">-->
+<!--            <a-select-->
+<!--              v-model="filter.year"-->
+<!--              style="width: 100%"-->
+<!--              @change="handleFilterByYear">-->
+<!--              <a-select-option value="">订单开始年份筛选</a-select-option>-->
+<!--              <a-select-option v-for="(year, index) in yearList" :key="index" :value="index">{{ year }}年-->
+<!--              </a-select-option>-->
+<!--              <a-select-option :value="4">{{ yearList[yearList.length - 1] }}年之前</a-select-option>-->
+<!--            </a-select>-->
+<!--          </a-col>-->
+<!--          <a-col-->
+<!--            class="item"-->
+<!--            :xs="{ span: 24 }"-->
+<!--            :sm="{ span: 8 }"-->
+<!--            :xl="{ span: 4 }">-->
+<!--            <a-input-->
+<!--              v-model="params.search"-->
+<!--              style="width: 100%"-->
+<!--              placeholder="项目名称，建设地点">-->
+<!--            </a-input>-->
+<!--          </a-col>-->
+<!--          <a-col-->
+<!--            class="item"-->
+<!--            :xs="{ span: 12 }"-->
+<!--            :sm="{ span: 8 }"-->
+<!--            :xl="{ span: 4 }">-->
+<!--            <a-button-->
+<!--              style="width: 100%"-->
+<!--              icon="search"-->
+<!--              @click="handleSearch">-->
+<!--              搜索-->
+<!--            </a-button>-->
+<!--          </a-col>-->
+<!--          <a-col-->
+<!--            class="item"-->
+<!--            :xs="{ span: 12 }"-->
+<!--            :sm="{ span: 8 }"-->
+<!--            :xl="{ span: 4 }">-->
+<!--            <a-button-->
+<!--              style="width: 100%"-->
+<!--              icon="delete"-->
+<!--              @click="handleClearParams">-->
+<!--              重置-->
+<!--            </a-button>-->
+<!--          </a-col>-->
+<!--        </a-row>-->
+<!--      </a-input-group>-->
       <a-spin :spinning="status.loading">
         <!--<a-card-->
           <!--class="card"-->

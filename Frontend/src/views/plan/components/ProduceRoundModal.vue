@@ -32,14 +32,30 @@
         </a-input>
       </a-form-item>
       <a-form-item
-        label="原料名称"
+        label="批次任务说明"
+        :label-col="{span: 8}"
+        :wrapper-col="{span: 12}"
+        v-bind="layout">
+        <a-input
+          type="text"
+          v-decorator="[
+            'name',
+            {
+              validateTrigger: 'blur',
+              initialValue: record ? record.name: null
+            }
+          ]">
+        </a-input>
+      </a-form-item>
+      <a-form-item
+        label="商品名称"
         v-bind="layout">
         <a-select
-          placeholder="请选择原料名称"
+          placeholder="请选择商品名称"
           v-decorator="[
-                'material',
+                'goods',
                 {rules:[{required: true, message: '请选择原料名称'}],
-                initialValue: record ? record.material.id : null}
+                initialValue: record ? record.goods.id : null}
               ]">
           <a-select-option
             v-for="item in typeList"
@@ -50,7 +66,7 @@
         </a-select>
       </a-form-item>
       <a-form-item
-        label="原料用量"
+        label="生产数量"
         :label-col="{span: 8}"
         :wrapper-col="{span: 12}"
         v-bind="layout">
@@ -69,20 +85,22 @@
         </a-input>
       </a-form-item>
       <a-form-item
-        label="备注"
-        :label-col="{span: 8}"
-        :wrapper-col="{span: 12}"
+        label="生产班组"
         v-bind="layout">
-        <a-textarea
-          type="text"
+        <a-select
+          placeholder="请选择生产班组"
           v-decorator="[
-            'note',
-            {
-              validateTrigger: 'blur',
-              initialValue: record ? record.note: null
-            }
-          ]">
-        </a-textarea>
+                'team',
+                {rules:[{required: true, message: '请选择原料名称'}],
+                initialValue: record ? record.team.id : null}
+              ]">
+          <a-select-option
+            v-for="item in teamList"
+            :key="item.id"
+            :value="item.id">
+            {{ item.name }}
+          </a-select-option>
+        </a-select>
       </a-form-item>
     </a-form>
   </a-modal>
@@ -90,11 +108,11 @@
 
 <script>
   import api from '../../../api/plan'
-  import api1 from '../../../api/ingredient'
-  import {mapGetters} from 'vuex'
+  import apiTeam from '../../../api/produceDepartment'
+  import apiGood from '../../../api/sale'
 
   export default {
-    name: 'IngredientModal',
+    name: 'ProduceRoundModal',
     props: {
       record: Object,
       visible: Boolean,
@@ -110,6 +128,7 @@
         form: this.$form.createForm(this),
         matter: {},
         typeList: [],
+          teamList:[]
       }
     },
     mounted() {
@@ -117,22 +136,26 @@
     },
     methods: {
         getData(){
-            api1.getSumList()
+            apiGood.getProductList()
                 .then(data => {
                     this.typeList = data
+                })
+            apiTeam.getTeamList()
+                .then(data => {
+                    this.teamList = data
                 })
         },
       handleOk() {
         this.form.validateFields((error, data) => {
           if (!error) {
             if (this.isEdit) {
-              api.updateIngredient(this.record.id, data)
+              api.updatePlanRound(this.record.id, data)
                 .then(data => {
                   this.$notification.success({message: '成功', description: '更新成功', key: 'SUCCESS'})
                   this.$emit('close')
                 })
             } else {
-              api.createIngredient(this.id,data)
+              api.createPlanRound(this.id,data)
                 .then(data => {
                   this.$notification.success({message: '成功', description: '新建成功', key: 'SUCCESS'})
                   this.$emit('close')

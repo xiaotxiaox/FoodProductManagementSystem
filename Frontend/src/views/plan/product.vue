@@ -24,7 +24,6 @@
           </a-button>
         </a-col>
       </a-row>
-      <!--<a-spin :spinning="status.listLoading">-->
       <a-table
         bordered
         :columns="columns"
@@ -40,10 +39,9 @@
           </a-popconfirm>
         </template>
         <template slot="ingredient" slot-scope="text, record, index">
-          <a-button @click="$router.push({name: 'productIngredientEdit',id:record.id})">原料管理</a-button>
+          <a-button @click="$router.push({'name': 'productIngredientEdit', params: {id: record.id}})">原料管理</a-button>
         </template>
       </a-table>
-      <!--</a-spin>-->
     </a-card>
   </div>
 </template>
@@ -139,6 +137,7 @@
                 this.modal.type = 'edit'
                 this.modal.record = record
                 this.modal.visible = true
+                console.log(record.id)
             },
             handleDelete(record) {
                 api.deleteProduct(record.id)

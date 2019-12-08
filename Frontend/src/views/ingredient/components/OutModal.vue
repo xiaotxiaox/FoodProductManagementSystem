@@ -12,86 +12,84 @@
       :form="form">
       <a-form-item
         v-if="isEdit"
-        label="编号"
+        label="出库编号"
+        :label-col="{span: 8}"
+        :wrapper-col="{span: 12}"
         v-bind="layout">
         <a-input
-          type="number"
           disabled
+          type="number"
           v-decorator="[
             'id',
             {
+              rules:[
+                { required: true, message: '请输入入库编号' },
+              ],
               validateTrigger: 'blur',
-              initialValue: record ? record.id : null
+              initialValue: record ? record.id: null
             }
           ]">
         </a-input>
       </a-form-item>
       <a-form-item
-        label="批次编号"
+        label="原料名称"
+        v-bind="layout">
+        <a-select
+          placeholder="请选择原料名称"
+          v-decorator="[
+                'materialid',
+                {rules:[{required: true, message: '请选择原料名称'}],
+                initialValue: record ? record.materialtotal.id : null}
+              ]">
+          <a-select-option
+            v-for="item in typeList"
+            :key="item.id"
+            :value="item.id">
+            {{ item.name }}
+          </a-select-option>
+        </a-select>
+      </a-form-item>
+      <a-form-item
+        label="出库数量"
+        :label-col="{span: 8}"
+        :wrapper-col="{span: 12}"
         v-bind="layout">
         <a-input
           type="number"
           v-decorator="[
-            'producing',
+            'num',
             {
+              rules:[
+                { required: true, message: '请输入出库数量' },
+              ],
               validateTrigger: 'blur',
-              initialValue: record ? record.producing.id : null
+              initialValue: record ? record.num: null
             }
           ]">
         </a-input>
       </a-form-item>
       <a-form-item
-        label="处理"
+        label="出库日期"
         v-bind="layout">
-        <a-input
-          type="text"
+        <a-date-picker
+          style="width:100%"
           v-decorator="[
-            'way',
-            {
-              validateTrigger: 'blur',
-              initialValue: record ? record.way : null
-            }
-          ]">
-        </a-input>
-      </a-form-item>
-      <a-form-item
-        label="处理状态"
-        v-bind="layout">
-        <a-select
-          placeholder="请选择处理状态"
-          v-decorator="[
-                'isHandle',
-                {rules:[{required: true, message: '请选择处理状态'}],
-                initialValue: record ? record.isHandle : 0}
+                'timeout',
+                {rules: [{ type: 'object', required: true, message: '请输入进货时间' }],
+                 initialValue: isEdit ? record.timeout : null}
               ]">
-          <a-select-option :key="0" :value="0">未处理</a-select-option>
-          <a-select-option :key="1" :value="1">已处理</a-select-option>
-        </a-select>
-      </a-form-item>
-      <a-form-item
-        label="备注"
-        v-bind="layout">
-        <a-textarea
-          type="text"
-          v-decorator="[
-            'note',
-            {
-              validateTrigger: 'blur',
-              initialValue: record ? record.note : null
-            }
-          ]">
-        </a-textarea>
+        </a-date-picker>
       </a-form-item>
     </a-form>
   </a-modal>
 </template>
 
 <script>
-    import api from '../../../api/finish'
-    import {mapGetters} from 'vuex'
+    import api from '../../../api/ingredient'
+    import moment from 'moment'
 
     export default {
-        name: 'BatchModal',
+        name: 'OutModal',
         props: {
             record: Object,
             visible: Boolean,
@@ -99,7 +97,6 @@
         },
         data() {
             return {
-                //project_id: this.projectSelected().id,
                 layout: {
                     'label-col': {span: 8},
                     'wrapper-col': {span: 12}
@@ -110,20 +107,33 @@
             }
         },
         mounted() {
+            this.getData()
         },
         methods: {
-            ...mapGetters(['projectSelected']),
+            getData(){
+                if (this.isEdit) {
+                    if (this.record.timeout !== null) {
+                        this.record.timeout = new moment(this.record.timeout)
+                    }
+                }
+                api.getSumList()
+                    .then(data => {
+                        this.typeList = data
+                        console.log(this.typeList)
+                    })
+            },
             handleOk() {
                 this.form.validateFields((error, data) => {
                     if (!error) {
+                        data.timeout = data.timeout.format('YYYY-MM-DD')
                         if (this.isEdit) {
-                            api.updateBatch(this.record.id, data)
+                            api.updateOutbound(this.record.id, data)
                                 .then(data => {
                                     this.$notification.success({message: '成功', description: '更新成功', key: 'SUCCESS'})
                                     this.$emit('close')
                                 })
                         } else {
-                            api.createOrder( data)
+                            api.createOutbound(data)
                                 .then(data => {
                                     this.$notification.success({message: '成功', description: '新建成功', key: 'SUCCESS'})
                                     this.$emit('close')

@@ -1,19 +1,36 @@
 <template>
   <div>
-    <producing-modal
+    <out-modal
       :record="modal.record"
       :visible="modal.visible"
       :type="modal.type"
       :id="modal.id"
       v-if="modal.visible"
       @close="handleClose()">
-    </producing-modal>
-    <a-card style="margin-bottom: 16px" title="待检验产品表">
+    </out-modal>
+    <a-card style="margin-bottom: 16px" title="原料出库表">
+      <a-row>
+        <a-col
+          class="item"
+          :xs="{ span: 24 }"
+          :sm="{ span: 12 }"
+          :xl="{ span: 4 }">
+          <a-button
+            type="primary"
+            icon="plus"
+            style="width: 100%;float:right;margin-bottom: 16px"
+            @click="handleCreate()">
+            新建
+          </a-button>
+        </a-col>
+      </a-row>
+      <!--<a-spin :spinning="status.listLoading">-->
       <a-table
         bordered
         :columns="columns"
-        :dataSource="producingList"
-        rowKey="id"
+        :dataSource="outList"
+        :scroll="{ x: 1300 }"
+        rowKey="customer_id"
         :pagination="false">
         <template slot="operation" slot-scope="text, record, index">
           <a-button @click="handleEdit(record)">编辑</a-button>
@@ -23,14 +40,6 @@
             <a-button type="danger">删除</a-button>
           </a-popconfirm>
         </template>
-        <template slot="state" slot-scope="text, record, index">
-          <a-button @click="qualified(record)" type="primary" style="margin-bottom: 6px">检验合格</a-button>
-          <a-popconfirm
-            title="确认改批次产品不合格吗?"
-            @confirm="disqualified(record)">
-            <a-button type="danger">检验不合格</a-button>
-          </a-popconfirm>
-        </template>
       </a-table>
       <!--</a-spin>-->
     </a-card>
@@ -38,67 +47,50 @@
 </template>
 
 <script>
-    import ProducingModal from './components/ProducingModal'
-    import api from '../../api/produceDepartment'
+    import OutModal from './components/OutModal'
+    import api from '../../api/ingredient'
+    import moment from 'moment'
 
     const columns = [
         {
-            title: '流水编号',
+            title: '出库编号',
             dataIndex: 'id',
             width: '20%',
             align: 'center'
-        },
-        {
-            title: '对应批次编号',
-            dataIndex: 'round.id',
-            width: '20%',
-            align: 'center'
-        },
-        {
-            title: '对应批次名称',
-            dataIndex: 'round.name',
-            width: '20%',
-            align: 'center'
-        },
-        {
-            title: '商品名称',
-            dataIndex: 'good.name',
-            width: '20%',
-            align: 'center'
         }, {
-            title: '商品数量',
-            dataIndex: 'goodCount',
+            title: '原料名称',
+            dataIndex: 'materialtotal.name',
             width: '20%',
             align: 'center'
-        }, {
-            title: '完成日期',
-            dataIndex: 'produceDate',
-            width: '30%',
+        },
+        {
+            title: '出库数量',
+            dataIndex: 'num',
+            width: '10%',
+            align: 'center'
+        },  {
+            title: '出库日期',
+            dataIndex: 'timeout',
+            width: '10%',
             align: 'center'
         },
         {
             title: '处理人',
             dataIndex: 'user.name',
-            width: '10%',
+            width: '20%',
             align: 'center'
         },
-        {
-            title: '检验',
-            dataIndex: 'state',
-            align: 'center',
-            scopedSlots: {customRender: 'state'}
-        },
         // {
-        //   title: '编辑',
-        //   dataIndex: 'operation',
-        //   align: 'center',
-        //   scopedSlots: {customRender: 'operation'}
+        //     title: '编辑',
+        //     dataIndex: 'operation',
+        //     align: 'center',
+        //     scopedSlots: {customRender: 'operation'}
         // }
     ]
     export default {
-        name: "producing",
+        name: "out",
         components: {
-            ProducingModal
+            OutModal
         },
         data() {
             return {
@@ -113,7 +105,7 @@
                     id: this.id
                 },
                 columns,
-                producingList: [],
+                outList: [],
             }
         },
         mounted() {
@@ -121,10 +113,10 @@
         },
         methods: {
             getData() {
-                api.getProducingList()
+                api.getOutList()
                     .then(data => {
-                        console.log(data)
-                        this.producingList = data
+                        data.timeout = new moment(data.timeout)
+                        this.outList = data
                     })
             },
             handleClose() {
@@ -143,26 +135,11 @@
                 this.modal.record = record
                 this.modal.visible = true
             },
-            qualified(record) {
-                api.changeRoundState(record.id,1)
-                    .then(data => {
-                        console.log(record.id)
-                    })
-                this.getData()
-            },
-            disqualified(record) {
-                api.changeRoundState(record.id,2)
-                    .then(data => {
-                        console.log(record.id)
-                    })
-                this.getData()
-            },
             handleDelete(record) {
-                api.deleteProducing(record.id)
+                api.deleteInbound(record.id)
                     .then(data => {
                         this.$notification.success({message: '成功', description: '删除成功', key: 'SUCCESS'})
                     })
-                this.getData()
             },
         }
     }

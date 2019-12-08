@@ -13,7 +13,7 @@ export default {
   props: {
     title: {
       type: String,
-      default: '食品企业生产管理系统',
+      default: '食品企业管理系统',
       required: false
     },
     showTitle: {
