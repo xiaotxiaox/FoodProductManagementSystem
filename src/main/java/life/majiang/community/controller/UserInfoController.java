@@ -9,11 +9,15 @@ import life.majiang.community.mapper.UserMapper;
 import life.majiang.community.mapper.User_userMapper;
 import life.majiang.community.model.User;
 import life.majiang.community.model.UserExample;
+import life.majiang.community.model.User;
+import life.majiang.community.model.UserExample;
 import life.majiang.community.service.UserInfoService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -47,5 +51,19 @@ public class UserInfoController {
         return CommonResult.success("注册成功！");
     }
 
+
+    @RequestMapping(value = "/api/user/get", method = RequestMethod.GET)
+    public List<UserInfoDTO> get() {
+        UserExample example = new UserExample();
+        example.createCriteria();
+        List<User> Users = userMapper.selectByExample(example);
+        List<UserInfoDTO> UserDTO = new ArrayList<UserInfoDTO>();
+        for (User User : Users) {
+            UserInfoDTO temp = new UserInfoDTO();
+            BeanUtils.copyProperties(User, temp);
+            UserDTO.add(temp);
+        }
+        return UserDTO;
+    }
 
 }
