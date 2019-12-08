@@ -3,9 +3,11 @@ package life.majiang.community.controller;
 import life.majiang.community.dto.InventoryDTO;
 import life.majiang.community.dto.NumberOfTimeDTO;
 import life.majiang.community.mapper.InventoryMapper;
+import life.majiang.community.mapper.MaterialtotalMapper;
 import life.majiang.community.mapper.UserMapper;
 import life.majiang.community.model.Inventory;
 import life.majiang.community.model.InventoryExample;
+import life.majiang.community.model.Materialtotal;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +27,9 @@ public class InventoryController {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private MaterialtotalMapper materialtotalMapper;
+
     @RequestMapping(value = "/api/inventory/num", method = RequestMethod.GET)
     public NumberOfTimeDTO get() {
         InventoryExample example = new InventoryExample();
@@ -36,9 +41,8 @@ public class InventoryController {
         NumberOfTimeDTO numberOfTimeDTO = new NumberOfTimeDTO();
         for (Inventory inventory : inventorys) {
             if (inventory.getTimeprotect().compareTo(dateNowStr) >= 0) {
-                numberOfTimeDTO.setTimein(numberOfTimeDTO.getTimein()+1);
-            }
-            else numberOfTimeDTO.setTimeout(numberOfTimeDTO.getTimeout()+1);
+                numberOfTimeDTO.setTimein(numberOfTimeDTO.getTimein() + 1);
+            } else numberOfTimeDTO.setTimeout(numberOfTimeDTO.getTimeout() + 1);
         }
         return numberOfTimeDTO;
     }
@@ -55,6 +59,7 @@ public class InventoryController {
         for (Inventory inventory : inventorys) {
             InventoryDTO temp = new InventoryDTO();
             BeanUtils.copyProperties(inventory, temp);
+            temp.setMaterialtotal(materialtotalMapper.selectByPrimaryKey(inventory.getMaterialid()));
             if (inventory.getTimeprotect().compareTo(dateNowStr) > 0) {
                 inventoryDTO.add(temp);
             }
@@ -74,6 +79,7 @@ public class InventoryController {
         for (Inventory inventory : inventorys) {
             InventoryDTO temp = new InventoryDTO();
             BeanUtils.copyProperties(inventory, temp);
+            temp.setMaterialtotal(materialtotalMapper.selectByPrimaryKey(inventory.getMaterialid()));
             if (inventory.getTimeprotect().compareTo(dateNowStr) < 0) {
                 inventoryDTO.add(temp);
             }
