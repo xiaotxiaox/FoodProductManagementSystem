@@ -123,6 +123,19 @@ public class OrderCollectionController {
                 temp.setGood(goodsMapper.selectByPrimaryKey(order.getGoods()));
             }
             temp.setUser(userMapper.selectByPrimaryKey(order.getHandler()));
+
+            BigDecimal number = new BigDecimal(0);
+            int value = goodsMapper.selectByPrimaryKey(order.getGoods()).getPrice() * order.getCount();
+            number = BigDecimal.valueOf((int) value);
+            int t = policyMapper.selectByPrimaryKey(customMapper.selectByPrimaryKey(order.getCustom()).getType()).getDiscount();
+            float value1 = (float) t / (float) 100;
+            BigDecimal number1 = new BigDecimal(value1);
+
+            temp.setTotalCost(number);
+            double result = number1.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+            BigDecimal number2 = new BigDecimal(0);
+            number2 = BigDecimal.valueOf(result);
+            temp.setDiscountCost(number.multiply(number2));
             orderCollectionDTOS.add(temp);
         }
         return orderCollectionDTOS;
@@ -141,7 +154,7 @@ public class OrderCollectionController {
         int value = goodsMapper.selectByPrimaryKey(order.getGoods()).getPrice() * order.getCount();
         number = BigDecimal.valueOf((int) value);
         int temp = policyMapper.selectByPrimaryKey(customMapper.selectByPrimaryKey(order.getCustom()).getType()).getDiscount();
-        float value1 = (float)temp / (float)100;
+        float value1 = (float) temp / (float) 100;
         BigDecimal number1 = new BigDecimal(value1);
 
         order.setTotalCost(number);
@@ -149,7 +162,7 @@ public class OrderCollectionController {
 //        b.format(order.getTotalCost().multiply(number1));
         double result = number1.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
         BigDecimal number2 = new BigDecimal(0);
-        number2=BigDecimal.valueOf(result);
+        number2 = BigDecimal.valueOf(result);
         order.setDiscountCost(number.multiply(number2));
 
         orderMapper.insert(order);
