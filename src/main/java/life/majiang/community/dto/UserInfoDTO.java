@@ -10,6 +10,7 @@ import lombok.Data;
 public class UserInfoDTO {
     private Integer id;
     private String accountId;
+    private String email;
     private String name;
     private String token;
     private Long gmtCreate;
