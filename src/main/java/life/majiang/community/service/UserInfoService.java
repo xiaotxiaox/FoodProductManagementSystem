@@ -23,10 +23,10 @@ public class UserInfoService {
     @Autowired
     private RoleService roleService;
 
-//    public UserInfoDTO getInfo(User user){
-//        UserInfoDTO userInfoDto = new UserInfoDTO();
-//        BeanUtils.copyProperties(user,userInfoDto);
-//        userInfoDto.setRole(roleService.getRole(roleMapper.selectByPrimaryKey(user.getRoleId())));
-//        return userInfoDto;
-//    }
+    public UserInfoDTO getInfo(User user){
+        UserInfoDTO userInfoDto = new UserInfoDTO();
+        BeanUtils.copyProperties(user,userInfoDto);
+        userInfoDto.setRole(roleService.getRole(roleMapper.selectByPrimaryKey(user.getRoleId())));
+        return userInfoDto;
+    }
 }

@@ -12,6 +12,7 @@ import life.majiang.community.mapper.User_userMapper;
 import life.majiang.community.model.*;
 import life.majiang.community.model.User;
 import life.majiang.community.model.UserExample;
+import life.majiang.community.service.RoleService;
 import life.majiang.community.service.UserInfoService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,19 +33,22 @@ public class UserInfoController {
     @Autowired
     private RoleMapper roleMapper;
 
+    @Autowired
+    private RoleService roleService;
+
 //    @Autowired
 //    private UserPasswordDTO userPasswordDTO;
 
-//    @RequestMapping(value = "/api/user/userInfo", method = RequestMethod.GET)
-//    public Object login(HttpServletRequest request) {
-//        // 给一个User 对象 ，通过 UserInfoservice 获得 一个 USERINFDTO
-//        User user = (User) request.getSession().getAttribute("user");
-////        User user = userMapper.selectByPrimaryKey((long)1);
-//        if (user == null) {
-//            return ResultDTO.errorOf(CustomizeErrorCode.NO_LOGIN);
-//        }
-//        return userInfoService.getInfo(user);
-//    }
+    @RequestMapping(value = "/api/user/userInfo", method = RequestMethod.GET)
+    public Object login(HttpServletRequest request) {
+        // 给一个User 对象 ，通过 UserInfoservice 获得 一个 USERINFDTO
+        User user = (User) request.getSession().getAttribute("user");
+//        User user = userMapper.selectByPrimaryKey((long)1);
+        if (user == null) {
+            return ResultDTO.errorOf(CustomizeErrorCode.NO_LOGIN);
+        }
+        return userInfoService.getInfo(user);
+    }
 
     @ResponseBody
     @RequestMapping(value = "/api/user/register", method = RequestMethod.POST)
@@ -68,7 +72,7 @@ public class UserInfoController {
         for (User User : Users) {
             UserInfoDTO temp = new UserInfoDTO();
             BeanUtils.copyProperties(User, temp);
-            temp.setRole(roleMapper.selectByPrimaryKey(temp.getRoleId()));
+            temp.setRole(roleService.getRole(roleMapper.selectByPrimaryKey(temp.getRoleId())));
             UserDTO.add(temp);
         }
         return UserDTO;

@@ -20,6 +20,5 @@ public class UserInfoDTO {
     private String avatarUrl;
     private String password;
     private Integer roleId;
-//    private RoleDTO role;
-    private Role role;
+    private RoleDTO role;
 }
