@@ -97,8 +97,8 @@ public class UserInfoController {
     @ResponseBody
     @RequestMapping(value = "/api/user/changePassword/{id}", method = RequestMethod.PUT)
     public Object putpassword(@RequestBody User users,
-                      @PathVariable(name = "id") int id,
-                      HttpServletRequest request) {
+                              @PathVariable(name = "id") int id,
+                              HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
             return ResultDTO.errorOf(CustomizeErrorCode.NO_LOGIN);
@@ -110,5 +110,10 @@ public class UserInfoController {
         return users;
     }
 
-
+    @ResponseBody
+    @RequestMapping(value = "/api/user/delete/{id}", method = RequestMethod.DELETE)
+    public Object delete(@PathVariable(name = "id") int id) {
+        userMapper.deleteByPrimaryKey(id);
+        return CommonResult.success("删除成功！");
+    }
 }
