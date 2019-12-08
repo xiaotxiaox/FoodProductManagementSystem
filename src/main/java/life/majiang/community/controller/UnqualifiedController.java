@@ -101,6 +101,7 @@ public class UnqualifiedController {
             return ResultDTO.errorOf(CustomizeErrorCode.NO_LOGIN);
         }
         unqualified.setHandler(user.getId());
+        unqualified.setState(unqualifiedMapper.selectByPrimaryKey(unqualified.getId()).getState());
         unqualifiedMapper.updateByPrimaryKey(unqualified);
         return unqualified;
     }
