@@ -1,5 +1,6 @@
 package life.majiang.community.dto;
 
+import life.majiang.community.model.Role;
 import lombok.Data;
 
 /**
@@ -10,6 +11,7 @@ import lombok.Data;
 public class UserInfoDTO {
     private Integer id;
     private String accountId;
+    private String email;
     private String name;
     private String token;
     private Long gmtCreate;
@@ -18,5 +20,6 @@ public class UserInfoDTO {
     private String avatarUrl;
     private String password;
     private Integer roleId;
-    private RoleDTO role;
+//    private RoleDTO role;
+    private Role role;
 }

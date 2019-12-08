@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -139,13 +140,17 @@ public class OrderCollectionController {
         BigDecimal number = new BigDecimal(0);
         int value = goodsMapper.selectByPrimaryKey(order.getGoods()).getPrice() * order.getCount();
         number = BigDecimal.valueOf((int) value);
-
-        BigDecimal number1 = new BigDecimal(0);
-        int value1 = policyMapper.selectByPrimaryKey(customMapper.selectByPrimaryKey(order.getCustom()).getType()).getDiscount()/100;
-        number1 = BigDecimal.valueOf((int) value1);
+        int temp = policyMapper.selectByPrimaryKey(customMapper.selectByPrimaryKey(order.getCustom()).getType()).getDiscount();
+        float value1 = (float)temp / (float)100;
+        BigDecimal number1 = new BigDecimal(value1);
 
         order.setTotalCost(number);
-        order.setDiscountCost(order.getTotalCost().multiply(number1));
+//        DecimalFormat b = new DecimalFormat("#.##");
+//        b.format(order.getTotalCost().multiply(number1));
+        double result = number1.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        BigDecimal number2 = new BigDecimal(0);
+        number2=BigDecimal.valueOf(result);
+        order.setDiscountCost(number.multiply(number2));
 
         orderMapper.insert(order);
         return CommonResult.success("创建成功！");
