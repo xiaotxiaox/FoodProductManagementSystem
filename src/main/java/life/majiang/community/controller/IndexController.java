@@ -1,5 +1,6 @@
 package life.majiang.community.controller;
 
+import life.majiang.api.CommonResult;
 import life.majiang.community.cache.HotTagCache;
 import life.majiang.community.dto.PaginationDTO;
 import life.majiang.community.service.NavService;
@@ -9,13 +10,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 /**
  * Created by codedrinker on 2019/4/24.
  */
-@Controller
+@RestController
 public class IndexController {
 
     @Autowired
@@ -25,19 +27,20 @@ public class IndexController {
     private HotTagCache hotTagCache;
 
     @GetMapping("/")
-    public String index(Model model,
+    public Object index(Model model,
                         @RequestParam(name = "page", defaultValue = "1") Integer page,
                         @RequestParam(name = "size", defaultValue = "10") Integer size,
                         @RequestParam(name = "search", required = false) String search,
                         @RequestParam(name = "tag", required = false) String tag,
                         @RequestParam(name = "sort", required = false) String sort) {
-        PaginationDTO pagination = questionService.list(search, tag, sort, page, size);
-        List<String> tags = hotTagCache.getHots();
-        model.addAttribute("pagination", pagination);
-        model.addAttribute("search", search);
-        model.addAttribute("tag", tag);
-        model.addAttribute("tags", tags);
-        model.addAttribute("sort", sort);
-        return "index";
+//        PaginationDTO pagination = questionService.list(search, tag, sort, page, size);
+//        List<String> tags = hotTagCache.getHots();
+//        model.addAttribute("pagination", pagination);
+//        model.addAttribute("search", search);
+//        model.addAttribute("tag", tag);
+//        model.addAttribute("tags", tags);
+//        model.addAttribute("sort", sort);
+        return CommonResult.success("此为首页！");
+
     }
 }

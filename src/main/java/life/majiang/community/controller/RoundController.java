@@ -84,6 +84,7 @@ public class RoundController {
         List<RoundDTO> roundDTOS= get(request);
         List<RoundDTO> result = new ArrayList<RoundDTO>();
         for (RoundDTO roundDTO : roundDTOS) {
+            if(roundDTO.getProductionPlan()==null) continue;
             if(roundDTO.getProductionPlan().getId()==id) result.add(roundDTO);
         }
         return  result;
@@ -150,6 +151,7 @@ public class RoundController {
         List<RoundDTO> roundDTOS= get(request);
         List<RoundDTO> result = new ArrayList<RoundDTO>();
         for (RoundDTO roundDTO : roundDTOS) {
+            if(roundDTO.getState()==null || roundDTO.getTeam()==null) continue;
             if(roundDTO.getTeam().getId()==id && roundDTO.getState()==0) result.add(roundDTO);
         }
         return  result;
